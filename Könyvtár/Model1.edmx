@@ -5,22 +5,15 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="book_vs19Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Author">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="name" Type="nchar" MaxLength="60" />
+          <Property Name="time" Type="nchar" MaxLength="30" />
+        </EntityType>
         <EntityType Name="konyv">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" Nullable="false" />
-          <Property Name="name" Type="nvarchar(max)" />
-          <Property Name="author" Type="int" />
-          <Property Name="ISBN" Type="nchar" MaxLength="10" />
-        </EntityType>
-        <EntityType Name="Konyvek">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" Nullable="false" />
-        </EntityType>
-        <EntityType Name="Table">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
@@ -30,28 +23,25 @@
           <Property Name="ISBN" Type="nchar" MaxLength="10" />
         </EntityType>
         <EntityContainer Name="book_vs19ModelStoreContainer">
+          <EntitySet Name="Author" EntityType="Self.Author" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="konyv" EntityType="Self.konyv" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Konyvek" EntityType="Self.Konyvek" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Table" EntityType="Self.Table" Schema="dbo" store:Type="Tables" />
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="book_vs19Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
-        <EntityType Name="Table">
+        <EntityContainer Name="book_vs19Entities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Author" EntityType="book_vs19Model.Author" />
+          <EntitySet Name="konyv" EntityType="book_vs19Model.konyv" />
+        </EntityContainer>
+        <EntityType Name="Author">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" />
-          <Property Name="name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="author" Type="Int32" />
-          <Property Name="ISBN" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="name" Type="String" MaxLength="60" FixedLength="true" Unicode="true" />
+          <Property Name="time" Type="String" MaxLength="30" FixedLength="true" Unicode="true" />
         </EntityType>
-        <EntityContainer Name="book_vs19Entities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="Table" EntityType="Self.Table" />
-          <EntitySet Name="konyv" EntityType="book_vs19Model.konyv" />
-          <EntitySet Name="Konyvek" EntityType="book_vs19Model.Konyvek" />
-        </EntityContainer>
         <EntityType Name="konyv">
           <Key>
             <PropertyRef Name="Id" />
@@ -61,25 +51,18 @@
           <Property Name="author" Type="Int32" />
           <Property Name="ISBN" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
         </EntityType>
-        <EntityType Name="Konyvek">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" />
-        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="book_vs19ModelStoreContainer" CdmEntityContainer="book_vs19Entities">
-          <EntitySetMapping Name="Table">
-            <EntityTypeMapping TypeName="book_vs19Model.Table">
-              <MappingFragment StoreEntitySet="Table">
-                <ScalarProperty Name="Id" ColumnName="Id" />
+          <EntitySetMapping Name="Author">
+            <EntityTypeMapping TypeName="book_vs19Model.Author">
+              <MappingFragment StoreEntitySet="Author">
+                <ScalarProperty Name="time" ColumnName="time" />
                 <ScalarProperty Name="name" ColumnName="name" />
-                <ScalarProperty Name="author" ColumnName="author" />
-                <ScalarProperty Name="ISBN" ColumnName="ISBN" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -89,13 +72,6 @@
                 <ScalarProperty Name="ISBN" ColumnName="ISBN" />
                 <ScalarProperty Name="author" ColumnName="author" />
                 <ScalarProperty Name="name" ColumnName="name" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Konyvek">
-            <EntityTypeMapping TypeName="book_vs19Model.Konyvek">
-              <MappingFragment StoreEntitySet="Konyvek">
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

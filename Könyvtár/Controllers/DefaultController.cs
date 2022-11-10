@@ -20,12 +20,13 @@ namespace Könyvtár.App_Data
                 teszt.author = 666;
                 teszt.ISBN = "ISBN001";
                 teszt.name = "egy könny";
+                teszt.Id = idd;
                 bullshit.konyv.Add(teszt);
-                if(bullshit.konyv.Where(q => q.Id == idd).Count() < 1)
+                if(bullshit.konyv.Where(q => q.Id == teszt.Id).Count() ==0)
                 {
-                    //bullshit.SaveChanges();
+                    bullshit.SaveChanges();
                 }
-                Debug.WriteLine("fasz");
+                
             }
             return View();
         }

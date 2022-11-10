@@ -7,8 +7,8 @@
       <Diagram DiagramId="9dc4c54660b346b0ba37940892ccc667" Name="Diagram1">
         <EntityTypeShape EntityType="book_vs19Model.Konyv" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="book_vs19Model.konyv1" Width="1.5" PointX="3.75" PointY="0.75" />
-        <EntityTypeShape EntityType="book_vs19Model.Konyvek" Width="1.5" PointX="0.75" PointY="3.75" />
-        <EntityTypeShape EntityType="book_vs19Model.konyv" Width="1.5" PointX="0.75" PointY="0.75" />
+        <EntityTypeShape EntityType="book_vs19Model.Author" Width="1.5" PointX="0.75" PointY="0.75" />
+        <EntityTypeShape EntityType="book_vs19Model.konyv" Width="1.5" PointX="2.75" PointY="0.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
