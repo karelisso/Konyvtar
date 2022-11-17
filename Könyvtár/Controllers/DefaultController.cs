@@ -12,25 +12,28 @@ namespace Könyvtár.App_Data
         // GET: Default
         public ActionResult Index()
         {
-            Random rng = new Random();
-            using (book_vs19Entities bullshit = new book_vs19Entities())
-            {
-                int idd = rng.Next();
-                konyv teszt = new konyv();
-                teszt.author = 666;
-                teszt.ISBN = "ISBN001";
-                teszt.name = "egy könny";
-                teszt.Id = idd;
-                bullshit.konyv.Add(teszt);
-                if(bullshit.konyv.Where(q => q.Id == teszt.Id).Count() ==0)
-                {
-                    bullshit.SaveChanges();
-                }
+            //Random rng = new Random();
+            //using (book_vs19Entities bullshit = new book_vs19Entities())
+            //{
+            //    int idd = rng.Next();
+            //    konyv teszt = new konyv();
+            //    teszt.author = 666;
+            //    teszt.ISBN = "ISBN001";
+            //    teszt.name = "egy könny";
+            //    teszt.Id = idd;
+            //    bullshit.konyv.Add(teszt);
+            //    if(bullshit.konyv.Where(q => q.Id == teszt.Id).Count() ==0)
+            //    {
+            //        bullshit.SaveChanges();
+            //    }
                 
-            }
+            //}
             return View();
         }
-
+        public ActionResult Secnd()
+        {
+            return View("secondary");
+        }
         // GET: Default/Details/5
         public ActionResult Details(int id)
         {
@@ -51,7 +54,7 @@ namespace Könyvtár.App_Data
             {
                 // TODO: Add insert logic here
 
-                return RedirectToAction("Index");
+                return RedirectToAction("secondary");
             }
             catch
             {
@@ -73,7 +76,7 @@ namespace Könyvtár.App_Data
             {
                 // TODO: Add update logic here
 
-                return RedirectToAction("Index");
+                return RedirectToAction("secondary");
             }
             catch
             {
@@ -95,7 +98,7 @@ namespace Könyvtár.App_Data
             {
                 // TODO: Add delete logic here
 
-                return RedirectToAction("Index");
+                return RedirectToAction("secondary");
             }
             catch
             {

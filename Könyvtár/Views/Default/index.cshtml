@@ -1,7 +1,6 @@
-﻿@{
+﻿@*@{
     Layout = null;
-}
-
+}*@
 <!DOCTYPE html>
 
 <html>
@@ -12,7 +11,9 @@
 <body>
     <div>
      veeemo
-        <a href="~/Default/seconary.cshtml">mittudomén</a>
+      
+       @Html.ActionLink("mi ad", "Secnd");
+        @Html.Action("Secnd");
     </div>
 </body>
 </html>

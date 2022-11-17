@@ -1,7 +1,7 @@
 ﻿@{
     Layout = null;
 }
-
+@Model secmodel
 <!DOCTYPE html>
 
 <html>
@@ -12,7 +12,8 @@
 <body>
     <div>
         woomy
-        <a href="~/index.cshtml">mittudomén</a>
+        @Html.ActionLink("Textlink", "Index");
+        <a href="Index">mittudomén</a>
     </div>
 </body>
 </html>

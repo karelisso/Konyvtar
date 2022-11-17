@@ -215,7 +215,7 @@
     <Content Include="Scripts\jquery-3.4.1.slim.min.map" />
     <Content Include="Scripts\jquery-3.4.1.min.map" />
     <Content Include="Views\Default\index.cshtml" />
-    <Content Include="Views\Default\seconary.cshtml" />
+    <Content Include="Views\Default\secondary.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
