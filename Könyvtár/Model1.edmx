@@ -22,9 +22,16 @@
           <Property Name="author" Type="int" />
           <Property Name="ISBN" Type="nchar" MaxLength="10" />
         </EntityType>
+        <EntityType Name="user">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="varchar" MaxLength="255" Nullable="false" />
+        </EntityType>
         <EntityContainer Name="book_vs19ModelStoreContainer">
           <EntitySet Name="Author" EntityType="Self.Author" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="konyv" EntityType="Self.konyv" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="user" EntityType="Self.user" Schema="dbo" store:Type="Tables" />
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
@@ -33,6 +40,7 @@
         <EntityContainer Name="book_vs19Entities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Author" EntityType="book_vs19Model.Author" />
           <EntitySet Name="konyv" EntityType="book_vs19Model.konyv" />
+          <EntitySet Name="user" EntityType="book_vs19Model.user" />
         </EntityContainer>
         <EntityType Name="Author">
           <Key>
@@ -50,6 +58,12 @@
           <Property Name="name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="author" Type="Int32" />
           <Property Name="ISBN" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+        </EntityType>
+        <EntityType Name="user">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -73,6 +87,13 @@
                 <ScalarProperty Name="author" ColumnName="author" />
                 <ScalarProperty Name="name" ColumnName="name" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="user">
+            <EntityTypeMapping TypeName="book_vs19Model.user">
+              <MappingFragment StoreEntitySet="user">
+                <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

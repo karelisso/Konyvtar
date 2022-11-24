@@ -27,5 +27,6 @@ namespace Könyvtár
     
         public virtual DbSet<Author> Author { get; set; }
         public virtual DbSet<konyv> konyv { get; set; }
+        public virtual DbSet<user> user { get; set; }
     }
 }

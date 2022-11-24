@@ -9,6 +9,7 @@
         <EntityTypeShape EntityType="book_vs19Model.konyv1" Width="1.5" PointX="3.75" PointY="0.75" />
         <EntityTypeShape EntityType="book_vs19Model.Author" Width="1.5" PointX="0.75" PointY="0.75" />
         <EntityTypeShape EntityType="book_vs19Model.konyv" Width="1.5" PointX="2.75" PointY="0.75" />
+        <EntityTypeShape EntityType="book_vs19Model.user" Width="1.5" PointX="3" PointY="3.25" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
