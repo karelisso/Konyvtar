@@ -37,17 +37,39 @@ namespace Könyvtár.App_Data
         //{
 
         //}
-        public ActionResult CreateUser(string Uname, string Upp)
+        public ActionResult CreateUser(string Uname, string mail, string Upp, string veryf)
         {
+            if (Upp != veryf)
+                return View("/error");
             using (book_vs19Entities bullshit = new book_vs19Entities())
             {
                 user account = new user();
+                //this should be fine until i find out to use auto increment.
+                account.id = bullshit.user.Count() + 1;
+                account.email = mail;
                 account.Username = Uname;
-                account.Userpeeword = Upp; 
+                account.Userpeeword = Upp;
                 bullshit.user.Add(account);
                 bullshit.SaveChanges();
             }
-            return View();
+            return View("Index");
+        }
+        public ActionResult LogInUser(string Uname,string Upp)
+        {
+            using (book_vs19Entities bullshit = new book_vs19Entities())
+            {
+                foreach (var item in bullshit.user)
+                {
+                    if(item.Username.ToLower() == Uname.ToLower() || item.email.ToLower() == Uname.ToLower())
+                    {
+                        if(item.Userpeeword == Upp)
+                        {
+                            return View("Index");
+                        }
+                    }
+                }
+            }
+            return View("/error");
         }
         public ActionResult Secnd()
         {

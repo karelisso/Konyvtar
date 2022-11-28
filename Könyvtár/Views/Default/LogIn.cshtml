@@ -19,17 +19,19 @@
         {
             <p>Create new user!</p>
             <form action="CreateUser" method="post">
-                <label>User name</label> <input type="text" name="Uname" required /> <br />
-                <label>Password</label> <input type="password" name="Upp" required/> <br />
+                <label>User name</label> <input type="text" name="Uname" required />            <br />
+                <label>E-mail</label> <input type="email" name="mail" required />               <br />
+                <label>Password</label> <input type="password" name="Upp" required />           <br />
+                <label>Password again</label> <input type="password" name="UppR" required />    <br />
                 <input type="submit" value="Submit" class="submit" />
             </form>
 
         }
         else{
         <p>Log in with your Logins!</p>
-        <form action="CreateUser" method="post">
-            <label>User name</label> <input type="text" name="Uname" /> <br />
-            <label>Password</label> <input type="password" name="Upp" /> <br />
+        <form action="LoginUser" method="post">
+            <label>User name</label> <input type="text" name="Uname" placeholder="username or mail"/> <br />
+            <label>Password</label> <input type="password" name="Upp" placeholder="password"/> <br />
             <input type="checkbox" name="RegYet" />
             <label> I don't have an account</label> <br />
             <input type="submit" value="Submit" class="submit" />

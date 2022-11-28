@@ -29,6 +29,7 @@
           <Property Name="id" Type="int" Nullable="false" />
           <Property Name="Username" Type="varchar" MaxLength="255" />
           <Property Name="Userpeeword" Type="varchar" MaxLength="32" />
+          <Property Name="email" Type="nvarchar(max)" />
         </EntityType>
         <EntityContainer Name="book_vs19ModelStoreContainer">
           <EntitySet Name="Author" EntityType="Self.Author" Schema="dbo" store:Type="Tables" />
@@ -68,6 +69,7 @@
           <Property Name="id" Type="Int32" Nullable="false" />
           <Property Name="Username" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="Userpeeword" Type="String" MaxLength="32" FixedLength="false" Unicode="false" />
+          <Property Name="email" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -97,6 +99,7 @@
           <EntitySetMapping Name="user">
             <EntityTypeMapping TypeName="book_vs19Model.user">
               <MappingFragment StoreEntitySet="user">
+                <ScalarProperty Name="email" ColumnName="email" />
                 <ScalarProperty Name="Userpeeword" ColumnName="Userpeeword" />
                 <ScalarProperty Name="Username" ColumnName="Username" />
                 <ScalarProperty Name="id" ColumnName="id" />

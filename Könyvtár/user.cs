@@ -17,5 +17,6 @@ namespace Könyvtár
         public int id { get; set; }
         public string Username { get; set; }
         public string Userpeeword { get; set; }
+        public string email { get; set; }
     }
 }
