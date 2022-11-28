@@ -1,0 +1,29 @@
+﻿@{
+    Layout = null;
+
+    string Regist;
+    Regist = Request["RegYet"];
+
+
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title></title>
+</head>
+<body>
+    <div>
+            <p>Create new user!</p>
+            <form action="CreateUser" method="post">
+                <label>User name</label> <input type="text" name="Uname" required />            <br />
+                <label>E-mail</label> <input type="email" name="mail" required />               <br />
+                <label>Password</label> <input type="password" name="Upp" required />           <br />
+                <label>Password again</label> <input type="password" name="UppR" required />    <br />
+                <input type="submit" value="Submit" class="submit" />
+            </form>
+
+        <a href="Index">mittudomén</a>
+    </div>
+</body>
+</html>

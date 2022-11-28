@@ -40,33 +40,42 @@ namespace Könyvtár.App_Data
         public ActionResult CreateUser(string Uname, string mail, string Upp, string veryf)
         {
             if (Upp != veryf)
-                return View("/error");
-            using (book_vs19Entities bullshit = new book_vs19Entities())
+                return View("Regist");
+            using (book_vs19Entities1 bullshit = new book_vs19Entities1())
             {
                 user account = new user();
                 //this should be fine until i find out to use auto increment.
-                account.id = bullshit.user.Count() + 1;
+                //account.id = bullshit.user.Count() + 1;
                 account.email = mail;
                 account.Username = Uname;
                 account.Userpeeword = Upp;
                 bullshit.user.Add(account);
                 bullshit.SaveChanges();
             }
-            return View("Index");
+            return View("LogIn");
         }
-        public ActionResult LogInUser(string Uname,string Upp)
+        public ActionResult LogInUser(string Uname,string Upp,string RegYet)
         {
-            using (book_vs19Entities bullshit = new book_vs19Entities())
+            if (RegYet != null)
+                return View("Regist");
+            using (book_vs19Entities1 bullshit = new book_vs19Entities1())
             {
                 foreach (var item in bullshit.user)
                 {
-                    if(item.Username.ToLower() == Uname.ToLower() || item.email.ToLower() == Uname.ToLower())
+                    try
                     {
-                        if(item.Userpeeword == Upp)
+                        if (item.Username.ToLower() == Uname.ToLower() || item.email.ToLower() == Uname.ToLower())
                         {
-                            return View("Index");
+                            if (item.Userpeeword == Upp)
+                            {
+                                return View("Index");
+                            }
                         }
                     }
+                    catch (Exception)
+                    {
+                    }
+                   
                 }
             }
             return View("/error");

@@ -230,6 +230,7 @@
     <Content Include="Scripts\jquery-3.4.1.min.map" />
     <Content Include="Views\Default\index.cshtml" />
     <Content Include="Views\Default\LogIn.cshtml" />
+    <Content Include="Views\Default\Regist.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

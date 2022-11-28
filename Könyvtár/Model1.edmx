@@ -26,7 +26,7 @@
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Username" Type="varchar" MaxLength="255" />
           <Property Name="Userpeeword" Type="varchar" MaxLength="32" />
           <Property Name="email" Type="nvarchar(max)" />
@@ -40,11 +40,6 @@
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="book_vs19Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
-        <EntityContainer Name="book_vs19Entities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="Author" EntityType="book_vs19Model.Author" />
-          <EntitySet Name="konyv" EntityType="book_vs19Model.konyv" />
-          <EntitySet Name="user" EntityType="book_vs19Model.user" />
-        </EntityContainer>
         <EntityType Name="Author">
           <Key>
             <PropertyRef Name="Id" />
@@ -66,43 +61,48 @@
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Username" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="Userpeeword" Type="String" MaxLength="32" FixedLength="false" Unicode="false" />
           <Property Name="email" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
+        <EntityContainer Name="book_vs19Entities1" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Author" EntityType="Self.Author" />
+          <EntitySet Name="konyv" EntityType="Self.konyv" />
+          <EntitySet Name="user" EntityType="Self.user" />
+        </EntityContainer>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="book_vs19ModelStoreContainer" CdmEntityContainer="book_vs19Entities">
+        <EntityContainerMapping StorageEntityContainer="book_vs19ModelStoreContainer" CdmEntityContainer="book_vs19Entities1">
           <EntitySetMapping Name="Author">
             <EntityTypeMapping TypeName="book_vs19Model.Author">
               <MappingFragment StoreEntitySet="Author">
-                <ScalarProperty Name="time" ColumnName="time" />
-                <ScalarProperty Name="name" ColumnName="name" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="time" ColumnName="time" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="konyv">
             <EntityTypeMapping TypeName="book_vs19Model.konyv">
               <MappingFragment StoreEntitySet="konyv">
-                <ScalarProperty Name="ISBN" ColumnName="ISBN" />
-                <ScalarProperty Name="author" ColumnName="author" />
-                <ScalarProperty Name="name" ColumnName="name" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="author" ColumnName="author" />
+                <ScalarProperty Name="ISBN" ColumnName="ISBN" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="user">
             <EntityTypeMapping TypeName="book_vs19Model.user">
               <MappingFragment StoreEntitySet="user">
-                <ScalarProperty Name="email" ColumnName="email" />
-                <ScalarProperty Name="Userpeeword" ColumnName="Userpeeword" />
-                <ScalarProperty Name="Username" ColumnName="Username" />
                 <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="Username" ColumnName="Username" />
+                <ScalarProperty Name="Userpeeword" ColumnName="Userpeeword" />
+                <ScalarProperty Name="email" ColumnName="email" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

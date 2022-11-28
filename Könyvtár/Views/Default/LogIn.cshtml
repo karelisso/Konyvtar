@@ -1,5 +1,4 @@
 ﻿@{
-     Response.Cookies.Clear();
     Layout = null;
 
     string Regist;
@@ -15,19 +14,6 @@
 </head>
 <body>
     <div>
-        @if(Regist == "on")
-        {
-            <p>Create new user!</p>
-            <form action="CreateUser" method="post">
-                <label>User name</label> <input type="text" name="Uname" required />            <br />
-                <label>E-mail</label> <input type="email" name="mail" required />               <br />
-                <label>Password</label> <input type="password" name="Upp" required />           <br />
-                <label>Password again</label> <input type="password" name="UppR" required />    <br />
-                <input type="submit" value="Submit" class="submit" />
-            </form>
-
-        }
-        else{
         <p>Log in with your Logins!</p>
         <form action="LoginUser" method="post">
             <label>User name</label> <input type="text" name="Uname" placeholder="username or mail"/> <br />
@@ -37,8 +23,6 @@
             <input type="submit" value="Submit" class="submit" />
         </form>
             <p>@Regist</p>
-        }
-        <div>@Response.Cookies.Get("CkUname").Value</div>
         <a href="Index">mittudomén</a>
     </div>
 </body>

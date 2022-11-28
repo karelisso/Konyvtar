@@ -13,10 +13,10 @@ namespace Könyvtár
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class book_vs19Entities : DbContext
+    public partial class book_vs19Entities1 : DbContext
     {
-        public book_vs19Entities()
-            : base("name=book_vs19Entities")
+        public book_vs19Entities1()
+            : base("name=book_vs19Entities1")
         {
         }
     
