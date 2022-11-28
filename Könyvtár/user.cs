@@ -14,6 +14,8 @@ namespace Könyvtár
     
     public partial class user
     {
-        public string id { get; set; }
+        public int id { get; set; }
+        public string Username { get; set; }
+        public string Userpeeword { get; set; }
     }
 }

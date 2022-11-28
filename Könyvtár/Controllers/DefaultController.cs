@@ -4,6 +4,8 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Diagnostics;
+using Antlr.Runtime.Misc;
+using System.Threading.Tasks;
 
 namespace Könyvtár.App_Data
 {
@@ -12,27 +14,44 @@ namespace Könyvtár.App_Data
         // GET: Default
         public ActionResult Index()
         {
-            //Random rng = new Random();
+            Random rng = new Random();
             //using (book_vs19Entities bullshit = new book_vs19Entities())
             //{
             //    int idd = rng.Next();
+                
             //    konyv teszt = new konyv();
             //    teszt.author = 666;
             //    teszt.ISBN = "ISBN001";
             //    teszt.name = "egy könny";
             //    teszt.Id = idd;
             //    bullshit.konyv.Add(teszt);
-            //    if(bullshit.konyv.Where(q => q.Id == teszt.Id).Count() ==0)
+            //    if (bullshit.konyv.Where(q => q.Id == teszt.Id).Count() == 0)
             //    {
             //        bullshit.SaveChanges();
             //    }
-                
+
             //}
+            return View();
+        }
+        //public Task<ActionResult> CreateUser()
+        //{
+
+        //}
+        public ActionResult CreateUser(string Uname, string Upp)
+        {
+            using (book_vs19Entities bullshit = new book_vs19Entities())
+            {
+                user account = new user();
+                account.Username = Uname;
+                account.Userpeeword = Upp; 
+                bullshit.user.Add(account);
+                bullshit.SaveChanges();
+            }
             return View();
         }
         public ActionResult Secnd()
         {
-            return View("secondary");
+            return View("LogIn");
         }
         // GET: Default/Details/5
         public ActionResult Details(int id)
