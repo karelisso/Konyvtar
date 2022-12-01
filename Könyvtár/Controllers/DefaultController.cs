@@ -58,6 +58,7 @@ namespace Könyvtár.App_Data
         {
             if (RegYet != null)
                 return View("Regist");
+            Session["username"] = Uname;
             using (book_vs19Entities1 bullshit = new book_vs19Entities1())
             {
                 foreach (var item in bullshit.user)

@@ -9,10 +9,21 @@
     <title></title>
 </head>
 <body>
-    <div>
-     veeemo
-      
-       @Html.ActionLink("Bejelentkezés", "Secnd");
-    </div>
+    @if (Session["username"] == null)
+    {
+        <div>
+            veeemo <br />
+            @Html.ActionLink("Bejelentkezés", "Secnd");
+        </div>
+    }
+    else
+    {
+        <div>
+            username: <br />
+            @(Session["username"] as string) <br>
+            @Html.ActionLink("Bejelentkezés", "Secnd");
+        </div>
+    }
+
 </body>
 </html>
