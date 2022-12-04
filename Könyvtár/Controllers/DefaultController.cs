@@ -18,7 +18,7 @@ namespace Könyvtár.App_Data
             //using (book_vs19Entities bullshit = new book_vs19Entities())
             //{
             //    int idd = rng.Next();
-                
+
             //    konyv teszt = new konyv();
             //    teszt.author = 666;
             //    teszt.ISBN = "ISBN001";
@@ -37,6 +37,10 @@ namespace Könyvtár.App_Data
         //{
 
         //}
+        public ActionResult ToggleActive()
+        {
+            return View();
+        }
         public ActionResult CreateUser(string Uname, string mail, string Upp, string veryf)
         {
             if (Upp != veryf)
