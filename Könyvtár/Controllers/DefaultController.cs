@@ -37,9 +37,24 @@ namespace Könyvtár.App_Data
         //{
 
         //}
-        public ActionResult ToggleActive()
+        public ActionResult AddBook(string name, string isbn, string auth)
         {
-            return View();
+            using (book_vs19Entities1 bullshit = new book_vs19Entities1())
+            {
+                konyv kv = new konyv();
+                kv.author = 0;
+                if (auth.Length > 0)
+                {
+                    kv.author =  int.Parse( auth);
+                }
+
+                kv.ISBN = isbn;
+                kv.name = name;
+                kv.Id = bullshit.konyv.Max(q => q.Id) + 1;
+                bullshit.konyv.Add(kv);
+                bullshit.SaveChanges();
+            }
+                return View("Index");
         }
         public ActionResult CreateUser(string Uname, string mail, string Upp, string veryf)
         {

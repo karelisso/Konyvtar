@@ -232,6 +232,7 @@
     <Content Include="Views\Default\LogIn.cshtml" />
     <Content Include="Views\Default\Regist.cshtml" />
     <Content Include="Views\Default\book_render.cshtml" />
+    <Content Include="Views\Default\book_add.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

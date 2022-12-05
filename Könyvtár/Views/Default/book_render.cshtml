@@ -2,10 +2,15 @@
     konyv[] AllBook;
     using (book_vs19Entities1 bullshit = new book_vs19Entities1())
     {
-         AllBook = bullshit.konyv.ToArray();
+        AllBook = bullshit.konyv.ToArray();
     }
+    int[] bookids;
     var tablegrid = new WebGrid(AllBook);
-
+    int example = 0;
+    if(example > 3)
+        {
+        Console.WriteLine( AllBook[9999999]);
+        }
 }
 <table class="table table-bordered">
     @foreach (var item in AllBook)
@@ -17,6 +22,9 @@
             <td>@item.name</td>
         </tr>
     }
+<div>
+    @example
+</div>
     @* find every active table row, use the id from the table to delete it from the datbase! *@
 <button class="navbar-fixed-bottom p3 h3 bg-danger">törlés!</button>
 
@@ -26,6 +34,9 @@
     tablerows.forEach(function (ellement) {
         ellement.addEventListener('click', function() {
             ellement.classList.toggle("bg-success");
+            @{ 
+                example++;
+            }
         });
     });
 </script>
