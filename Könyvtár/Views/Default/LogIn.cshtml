@@ -3,7 +3,10 @@
 
     string Regist;
     Regist = Request["RegYet"];
-    Session["username"] = Request["Upp"];
+    user urugay = new user();
+    urugay.Username = Request["Uname"];
+    urugay.Userpeeword = Request["Upp"];
+    Session["username"] = (object) urugay;
 
 }
 <!DOCTYPE html>

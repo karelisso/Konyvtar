@@ -18,11 +18,11 @@
     }
     else
     {
-        <div>
-            username: <br />
-            @(Session["username"] as string) <br>
-            @Html.ActionLink("Bejelentkezés", "Secnd");
-        </div>
+<div>
+    username: <br />
+    @(Session["username"]) <br>
+    @Html.ActionLink("Bejelentkezés", "Secnd");
+</div>
     }
     @RenderPage("book_add.cshtml")
     @RenderPage("book_render.cshtml")
