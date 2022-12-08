@@ -31,7 +31,7 @@ namespace Könyvtár.App_Data
             //    }
 
             //}
-            return View();
+            return View("index");
         }
         //public Task<ActionResult> CreateUser()
         //{
@@ -50,11 +50,35 @@ namespace Könyvtár.App_Data
 
                 kv.ISBN = isbn;
                 kv.name = name;
-                kv.Id = bullshit.konyv.Max(q => q.Id) + 1;
+                try
+                {
+                    kv.Id = bullshit.konyv.Max(q => q.Id) + 1;
+                }
+                catch (Exception)
+                {
+
+                    kv.Id = 0;
+                }
+               
                 bullshit.konyv.Add(kv);
                 bullshit.SaveChanges();
             }
                 return View("Index");
+        }
+        public void delbooks(string name) {
+            using (book_vs19Entities1 bullshit = new book_vs19Entities1())
+            {
+                string[] namesplit = name.Split(' ');
+                for (int i = 0; i < namesplit.Length; i++)
+                {
+                    if (namesplit[i].Length <= 0) continue; 
+                    int tempid = int.Parse(namesplit[i]);
+                    konyv torolj = bullshit.konyv.Where(q => q.Id.Equals(tempid)).FirstOrDefault();
+                    bullshit.konyv.Remove(torolj);
+                }
+                bullshit.SaveChanges();
+            }
+           // return View("index");
         }
         public ActionResult CreateUser(string Uname, string mail, string Upp, string veryf)
         {
