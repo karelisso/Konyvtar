@@ -80,6 +80,29 @@ namespace Könyvtár.App_Data
             }
            // return View("index");
         }
+        //public konyv[] Retrievebooks()
+        //{
+        //    konyv[] kv;
+        //    using (book_vs19Entities1 bullshit = new book_vs19Entities1())
+        //    {
+        //        kv = bullshit.konyv.ToArray();
+        //    }
+        //    return kv.ToArray();
+        //}
+        public void Retrievebooks()
+        {
+            List<String[]> kv = new List<string[]>();
+            using (book_vs19Entities1 bullshit = new book_vs19Entities1())
+            {
+                foreach (var item in bullshit.konyv)
+                {         
+                    kv.Add(KonyvSTR(item));
+                }
+               
+            }
+            System.Diagnostics.Debug.WriteLine(kv[0].ToString());
+            Response.Write( kv[0].ToString());
+        }
         public ActionResult CreateUser(string Uname, string mail, string Upp, string veryf)
         {
             if (Upp != veryf)
@@ -199,5 +222,11 @@ namespace Könyvtár.App_Data
                 return View();
             }
         }
+        public string[] KonyvSTR(konyv inp)
+        {
+            String[] vm = new string[4] { inp.Id.ToString(), inp.ISBN, inp.name, inp.author.ToString() };
+            return vm;
+        }
     }
+}
 }

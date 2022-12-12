@@ -30,7 +30,12 @@
         let selectedrows = document.querySelector(".selected").innerText;
         console.log( $(".selected td:first-child").text() );
         $.post("delbooks", { 'name': $(".selected td:first-child").text() });
-        $.get("")
+        $.get("Retrievebooks", function (data) {
+            alert(data);
+        });
+    }
+    function reloadTable() {
+        
     }
 </script>
   
