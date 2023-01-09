@@ -18,7 +18,6 @@ namespace Könyvtár.App_Data
             //using (book_vs19Entities bullshit = new book_vs19Entities())
             //{
             //    int idd = rng.Next();
-
             //    konyv teszt = new konyv();
             //    teszt.author = 666;
             //    teszt.ISBN = "ISBN001";
@@ -29,14 +28,13 @@ namespace Könyvtár.App_Data
             //    {
             //        bullshit.SaveChanges();
             //    }
-
             //}
             return View("index");
         }
-        //public Task<ActionResult> CreateUser()
-        //{
+        // public Task<ActionResult> CreateUser()
+        // {
 
-        //}
+        // }
         public ActionResult AddBook(string name, string isbn, string auth)
         {
             using (book_vs19Entities1 bullshit = new book_vs19Entities1())
@@ -80,6 +78,7 @@ namespace Könyvtár.App_Data
             }
            // return View("index");
         }
+
         //public konyv[] Retrievebooks()
         //{
         //    konyv[] kv;
@@ -89,6 +88,7 @@ namespace Könyvtár.App_Data
         //    }
         //    return kv.ToArray();
         //}
+
         public void Retrievebooks()
         {
             List<String[]> kv = new List<string[]>();
@@ -228,5 +228,4 @@ namespace Könyvtár.App_Data
             return vm;
         }
     }
-}
 }
