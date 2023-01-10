@@ -18,5 +18,9 @@ namespace Könyvtár
         public string name { get; set; }
         public Nullable<int> author { get; set; }
         public string ISBN { get; set; }
+        public Nullable<int> Categories { get; set; }
+        public string Descrpition { get; set; }
+        public string path { get; set; }
+        public string demo { get; set; }
     }
 }

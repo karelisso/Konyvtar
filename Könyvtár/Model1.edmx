@@ -12,6 +12,14 @@
           <Property Name="Id" Type="int" Nullable="false" />
           <Property Name="name" Type="nchar" MaxLength="60" />
           <Property Name="time" Type="nchar" MaxLength="30" />
+          <Property Name="FavCategories" Type="int" />
+        </EntityType>
+        <EntityType Name="Categories">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Name" Type="nchar" MaxLength="255" />
         </EntityType>
         <EntityType Name="konyv">
           <Key>
@@ -21,6 +29,10 @@
           <Property Name="name" Type="nvarchar(max)" />
           <Property Name="author" Type="int" />
           <Property Name="ISBN" Type="nchar" MaxLength="10" />
+          <Property Name="Categories" Type="int" />
+          <Property Name="Descrpition" Type="nchar" MaxLength="255" />
+          <Property Name="path" Type="nchar" MaxLength="255" />
+          <Property Name="demo" Type="text" />
         </EntityType>
         <EntityType Name="user">
           <Key>
@@ -30,9 +42,11 @@
           <Property Name="Username" Type="varchar" MaxLength="255" />
           <Property Name="Userpeeword" Type="varchar" MaxLength="32" />
           <Property Name="email" Type="nvarchar(max)" />
+          <Property Name="lovedBooks" Type="int" />
         </EntityType>
         <EntityContainer Name="book_vs19ModelStoreContainer">
           <EntitySet Name="Author" EntityType="Self.Author" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Categories" EntityType="Self.Categories" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="konyv" EntityType="Self.konyv" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="user" EntityType="Self.user" Schema="dbo" store:Type="Tables" />
         </EntityContainer>
@@ -47,6 +61,7 @@
           <Property Name="Id" Type="Int32" Nullable="false" />
           <Property Name="name" Type="String" MaxLength="60" FixedLength="true" Unicode="true" />
           <Property Name="time" Type="String" MaxLength="30" FixedLength="true" Unicode="true" />
+          <Property Name="FavCategories" Type="Int32" />
         </EntityType>
         <EntityType Name="konyv">
           <Key>
@@ -56,6 +71,10 @@
           <Property Name="name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="author" Type="Int32" />
           <Property Name="ISBN" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="Categories" Type="Int32" />
+          <Property Name="Descrpition" Type="String" MaxLength="255" FixedLength="true" Unicode="true" />
+          <Property Name="path" Type="String" MaxLength="255" FixedLength="true" Unicode="true" />
+          <Property Name="demo" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="user">
           <Key>
@@ -65,12 +84,21 @@
           <Property Name="Username" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="Userpeeword" Type="String" MaxLength="32" FixedLength="false" Unicode="false" />
           <Property Name="email" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="lovedBooks" Type="Int32" />
         </EntityType>
         <EntityContainer Name="book_vs19Entities1" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Author" EntityType="Self.Author" />
           <EntitySet Name="konyv" EntityType="Self.konyv" />
           <EntitySet Name="user" EntityType="Self.user" />
+          <EntitySet Name="Categories" EntityType="book_vs19Model.Categories" />
         </EntityContainer>
+        <EntityType Name="Categories">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="255" FixedLength="true" Unicode="true" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -80,6 +108,7 @@
           <EntitySetMapping Name="Author">
             <EntityTypeMapping TypeName="book_vs19Model.Author">
               <MappingFragment StoreEntitySet="Author">
+                <ScalarProperty Name="FavCategories" ColumnName="FavCategories" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="name" ColumnName="name" />
                 <ScalarProperty Name="time" ColumnName="time" />
@@ -89,6 +118,10 @@
           <EntitySetMapping Name="konyv">
             <EntityTypeMapping TypeName="book_vs19Model.konyv">
               <MappingFragment StoreEntitySet="konyv">
+                <ScalarProperty Name="demo" ColumnName="demo" />
+                <ScalarProperty Name="path" ColumnName="path" />
+                <ScalarProperty Name="Descrpition" ColumnName="Descrpition" />
+                <ScalarProperty Name="Categories" ColumnName="Categories" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="name" ColumnName="name" />
                 <ScalarProperty Name="author" ColumnName="author" />
@@ -99,10 +132,19 @@
           <EntitySetMapping Name="user">
             <EntityTypeMapping TypeName="book_vs19Model.user">
               <MappingFragment StoreEntitySet="user">
+                <ScalarProperty Name="lovedBooks" ColumnName="lovedBooks" />
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="Username" ColumnName="Username" />
                 <ScalarProperty Name="Userpeeword" ColumnName="Userpeeword" />
                 <ScalarProperty Name="email" ColumnName="email" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Categories">
+            <EntityTypeMapping TypeName="book_vs19Model.Categories">
+              <MappingFragment StoreEntitySet="Categories">
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

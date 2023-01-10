@@ -8,6 +8,7 @@
         <EntityTypeShape EntityType="book_vs19Model.Author" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="book_vs19Model.konyv" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="book_vs19Model.user" Width="1.5" PointX="0.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="book_vs19Model.Categories" Width="1.5" PointX="3.375" PointY="3.875" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

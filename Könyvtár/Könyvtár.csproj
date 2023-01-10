@@ -130,13 +130,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_Data\Books.mdf" />
-    <Content Include="App_Data\Books_log.ldf">
-      <DependentUpon>Books.mdf</DependentUpon>
-    </Content>
     <Content Include="App_Data\book_vs19.mdf" />
     <Content Include="App_Data\book_vs19_log.ldf">
       <DependentUpon>book_vs19.mdf</DependentUpon>
+    </Content>
+    <Content Include="App_Data\Users.mdf" />
+    <Content Include="App_Data\Users_log.ldf">
+      <DependentUpon>Users.mdf</DependentUpon>
     </Content>
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
@@ -179,6 +179,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Author.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Categories.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Controllers\DefaultController.cs" />
