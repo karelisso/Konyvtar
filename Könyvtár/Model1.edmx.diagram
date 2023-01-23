@@ -9,6 +9,13 @@
         <EntityTypeShape EntityType="book_vs19Model.konyv" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="book_vs19Model.user" Width="1.5" PointX="0.75" PointY="3.75" IsExpanded="true" />
         <EntityTypeShape EntityType="book_vs19Model.Categories" Width="1.5" PointX="3.375" PointY="3.875" />
+        <EntityTypeShape EntityType="book_vs19Model.Images" Width="1.5" PointX="5.75" PointY="0.75" />
+        <EntityTypeShape EntityType="book_vs19Model.Relation_AuthorWriterBook" Width="1.5" PointX="5.75" PointY="3.75" />
+        <EntityTypeShape EntityType="book_vs19Model.Relation_BookCategorie" Width="1.5" PointX="0.75" PointY="6.75" />
+        <EntityTypeShape EntityType="book_vs19Model.Relation_UserBook" Width="1.5" PointX="2.75" PointY="6.75" />
+        <EntityTypeShape EntityType="book_vs19Model.Relation_UserCategorie" Width="1.5" PointX="4.75" PointY="6.75" />
+        <EntityTypeShape EntityType="book_vs19Model.Table" Width="1.5" PointX="6.75" PointY="6.75" />
+        <EntityTypeShape EntityType="book_vs19Model.Writer" Width="1.5" PointX="7.75" PointY="0.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -22,5 +22,8 @@ namespace Könyvtár
         public string Descrpition { get; set; }
         public string path { get; set; }
         public string demo { get; set; }
+        public Nullable<int> writerID { get; set; }
+        public Nullable<int> authorId { get; set; }
+        public Nullable<long> imageID { get; set; }
     }
 }
