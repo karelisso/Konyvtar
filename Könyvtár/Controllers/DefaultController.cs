@@ -11,6 +11,8 @@ namespace Könyvtár.App_Data
 {
     public class DefaultController : Controller
     {
+        public static UsersEntities db_user = new UsersEntities();
+        public book_vs19Entities1 db_book = new book_vs19Entities1();
         // GET: Default
         public ActionResult Index()
         {
@@ -35,32 +37,31 @@ namespace Könyvtár.App_Data
         // {
 
         // }
-        public ActionResult AddBook(string name, string isbn, string auth)
+        public ActionResult AddBook(string name, string isbn, string auth,string img)
         {
-            using (book_vs19Entities1 bullshit = new book_vs19Entities1())
-            {
                 konyv kv = new konyv();
-                kv.author = 0;
+                kv.authorId = 0;
                 if (auth.Length > 0)
                 {
-                    kv.author =  int.Parse( auth);
+                    kv.authorId =  int.Parse( auth);
                 }
 
                 kv.ISBN = isbn;
                 kv.name = name;
                 try
                 {
-                    kv.Id = bullshit.konyv.Max(q => q.Id) + 1;
+                    kv.Id = db_book.konyv.Max(q => q.Id) + 1;
                 }
                 catch (Exception)
                 {
 
                     kv.Id = 0;
                 }
-               
-                bullshit.konyv.Add(kv);
-                bullshit.SaveChanges();
-            }
+                //Images img = new Images;
+                //img.JPG = img;
+                //db_book.Images.Add();
+                db_book.konyv.Add(kv);
+                db_book.SaveChanges();
                 return View("Index");
         }
         public void delbooks(string name) {
@@ -103,39 +104,60 @@ namespace Könyvtár.App_Data
             System.Diagnostics.Debug.WriteLine(kv[0].ToString());
             Response.Write( kv[0].ToString());
         }
-        public ActionResult CreateUser(string Uname, string mail, string Upp, string veryf)
+        public ActionResult CreateUser(string Uname, string mail, string Upp, string UppR, bool? Adm)
         {
-            if (Upp != veryf)
+            if (Upp != UppR)
                 return View("Regist");
-            using (book_vs19Entities1 bullshit = new book_vs19Entities1())
-            {
-                user account = new user();
-                //this should be fine until i find out to use auto increment.
-                //account.id = bullshit.user.Count() + 1;
-                account.email = mail;
-                account.Username = Uname;
-                account.Userpeeword = Upp;
-                bullshit.user.Add(account);
-                bullshit.SaveChanges();
-            }
+               
+            User_sus account1 = new User_sus();
+            user account2 = new user();
+            //this should be fine until i find out to use auto increment.
+            //account.id = bullshit.user.Count() + 1;
+            account1.Username = Uname;
+            account2.Username = Uname;
+            account1.Userpassword = Upp;
+            account1.email = mail;
+            account1.phone = "+36-30-555-5555";
+            if (Adm ==null)
+                Adm = false;
+            account2.admin = (bool)Adm ? 1 : 0;
+            account2.special_password = Upp;
+            //try
+            //{
+                db_user.User_sus.Add(account1);
+                db_user.SaveChanges();
+
+                account2.id = db_user.User_sus.Where(q => q.Username == account1.Username && q.email == account1.email).FirstOrDefault().Id;
+                db_book.user.Add(account2);
+               
+                db_book.SaveChanges();
+
+                //Session["username"] = Uname;
+            //}
+            //catch (Exception)
+            //{
+            //   // return View("Regist");
+            //}
+            
             return View("LogIn");
         }
         public ActionResult LogInUser(string Uname,string Upp,string RegYet)
         {
             if (RegYet != null)
                 return View("Regist");
-            Session["username"] = Uname;
-            using (book_vs19Entities1 bullshit = new book_vs19Entities1())
-            {
-                foreach (var item in bullshit.user)
+                //Session["username"] = Uname;
+                foreach (var item in db_user.User_sus)
                 {
                     try
                     {
                         if (item.Username.ToLower() == Uname.ToLower() || item.email.ToLower() == Uname.ToLower())
                         {
-                            if (item.Userpeeword == Upp)
+                            if (item.Userpassword == Upp)
                             {
-                                return View("Index");
+                            Session["username"] = Uname;
+                            Session["usermail"] = item.email;
+                            Session["userid"] = item.Id;
+                            return View("Index");                            
                             }
                         }
                     }
@@ -144,7 +166,6 @@ namespace Könyvtár.App_Data
                     }
                    
                 }
-            }
             return View("/error");
         }
         public ActionResult Secnd()
@@ -224,7 +245,7 @@ namespace Könyvtár.App_Data
         }
         public string[] KonyvSTR(konyv inp)
         {
-            String[] vm = new string[4] { inp.Id.ToString(), inp.ISBN, inp.name, inp.author.ToString() };
+            String[] vm = new string[4] { inp.Id.ToString(), inp.ISBN, inp.name, "author" + db_book.Author.Where(q=>q.Id == inp.authorId).First().name   };
             return vm;
         }
     }

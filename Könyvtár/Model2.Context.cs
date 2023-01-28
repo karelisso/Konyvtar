@@ -25,6 +25,6 @@ namespace Könyvtár
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<Table> Table { get; set; }
+        public virtual DbSet<User_sus> User_sus { get; set; }
     }
 }

@@ -9,7 +9,7 @@ namespace Könyvtár.Helper
     {
         public string[] KonyvSTR2 (konyv inp)
         {
-            String[] vm = new string[4] {inp.Id.ToString(),inp.ISBN,inp.name,inp.author.ToString()};
+            String[] vm = new string[4] {inp.Id.ToString(),inp.ISBN,inp.name,inp.authorId.ToString()};
             return vm;
         }
     }

@@ -16,9 +16,8 @@ namespace Könyvtár
     {
         public int id { get; set; }
         public string Username { get; set; }
-        public string Userpeeword { get; set; }
-        public string email { get; set; }
-        public Nullable<int> lovedBooks { get; set; }
         public string role { get; set; }
+        public Nullable<int> admin { get; set; }
+        public string special_password { get; set; }
     }
 }

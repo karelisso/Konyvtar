@@ -3,9 +3,9 @@
 
     string Regist;
     Regist = Request["RegYet"];
-    user urugay = new user();
+    User_sus urugay = new User_sus();
     urugay.Username = Request["Uname"];
-    urugay.Userpeeword = Request["Upp"];
+    urugay.Userpassword = Request["Upp"];
     Session["username"] = (object) urugay;
 
 }
@@ -15,7 +15,7 @@
     <meta name="viewport" content="width=device-width" />
     <title></title>
 </head>
-<body>
+<body class="bg-warning">
     <div>
         <p>Log in with your Logins!</p>
         <form action="LoginUser" method="post">

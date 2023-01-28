@@ -16,8 +16,6 @@ namespace Könyvtár
     {
         public int Id { get; set; }
         public string name { get; set; }
-        public string time { get; set; }
-        public Nullable<int> FavCategories { get; set; }
         public string Date { get; set; }
     }
 }
