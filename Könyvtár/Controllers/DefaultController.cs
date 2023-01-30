@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 using System.Data.SqlClient;
 using System.IO;
 using Antlr.Runtime.Tree;
+using System.Drawing;
+using Microsoft.Ajax.Utilities;
 
 namespace Könyvtár.App_Data
 {
@@ -80,12 +82,28 @@ namespace Könyvtár.App_Data
             
             return View("Index");
         }
-        public ActionResult Load_Image()
+        public String Load_Image()
         {
-            return File(db_book.Images.First().JPG, "image/jpg");
+
+            //return "<body>\r\n    <div class=\"container bg-warning\">\r\n        <a href=\"#\">contentált conttent</a> <br>\r\n        <div class=\"alert-danger\">\r\n        </div>\r\n    </div>\r\n     \r\n</body>";
+            //return File(db_book.Images.First().JPG, "image/jpg");
+            return string.Format(" \"data:image/png;base64,{0}\"", Convert.ToBase64String(db_book.Images.First().JPG));
+            //return $"<img src=\"{string.Format("data:image/png;base64,{0}", Convert.ToBase64String(db_book.Images.First().JPG))}\" alt=\"Alternate Text\" style=\"max-width: 100%; max-height: 100%;\" />" ;
+            //return byteArrayToImage(db_book.Images.First().JPG);
             //int imageId = Convert.ToInt32(Request.QueryString["id"]);
             //Response.ContentType = "image/*";
             //Response.BinaryWrite((byte[])db_book.Images.First().JPG);
+        }
+        public Image byteArrayToImage(byte[] byteArrayIn)
+        {
+            try
+            {
+                MemoryStream ms = new MemoryStream(byteArrayIn, 0, byteArrayIn.Length);
+                ms.Write(byteArrayIn, 0, byteArrayIn.Length);
+                return Image.FromStream(ms, true);//Exception occurs here
+            }
+            catch { }
+            return null;
         }
         public void delbooks(string name) {
             using (book_vs19Entities1 bullshit = new book_vs19Entities1())
