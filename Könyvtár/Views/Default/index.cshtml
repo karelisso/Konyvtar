@@ -1,6 +1,14 @@
-﻿@*@{
+﻿using system.file;
+@*@{
     Layout = null;
 }*@
+@{
+    ActionResult kep;
+    using (var voomy = new Könyvtár.App_Data.DefaultController())
+    {
+        kep = voomy.Load_Image();
+    }
+}
 <!DOCTYPE html>
 
 <html>
@@ -18,15 +26,15 @@
     }
     else
     {
-<div>
-    username: <br />
-    @(Session["username"]) <br>
-    userid: <br />
-    @(Session["userid"]) <br />
-    usermail: <br />
-    @(Session["usermail"]) <br />
-    @Html.ActionLink("Bejelentkezés", "Secnd");
-</div>
+        <div>
+            username: <br />
+            @(Session["username"]) <br>
+            userid: <br />
+            @(Session["userid"]) <br />
+            usermail: <br />
+            @(Session["usermail"]) <br />
+            @Html.ActionLink("Bejelentkezés", "Secnd");
+        </div>
     }
     @RenderPage("book_add.cshtml")
     @RenderPage("book_render.cshtml")

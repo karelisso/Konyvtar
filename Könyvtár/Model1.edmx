@@ -24,7 +24,7 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="bigint" Nullable="false" />
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="JPG" Type="image" />
         </EntityType>
         <EntityType Name="konyv">
@@ -120,7 +120,6 @@
         <EntityContainer Name="book_vs19Entities1" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Author" EntityType="book_vs19Model.Author" />
           <EntitySet Name="Categories" EntityType="book_vs19Model.Categories" />
-          <EntitySet Name="Images" EntityType="book_vs19Model.Images" />
           <EntitySet Name="konyv" EntityType="book_vs19Model.konyv" />
           <EntitySet Name="Relation_AuthorWriterBook" EntityType="book_vs19Model.Relation_AuthorWriterBook" />
           <EntitySet Name="Relation_BookCategorie" EntityType="book_vs19Model.Relation_BookCategorie" />
@@ -129,6 +128,7 @@
           <EntitySet Name="staff_role" EntityType="book_vs19Model.staff_role" />
           <EntitySet Name="user" EntityType="book_vs19Model.user" />
           <EntitySet Name="Writer" EntityType="book_vs19Model.Writer" />
+          <EntitySet Name="Images" EntityType="book_vs19Model.Images" />
         </EntityContainer>
         <EntityType Name="Author">
           <Key>
@@ -144,13 +144,6 @@
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" />
           <Property Name="Name" Type="String" MaxLength="255" FixedLength="true" Unicode="true" />
-        </EntityType>
-        <EntityType Name="Images">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int64" Nullable="false" />
-          <Property Name="JPG" Type="Binary" MaxLength="Max" FixedLength="false" />
         </EntityType>
         <EntityType Name="konyv">
           <Key>
@@ -225,6 +218,13 @@
           <Property Name="writer_Date" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="aboutpath" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
+        <EntityType Name="Images">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="JPG" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -244,14 +244,6 @@
             <EntityTypeMapping TypeName="book_vs19Model.Categories">
               <MappingFragment StoreEntitySet="Categories">
                 <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Images">
-            <EntityTypeMapping TypeName="book_vs19Model.Images">
-              <MappingFragment StoreEntitySet="Images">
-                <ScalarProperty Name="JPG" ColumnName="JPG" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -333,6 +325,14 @@
                 <ScalarProperty Name="aboutpath" ColumnName="aboutpath" />
                 <ScalarProperty Name="writer_Date" ColumnName="writer_Date" />
                 <ScalarProperty Name="writer_name" ColumnName="writer_name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Images">
+            <EntityTypeMapping TypeName="book_vs19Model.Images">
+              <MappingFragment StoreEntitySet="Images">
+                <ScalarProperty Name="JPG" ColumnName="JPG" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

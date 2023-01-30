@@ -27,7 +27,6 @@ namespace Könyvtár
     
         public virtual DbSet<Author> Author { get; set; }
         public virtual DbSet<Categories> Categories { get; set; }
-        public virtual DbSet<Images> Images { get; set; }
         public virtual DbSet<konyv> konyv { get; set; }
         public virtual DbSet<Relation_AuthorWriterBook> Relation_AuthorWriterBook { get; set; }
         public virtual DbSet<Relation_BookCategorie> Relation_BookCategorie { get; set; }
@@ -36,5 +35,6 @@ namespace Könyvtár
         public virtual DbSet<staff_role> staff_role { get; set; }
         public virtual DbSet<user> user { get; set; }
         public virtual DbSet<Writer> Writer { get; set; }
+        public virtual DbSet<Images> Images { get; set; }
     }
 }

@@ -6,6 +6,9 @@ using System.Web.Mvc;
 using System.Diagnostics;
 using Antlr.Runtime.Misc;
 using System.Threading.Tasks;
+using System.Data.SqlClient;
+using System.IO;
+using Antlr.Runtime.Tree;
 
 namespace Könyvtár.App_Data
 {
@@ -37,32 +40,52 @@ namespace Könyvtár.App_Data
         // {
 
         // }
-        public ActionResult AddBook(string name, string isbn, string auth,string img)
+        public ActionResult AddBook(string name, string isbn, string auth,string img,string demo)
         {
-                konyv kv = new konyv();
-                kv.authorId = 0;
-                if (auth.Length > 0)
+            konyv kv = new konyv();
+            //long? pictureimage;
+            if(Request.Files.Count > 0)
+            {
+                // HttpPostedFile image = Request.Files[0].InputStream;
+                using (var binaryReader = new BinaryReader(Request.Files[0].InputStream))
                 {
-                    kv.authorId =  int.Parse( auth);
+                    var imageData = binaryReader.ReadBytes((int)binaryReader.BaseStream.Length);
+                    Images imageadd = new Images();
+                    imageadd.JPG = imageData;
+                    db_book.Images.Add(imageadd);
+                    db_book.SaveChanges();
+                   // kv.imageID = db_book.Images.Where(q => q.JPG == imageData).Last().Id ;
                 }
+            }           
+            kv.authorId = 0;
+            if (auth.Length > 0)
+            {
+                kv.authorId =  int.Parse( auth);
+            }
 
-                kv.ISBN = isbn;
-                kv.name = name;
-                try
-                {
-                    kv.Id = db_book.konyv.Max(q => q.Id) + 1;
-                }
-                catch (Exception)
-                {
+            kv.ISBN = isbn;
+            kv.name = name;
+            kv.demo = demo;
+            try
+            {
+                kv.Id = db_book.konyv.Max(q => q.Id) + 1;
+            }
+            catch (Exception)
+            {
 
-                    kv.Id = 0;
-                }
-                //Images img = new Images;
-                //img.JPG = img;
-                //db_book.Images.Add();
-                db_book.konyv.Add(kv);
-                db_book.SaveChanges();
-                return View("Index");
+                kv.Id = 0;
+            }
+            db_book.konyv.Add(kv);
+            db_book.SaveChanges();
+            
+            return View("Index");
+        }
+        public ActionResult Load_Image()
+        {
+            return File(db_book.Images.First().JPG, "image/jpg");
+            //int imageId = Convert.ToInt32(Request.QueryString["id"]);
+            //Response.ContentType = "image/*";
+            //Response.BinaryWrite((byte[])db_book.Images.First().JPG);
         }
         public void delbooks(string name) {
             using (book_vs19Entities1 bullshit = new book_vs19Entities1())
