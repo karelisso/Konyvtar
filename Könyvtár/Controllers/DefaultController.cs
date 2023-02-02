@@ -22,26 +22,21 @@ namespace Könyvtár.App_Data
         public ActionResult Index()
         {
             Random rng = new Random();
-            //using (book_vs19Entities bullshit = new book_vs19Entities())
-            //{
-            //    int idd = rng.Next();
-            //    konyv teszt = new konyv();
-            //    teszt.author = 666;
-            //    teszt.ISBN = "ISBN001";
-            //    teszt.name = "egy könny";
-            //    teszt.Id = idd;
-            //    bullshit.konyv.Add(teszt);
-            //    if (bullshit.konyv.Where(q => q.Id == teszt.Id).Count() == 0)
-            //    {
-            //        bullshit.SaveChanges();
-            //    }
-            //}
             return View("index");
         }
-        // public Task<ActionResult> CreateUser()
-        // {
-
-        // }
+        public ActionResult MetaPage()
+        {
+            return View("TheMetaViewer");
+        }
+        public ActionResult BookPage()
+        {
+            return View("book_detail");
+        }
+        public void SetSession(string name, string value)
+        {
+            Session[name] = null;
+            Session[name] = value;
+        }
         public ActionResult AddBook(string name, string isbn, string auth,string img,string demo)
         {
             konyv kv = new konyv();
@@ -56,7 +51,7 @@ namespace Könyvtár.App_Data
                     imageadd.JPG = imageData;
                     db_book.Images.Add(imageadd);
                     db_book.SaveChanges();
-                   // kv.imageID = db_book.Images.Where(q => q.JPG == imageData).Last().Id ;
+                    kv.imageID = db_book.Images.Where(q => q.JPG == imageData).First().Id ;
                 }
             }           
             kv.authorId = 0;
@@ -82,17 +77,44 @@ namespace Könyvtár.App_Data
             
             return View("Index");
         }
-        public String Load_Image()
+        public String Load_Image_Base()
         {
 
             //return "<body>\r\n    <div class=\"container bg-warning\">\r\n        <a href=\"#\">contentált conttent</a> <br>\r\n        <div class=\"alert-danger\">\r\n        </div>\r\n    </div>\r\n     \r\n</body>";
             //return File(db_book.Images.First().JPG, "image/jpg");
-            return string.Format(" \"data:image/png;base64,{0}\"", Convert.ToBase64String(db_book.Images.First().JPG));
+            return string.Format(" data:image/png;base64,{0} ", Convert.ToBase64String(db_book.Images.First().JPG));
             //return $"<img src=\"{string.Format("data:image/png;base64,{0}", Convert.ToBase64String(db_book.Images.First().JPG))}\" alt=\"Alternate Text\" style=\"max-width: 100%; max-height: 100%;\" />" ;
             //return byteArrayToImage(db_book.Images.First().JPG);
             //int imageId = Convert.ToInt32(Request.QueryString["id"]);
             //Response.ContentType = "image/*";
             //Response.BinaryWrite((byte[])db_book.Images.First().JPG);
+        }
+        public ActionResult Load_Image_File()
+        {
+            byte[] cover = db_book.Images.First().JPG;
+            if (cover != null)
+            {
+                return File(cover, "image/jpg");
+            }
+            else
+            {
+                return null;
+            }
+        }
+        public string LoadPage(int id)
+        {
+            return id + " wodmwoddoq omgw wemogf";        }
+        public ActionResult Load_Image_File_Id(long id)
+        {
+            byte[] cover = db_book.Images.Where(q=>q.Id == id).FirstOrDefault().JPG;
+            if (cover != null)
+            {
+                return File(cover, "image/jpg");
+            }
+            else
+            {
+                return null;
+            }
         }
         public Image byteArrayToImage(byte[] byteArrayIn)
         {

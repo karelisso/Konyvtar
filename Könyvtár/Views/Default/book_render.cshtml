@@ -1,8 +1,10 @@
 ﻿@{
     konyv[] AllBook;
+    Images[] images;
     using (book_vs19Entities1 bullshit = new book_vs19Entities1())
     {
         AllBook = bullshit.konyv.ToArray();
+        images = bullshit.Images.ToArray();
     }
 }
 <table class="table table-bordered">
@@ -13,6 +15,7 @@
             <td>@item.ISBN</td>
             <td>@item.authorId</td>
             <td>@item.name</td>
+            <td> <img src="/Default/Load_Image_File_Id/@item.imageID" alt="Alternate Text"  height="50px"/> </td>
         </tr>
     }
     @* find every active table row, use the id from the table to delete it from the datbase! *@
@@ -24,15 +27,33 @@
         ellement.addEventListener('click', function() {
             ellement.classList.toggle("bg-success");
             ellement.classList.toggle("selected");
-                });
+            tablerows.forEach(function (innerelement) {
+                innerelement.classList.remove("bg-warning");
+                innerelement.classList.remove("super-selected");
+            })
+        });
+        ellement.addEventListener('dblclick', function () {
+            tablerows.forEach(function (innerelement) {
+                innerelement.classList.remove("bg-success");
+                innerelement.classList.remove("bg-warning");
+                innerelement.classList.remove("super-selected");
+                innerelement.classList.remove("selected");
+            })
+            ellement.classList.toggle("bg-warning");
+            ellement.classList.toggle("super-selected");
+            console.log(ellement.children[0].innerText);
+            $.post("/Default/SetSession", { 'name': "cur_book", 'value': ellement.children[0].innerText });
+            
+        });
+        
     });
     function Dell() {
         let selectedrows = document.querySelector(".selected").innerText;
         console.log( $(".selected td:first-child").text() );
-        $.post("delbooks", { 'name': $(".selected td:first-child").text() });
-        $.get("Retrievebooks", function (data) {
-            alert(data);
-        });
+        $.post("/Default/delbooks", { 'name': $(".selected td:first-child").text() });
+        //$.get("/Default/Retrievebooks", function (data) {
+        //    alert(data);
+        //});
     }
     function reloadTable() {
         

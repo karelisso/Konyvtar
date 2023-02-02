@@ -3,10 +3,7 @@
 }*@
 @{
     ActionResult kep;
-    using (var voomy = new Könyvtár.App_Data.DefaultController())
-    {
-        //kep = voomy.Load_Image();
-    }
+    Session["cur_book"] = null;
 }
 <!DOCTYPE html>
 
@@ -14,6 +11,8 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <title></title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
 </head>
 
 @*<body>
@@ -26,9 +25,9 @@
 </body>*@
 
 <body>
-    @*<iframe src="/Default/Load_Image" style="max-width: 100%; max-height: 100%;">*@  
-      <img src="/Default/Load_Image" alt="Alternate Text" />
-       
+    @*<iframe src="/Default/Load_Image" style="max-width: 100%; max-height: 100%;">*@
+    @*<img src="/Default/Load_Image" alt="Alternate Text" />*@
+
     @if (Session["username"] == null)
     {
         <div>
@@ -47,8 +46,19 @@
             @(Session["usermail"]) <br />
             @Html.ActionLink("Bejelentkezés", "Secnd");
         </div>
+        <div class="text-muted">
+            @Html.ActionLink("metadaták hozzáadása", "MetaPage");
+        </div>
     }
-    @RenderPage("book_add.cshtml")
+    @Html.ActionLink("Legelső kijelölt könyv megtekintése", "BookPage");
+    <div class="bg-danger">
+        @RenderPage("book_add.cshtml")
+    </div>
     @RenderPage("book_render.cshtml")
+
+    <script>
+    //const tablerows = document.querySelectorAll(".clickable-table");
+    </script>
 </body>
+
 </html>
