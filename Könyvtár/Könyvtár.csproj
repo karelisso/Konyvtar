@@ -226,6 +226,12 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="Szalamandra könyvtár\css\styles.css" />
+    <Content Include="Szalamandra könyvtár\img\bgwallpaper.jpg" />
+    <Content Include="Szalamandra könyvtár\img\book.png" />
+    <Content Include="Szalamandra könyvtár\img\bs-logo.svg" />
+    <Content Include="Szalamandra könyvtár\img\icon.png" />
+    <Content Include="Szalamandra könyvtár\index.html" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -329,6 +335,7 @@
     <Content Include="Views\Default\book_add.cshtml" />
     <Content Include="Views\Default\book_detail.cshtml" />
     <Content Include="Views\Default\TheMetaViewer.cshtml" />
+    <Content Include="Szalamandra könyvtár\img\Thumbs.db" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
