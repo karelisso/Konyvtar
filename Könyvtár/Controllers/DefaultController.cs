@@ -103,7 +103,8 @@ namespace Könyvtár.App_Data
         }
         public string LoadPage(int id)
         {
-            return id + " wodmwoddoq omgw wemogf";        }
+            return id + " wodmwoddoq omgw wemogf";        
+        }
         public ActionResult Load_Image_File_Id(long id)
         {
             byte[] cover = db_book.Images.Where(q=>q.Id == id).FirstOrDefault().JPG;
