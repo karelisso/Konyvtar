@@ -1,13 +1,17 @@
 ﻿
 @{
-
     konyv curr;
     using (book_vs19Entities1 bullshit = new book_vs19Entities1())
     {
         try
         {
-            int sesbook = int.Parse(Session["cur_book"].ToString());
-            curr = bullshit.konyv.Where(q => q.Id == sesbook).First();
+            int sesbook = 0;
+            if(Session["cur_book"] != null)
+            {
+                sesbook = int.Parse(Session["cur_book"].ToString());
+            }
+
+            curr = bullshit.konyv.Where(q => q.Id == sesbook).FirstOrDefault();
         }
         catch (Exception)
         {

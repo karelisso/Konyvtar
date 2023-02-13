@@ -12,32 +12,34 @@
     @Scripts.Render("~/bundles/modernizr")
 </head>
 <body class="container-fluid bg-danger text-warning">
-    <div  >
-            @*This is category  *@
-           
-        <form action="/" method="post" class="bg-info">
-            <h3>Kategoria</h3> <br />
+    <div>
+        @*This is category  *@
+
+        <form action="/" method="post" class="bg-info text-muted">
+            <h3>Kategoria w.i.p.</h3> <br />
             <label>Name</label> <input type="text" name="name" value="" required /> <br />
             <input type="submit" name="no" value="sublimálás" />
         </form>
-            <br />
-           
-            @*This is author  *@
-    <form action="/" method="post" class="bg-success">
-        <h3>Kiadó</h3>
-        <label>Name</label> <input type="text" name="name" value="" required /> <br />
-        <input type="submit" name="no" value="sublimálás" />
-    </form>
-            <br />
-           
-            @*This is writer  *@
-    <form action="/" method="post" class="bg-warning">
-        <h3>Író</h3>
-        <label>Name</label> <input type="text" name="name" value="" required /> <br />
-        <label>Élt(évszám)</label> <input type="text" name="life" value="" /> <br />
-        <label>Egyéb</label> <input type="text" name="about" value="" /> <br />
-        <input type="submit" name="no" value="sublimálás" />
-    </form>
+        <br />
+
+        @*This is author  *@
+        <form action="/" method="post" class="bg-success text-muted">
+            <h3>Kiadó w.i.p.</h3>
+            <label>Name</label> <input type="text" name="name" value="" required /> <br />
+            <input type="submit" name="no" value="sublimálás" />
+        </form>
+        <br />
+
+        @*This is writer  *@
+        <form action="CreateWriter" method="post" class="bg-warning">
+            <h3>Író</h3>
+            <label>Name</label> <input type="text" name="name" value="" autocomplete="off"/> <br />
+            <label>real Name</label> <input type="text" name="name2" value="" autocomplete="off"/> <br />
+            <label>Élt(évszám)</label> <input type="text" name="life" autocomplete="off" value="" placeholder="1000-2000" /> <br />
+            <label>Egyéb</label> <input type="text" name="about" value="" autocomplete="off"/> <br />
+            <input type="submit" name="no" value="sublimálás" />
+        </form>
     </div>
+    <a href="/Default/Index"><button class="navbar-fixed-bottom p3 h3 bg-success"> vissza a föoldara</button></a>
 </body>
 </html>

@@ -1,30 +1,63 @@
 ﻿@{
     konyv[] AllBook;
+    Writer[] AllWriter;
     Images[] images;
     using (book_vs19Entities1 bullshit = new book_vs19Entities1())
     {
         AllBook = bullshit.konyv.ToArray();
+        AllWriter = bullshit.Writer.ToArray();
         images = bullshit.Images.ToArray();
     }
-}
+} 
+<form action="/" method="post">
+    <select name="auth">
+            <option value="ertek">iras</option>
+
+    </select>
+    @*<input id="livesearchtags" name="livesearchtags" placeholder="Search" autocomplete="off" />*@
+
+</form>
 <table class="table table-bordered">
-    @foreach (var item in AllBook)
-    {
-        <tr class="clickable-table">
-            <td>@item.Id </td>
-            <td>@item.ISBN</td>
-            <td>@item.authorId</td>
-            <td>@item.name</td>
-            <td> <img src="/Default/Load_Image_File_Id/@item.imageID" alt="Alternate Text"  height="50px"/> </td>
+
+    <thead style="position: sticky;top: 0">
+
+        <tr>
+            <td>ID</td>
+            <td>ISBN </td>
+            <td>kiado</td>
+            <td>cím</td>
+            <td>kep</td>
         </tr>
-    }
+        
+    </thead>
+        <tbody>
+            @foreach (var item in AllBook)
+            {
+                <tr class="clickable-table">
+                    <td>@item.Id </td>
+                    <td>@item.ISBN</td>
+                    <td> @AllWriter.Where(q => q.Id == item.authorId).FirstOrDefault().writer_name </td>
+                    <td>@item.name</td>
+                    <td> <img src="/Default/Load_Image_File_Id/@item.imageID" alt="Alternate Text" height="50px" /> </td>
+                </tr>
+            }
+        </tbody>
+
     @* find every active table row, use the id from the table to delete it from the datbase! *@
 </table>
-<button class="navbar-fixed-bottom p3 h3 bg-danger" onclick="Dell()"> torles</button>
+@if (Session["username"] != null)
+{
+    <button class="navbar-fixed-bottom p3 h3 bg-danger" onclick="Dell()"> torles</button>
+}
+else
+{
+    <a href="/Default/Secnd"><button class="navbar-fixed-bottom p3 h3 bg-dark" href=""> jelentkezz be a  torleshez</button></a>
+}
 <script>
     const tablerows = document.querySelectorAll(".clickable-table");
+    let bookset = false;
     tablerows.forEach(function (ellement) {
-        ellement.addEventListener('click', function() {
+        ellement.addEventListener('click', function () {
             ellement.classList.toggle("bg-success");
             ellement.classList.toggle("selected");
             tablerows.forEach(function (innerelement) {
@@ -43,23 +76,24 @@
             ellement.classList.toggle("super-selected");
             console.log(ellement.children[0].innerText);
             $.post("/Default/SetSession", { 'name': "cur_book", 'value': ellement.children[0].innerText });
-            
+            bookset = true;
+            window.location.href = "/Default/BookPage";
         });
-        
+
     });
     function Dell() {
         let selectedrows = document.getElementsByClassName(".selected").innerText;
-        console.log( $(".selected td:first-child").text() );
+        console.log($(".selected td:first-child").text());
         $.post("/Default/delbooks", { 'name': $(".selected td:first-child").text() })
             .done(function () {
-              
-               // document.getElementsByClassName(".selected")[0].remove();
+
+                // document.getElementsByClassName(".selected")[0].remove();
                 const button = document.querySelectorAll('.selected');
                 for (i = 0; i < button.length; ++i) {
                     button[i].remove();
                 }
                 alert("second success");
-        })
+            })
             .fail(function () {
                 alert("error");
             });
@@ -67,8 +101,9 @@
         //    alert(data);
         //});
     }
+
     function reloadTable() {
-        
+
     }
 </script>
-  
+

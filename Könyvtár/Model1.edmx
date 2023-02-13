@@ -25,7 +25,7 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="JPG" Type="image" />
+          <Property Name="JPG" Type="varbinary(max)" />
         </EntityType>
         <EntityType Name="konyv">
           <Key>
@@ -97,6 +97,7 @@
           </Key>
           <Property Name="Id" Type="int" Nullable="false" />
           <Property Name="writer_name" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="real_name" Type="nvarchar(max)" Nullable="false" />
           <Property Name="writer_Date" Type="varchar(max)" />
           <Property Name="aboutpath" Type="nvarchar(max)" />
         </EntityType>
@@ -217,6 +218,7 @@
           <Property Name="writer_name" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="writer_Date" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="aboutpath" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="real_name" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="Images">
           <Key>
@@ -322,6 +324,7 @@
           <EntitySetMapping Name="Writer">
             <EntityTypeMapping TypeName="book_vs19Model.Writer">
               <MappingFragment StoreEntitySet="Writer">
+                <ScalarProperty Name="real_name" ColumnName="real_name" />
                 <ScalarProperty Name="aboutpath" ColumnName="aboutpath" />
                 <ScalarProperty Name="writer_Date" ColumnName="writer_Date" />
                 <ScalarProperty Name="writer_name" ColumnName="writer_name" />
