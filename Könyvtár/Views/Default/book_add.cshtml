@@ -1,11 +1,49 @@
 ﻿@{
     konyv km = new konyv();
+    Writer[] wrt;
+    using (book_vs19Entities1 bullshit = new book_vs19Entities1())
+    {
+        wrt = bullshit.Writer.ToArray();
+    }
 }
 <form action="AddBook" method="post" enctype="multipart/form-data">
-    <label>Name</label>  <input type="type" name="name" value="" required /> <br />
-    <label>ISBNcode</label><input type="type" name="isbn" value="" required /> <br />
-    <label>AUTH int only!!!!</label><input type="number" name="auth" value="0" required/> <br />
-    <input type="file" accept="image/*" name="img" required/> <!-- all image types -->
-    <input type="text" name="demo" />
+    <label>Name</label>  <input type="type" name="name" value="" required autocomplete="off"/> <br />
+    <label>ISBNcode</label><input type="type" name="isbn" value="" required autocomplete="off"/> <br />
+    @*<label>AUTH int only!!!!</label><input type="number" name="auth" value="0" required/> <br />*@
+    <input type="file" accept="image/*" name="img" required /> <!-- all image types -->
+    <input type="text" name="demo" autocomplete="off"/>
+    <select name="auth">
+            @foreach (var item in wrt)
+            {
+                <option value="@item.Id">@item.writer_name</option>
+            }
+
+    </select>
+    @*<input id="livesearchtags" name="livesearchtags" placeholder="Search" autocomplete="off" />
+    <div id="result" class="tag-results">*@
     <input type="submit" name="btnSubmit" value="hozzáadás" />
 </form>
+<script>
+    document.getElementById('livesearchtags').addEventListener('keyup', function (e) {
+        //Run LiveSearch on ever key up 
+        LiveSearch()
+    });
+
+    function LiveSearch() {
+        //Get the input value
+        let value = document.getElementById('livesearchtags').value
+
+        $.ajax({
+            type: "POST",
+            // You can use the absolute url eg www.site.com/MyControllerName/LiveTagSearch or the relative path live below  
+            url: "/Default/LiveTagSearch",
+            // Attach the value to a parameter called search
+            data: { search: value },
+            datatype: "html",
+            success: function (data) {
+                // Insert the returned search results html into the result element 
+                $('#result').html(data);
+            }
+        });
+    }
+</script>

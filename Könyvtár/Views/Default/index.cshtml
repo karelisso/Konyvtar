@@ -44,20 +44,24 @@
             @(Session["userid"]) <br />
             usermail: <br />
             @(Session["usermail"]) <br />
-            @Html.ActionLink("Bejelentkezés", "Secnd");
+            @Html.ActionLink("Kijelentkezés", "Third");
         </div>
         <div class="text-muted">
             @Html.ActionLink("metadaták hozzáadása", "MetaPage");
         </div>
+
+        <div class="bg-danger">
+            @RenderPage("book_add.cshtml")
+        </div>
     }
-    @Html.ActionLink("Legelső kijelölt könyv megtekintése", "BookPage");
-    <div class="bg-danger">
-        @RenderPage("book_add.cshtml")
-    </div>
+     @*@Html.ActionLink("Legelső kijelölt könyv megtekintése", "BookPage")*@
+    
+
     @RenderPage("book_render.cshtml")
 
     <script>
-    //const tablerows = document.querySelectorAll(".clickable-table");
+        //const tablerows = document.querySelectorAll(".clickable-table");
+        const hide = document.getElementById("showBook");
     </script>
 </body>
 

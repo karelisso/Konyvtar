@@ -24,6 +24,13 @@ namespace Könyvtár.App_Data
             Random rng = new Random();
             return View("index");
         }
+        public ActionResult Third()
+        {
+            Session["username"] = null;
+            Session["usermail"] = null;
+            Session["userid"] = null;
+            return View("Index");
+        }
         public ActionResult MetaPage()
         {
             return View("TheMetaViewer");
@@ -36,6 +43,23 @@ namespace Könyvtár.App_Data
         {
             Session[name] = null;
             Session[name] = value;
+        }
+        public ActionResult CreateWriter(string name, string name2, string life, string about)
+        {
+            Writer wm = new Writer();
+            wm.writer_Date = life;
+            if (name.Length < 1) name = name2;
+            if (name.Length < 1 && name2.Length < 1)
+            {
+                name = "anonimus";
+                name2 = "";
+            }
+            wm.writer_name = name;
+            wm.real_name = name2;
+            wm.aboutpath = about;
+            db_book.Writer.Add(wm);
+            db_book.SaveChanges();
+            return View("TheMetaViewer");
         }
         public ActionResult AddBook(string name, string isbn, string auth,string img,string demo)
         {
@@ -103,7 +127,8 @@ namespace Könyvtár.App_Data
         }
         public string LoadPage(int id)
         {
-            return id + " wodmwoddoq omgw wemogf";        }
+            return id + " wodmwoddoq omgw wemogf";        
+        }
         public ActionResult Load_Image_File_Id(long id)
         {
             byte[] cover = db_book.Images.Where(q=>q.Id == id).FirstOrDefault().JPG;
@@ -127,6 +152,89 @@ namespace Könyvtár.App_Data
             catch { }
             return null;
         }
+        public String LiveTagSearch(string search)
+        {
+
+            search = search.Trim();
+            if (search.Length < 1) return "";
+            string html_code = "";
+            int occurances = 0;
+            foreach (var item in db_book.Writer)
+            {
+                
+                if (item.writer_name.ToLower().Contains(search.ToLower()))
+                {
+                    occurances++;
+                    html_code += $"<div>{item.writer_name} </div> <br>";
+                }
+                else if (item.real_name.ToLower().Contains(search.ToLower()))
+                {
+                    occurances++;
+                    html_code += $"<div>{item.real_name} </div> <br>";
+                }
+            }
+            if (occurances<=0)
+            {
+                Dictionary<string, int> writers = new Dictionary<string, int>();
+                foreach (var item in db_book.Writer)
+                {
+                    writers.Add(item.writer_name.ToLower(), LevenshteinDistance(search.Trim().ToLower(), item.writer_name.ToLower().Trim()));
+                    if (!writers.ContainsKey(item.writer_name.ToLower()))
+                    {
+                        writers.Add(item.writer_name.ToLower(), LevenshteinDistance(search.Trim().ToLower(), item.real_name.ToLower().Trim()));
+                    }
+                    else if(LevenshteinDistance(search.Trim().ToLower(), item.real_name.ToLower().Trim()) < writers[item.writer_name.ToLower()])
+                    {
+                        writers.Add(item.writer_name.ToLower(), LevenshteinDistance(search.Trim().ToLower(), item.real_name.ToLower().Trim()));
+                    }
+                    //if (LevenshteinDistance(search.Trim().ToLower(),item.writer_name.ToLower().Trim()) < 3 + search.Length / 4 + item.writer_name.Length)
+                    //{
+                    //    occurances++;
+                    //    html_code += $"<div>{item.writer_name} </div> <br>";
+                    //}
+                    //if (LevenshteinDistance(search.ToLower(), item.real_name.ToLower().Trim()) < 3 + search.Length / 4 + item.real_name.Length)
+                    //{
+                    //    occurances++;
+                    //    html_code += $"<div>{item.writer_name} </div> <br>";
+                    //}
+                }
+                writers= writers.OrderBy(q => q.Value).ToDictionary(w => w.Key, w => w.Value);
+                int counter = 0;
+                foreach (var item in writers)
+                {
+                    counter++;
+                    Writer wm = db_book.Writer.Where(q => q.writer_name == item.Key).FirstOrDefault();
+                    html_code += $"<div>{wm.writer_name} </div> <br>";
+                    if(counter > 1)
+                    {
+                        break;
+                    }
+                }
+            }
+            return html_code;
+        }
+        static int LevenshteinDistance(string a, string b)
+        {
+            int[,] distance = new int[a.Length + 1, b.Length + 1];
+            for (int i = 0; i <= a.Length; i++)
+            {
+                distance[i, 0] = i;
+            }
+            for (int j = 0; j <= b.Length; j++)
+            {
+                distance[0, j] = j;
+            }
+            for (int i = 1; i <= a.Length; i++)
+            {
+                for (int j = 1; j <= b.Length; j++)
+                {
+                    int cost = (a[i - 1] == b[j - 1]) ? 0 : 1;
+                    distance[i, j] = Math.Min(Math.Min(distance[i - 1, j] + 1, distance[i, j - 1] + 1), distance[i - 1, j - 1] + cost);
+                }
+            }
+            return distance[a.Length, b.Length];
+        }
+
         public void delbooks(string name) {
             using (book_vs19Entities1 bullshit = new book_vs19Entities1())
             {
