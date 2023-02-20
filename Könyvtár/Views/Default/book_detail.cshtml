@@ -1,6 +1,7 @@
 ﻿
 @{
     konyv curr;
+    bool iserror = false;
     using (book_vs19Entities1 bullshit = new book_vs19Entities1())
     {
         try
@@ -15,10 +16,14 @@
         }
         catch (Exception)
         {
-
+            iserror = true;
             curr = bullshit.konyv.First();
         }
-
+        if (Session["cur_book"] == null)
+        {
+            iserror = true;
+            curr = bullshit.konyv.First();
+        }
 
     }
 }
@@ -33,6 +38,10 @@
     @Scripts.Render("~/bundles/modernizr")
 </head>
 <body>
+    @if (iserror)
+    {
+        <h1 class="text-danger bg-warning"> Error! No book is selected </h1>
+    }   
     <div class="container-fluid">
         <div class="col-sm-6 bg-success">
             <img src="/Default/Load_Image_File_Id/@curr.imageID" alt="Alternate Text" width="100%" />

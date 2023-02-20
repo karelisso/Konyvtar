@@ -42,6 +42,7 @@ namespace Könyvtár.App_Data
         public void SetSession(string name, string value)
         {
             Session[name] = null;
+
             Session[name] = value;
         }
         public ActionResult CreateWriter(string name, string name2, string life, string about)
