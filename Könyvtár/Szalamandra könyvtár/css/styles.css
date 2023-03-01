@@ -7,8 +7,14 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 body {
-    background-image: url("../img/bgwallpaper.jpg");
+    background-image: linear-gradient(to bottom, rgb(102, 156, 154, 0.7),rgb(105, 62, 0, 0.8)),url("../img/bgwallpaper.jpg");
     background-size: 100%;
+    background-position: center;
+    background-attachment:fixed;
+    min-height = 100vh;
     color: whitesmoke !important;
-    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+    /* text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;*/
+}
+table{
+    background-color: rgb(78, 78, 78, 0.74) !important;
 }

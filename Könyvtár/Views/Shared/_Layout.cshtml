@@ -42,14 +42,27 @@
                         @Html.ActionLink("Súgó", "Index", "Default", new { area = "" }, new { @class = "navbar-brand" })
 
                     </li>
-                    <li class="nav-item">
-                        @Html.ActionLink("Regisztráció", "Secnd", "Default", new { area = "" }, new { @class = "navbar-brand" })
+                    @if (Session["username"] == null)
+                    {
+                        <li class="nav-item">
+                            @Html.ActionLink("Regisztráció", "RegisterUser", "Default", new { area = "" }, new { @class = "navbar-brand" })
 
-                    </li>
-                    <li class="nav-item">
-                        @Html.ActionLink("Bejelentkezés", "Secnd", "Default", new { area = "" }, new { @class = "navbar-brand" })
+                        </li>
+                        <li class="nav-item">
+                            @Html.ActionLink("Bejelentkezés", "Secnd", "Default", new { area = "" }, new { @class = "navbar-brand" })
 
-                    </li>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="nav-item">
+                            @Html.ActionLink("MetaPage", "MetaPage", "Default", new { area = "" }, new { @class = "navbar-brand" })
+                        </li>
+                        <li class="nav-item">
+                            @Html.ActionLink("Kijelentkezés", "Third", "Default", new { area = "" }, new { @class = "navbar-brand" })
+                        </li>
+                    }
+
                 </div>
                 </li>
                 </ul>

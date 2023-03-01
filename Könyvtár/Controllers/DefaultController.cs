@@ -62,6 +62,25 @@ namespace Könyvtár.App_Data
             db_book.SaveChanges();
             return View("TheMetaViewer");
         }
+        public ActionResult CreateCategory(string name)
+        {
+            Categories cp = new Categories();
+            cp.Name = name;
+            db_book.Categories.Add(cp);
+            db_book.SaveChanges();
+            return View("TheMetaViewer");
+        }
+        public ActionResult CreateAuthor(string name ,string life)
+        {
+            Author ath = new Author();
+            ath.name = name;
+            ath.Date = life;
+            db_book.Author.Add(ath);
+            db_book.SaveChanges();
+            return View("TheMetaViewer");
+        }
+
+
         public ActionResult AddBook(string name, string isbn, string auth,string img,string demo)
         {
             konyv kv = new konyv();
@@ -316,7 +335,7 @@ namespace Könyvtár.App_Data
         public ActionResult LogInUser(string Uname,string Upp,string RegYet)
         {
             if (RegYet != null)
-                return View("Regist");
+                return RegisterUser();
                 //Session["username"] = Uname;
                 foreach (var item in db_user.User_sus)
                 {
@@ -339,6 +358,10 @@ namespace Könyvtár.App_Data
                    
                 }
             return View("/error");
+        }
+        public ActionResult RegisterUser()
+        {
+            return View("Regist");
         }
         public ActionResult Secnd()
         {

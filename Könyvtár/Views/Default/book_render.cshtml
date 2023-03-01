@@ -17,7 +17,7 @@
     @*<input id="livesearchtags" name="livesearchtags" placeholder="Search" autocomplete="off" />*@
 
 <!--</form>-->
-<table class="table table-bordered bg-primary">
+<table class="table table-bordered bg-secondary">
 
     <thead style="position: sticky;top: 0">
 
@@ -47,11 +47,11 @@
 </table>
 @if (Session["username"] != null)
 {
-    <button class="navbar-fixed-bottom p3 h3 bg-danger" onclick="Dell()"> torles</button>
+    <button class="btn btn-dark btn-block btn-lg" onclick="Dell()"> torles</button>
 }
 else
 {
-    <a href="/Default/Secnd"><button class="navbar-fixed-bottom p3 h3 bg-dark" href=""> jelentkezz be a  torleshez</button></a>
+    <a href="/Default/Secnd"><button class="btn btn-dark btn-block btn-lg" href=""> jelentkezz be a  torleshez</button></a>
 }
 <script>
     const tablerows = document.querySelectorAll(".clickable-table");
@@ -75,9 +75,16 @@ else
             ellement.classList.toggle("bg-warning");
             ellement.classList.toggle("super-selected");
             console.log(ellement.children[0].innerText);
-            $.post("/Default/SetSession", { 'name': "cur_book", 'value': ellement.children[0].innerText });
+           // $.post("/Default/SetSession", { 'name': "cur_book", 'value': ellement.children[0].innerText });
+            $.ajax({
+                url: "/Default/SetSession",
+                type: "POST",
+                data: { 'name': "cur_book", 'value': ellement.children[0].innerText },
+                success: function () { window.location.href = "/Default/BookPage"; },
+                error: function () { alert("error"); }
+               });
             bookset = true;
-            window.location.href = "/Default/BookPage";
+            //window.location.href = "/Default/BookPage";
         });
 
     });

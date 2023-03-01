@@ -16,8 +16,8 @@ namespace Könyvtár
     {
         public int Id { get; set; }
         public string writer_name { get; set; }
+        public string real_name { get; set; }
         public string writer_Date { get; set; }
         public string aboutpath { get; set; }
-        public string real_name { get; set; }
     }
 }

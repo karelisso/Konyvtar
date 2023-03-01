@@ -15,7 +15,7 @@
     <div>
         @*This is category  *@
 
-        <form action="/" method="post" class="bg-info text-muted">
+        <form action="CreateCategory" method="post" class="bg-info text-muted">
             <h3>Kategoria w.i.p.</h3> <br />
             <label>Name</label> <input type="text" name="name" value="" required /> <br />
             <input type="submit" name="no" value="sublimálás" />
@@ -23,11 +23,12 @@
         <br />
 
         @*This is author  *@
-        <form action="/" method="post" class="bg-success text-muted">
-            <h3>Kiadó w.i.p.</h3>
-            <label>Name</label> <input type="text" name="name" value="" required /> <br />
-            <input type="submit" name="no" value="sublimálás" />
-        </form>
+    <form action="CreateAuthor" method="post" class="bg-success text-muted">
+        <h3>Kiadó w.i.p.</h3>
+        <label>Name</label> <input type="text" name="name" value="" required /> <br />
+        <label>Élt(évszám)</label> <input type="text" name="life" autocomplete="off" value="" placeholder="1000-2000" /> <br />
+        <input type="submit" name="no" value="sublimálás" />
+    </form>
         <br />
 
         @*This is writer  *@
@@ -40,6 +41,6 @@
             <input type="submit" name="no" value="sublimálás" />
         </form>
     </div>
-    <a href="/Default/Index"><button class="navbar-fixed-bottom p3 h3 bg-success"> vissza a föoldara</button></a>
+    <a href="/Default/Index"><button class="btn btn-dark btn-block btn-lg"> vissza a föoldara</button></a>
 </body>
 </html>

@@ -27,14 +27,17 @@ namespace Könyvtár
     
         public virtual DbSet<Author> Author { get; set; }
         public virtual DbSet<Categories> Categories { get; set; }
+        public virtual DbSet<Images> Images { get; set; }
+        public virtual DbSet<InformationBundle> InformationBundle { get; set; }
         public virtual DbSet<konyv> konyv { get; set; }
+        public virtual DbSet<Reader_Card> Reader_Card { get; set; }
         public virtual DbSet<Relation_AuthorWriterBook> Relation_AuthorWriterBook { get; set; }
         public virtual DbSet<Relation_BookCategorie> Relation_BookCategorie { get; set; }
         public virtual DbSet<Relation_UserBook> Relation_UserBook { get; set; }
         public virtual DbSet<Relation_UserCategorie> Relation_UserCategorie { get; set; }
+        public virtual DbSet<Rent> Rent { get; set; }
         public virtual DbSet<staff_role> staff_role { get; set; }
         public virtual DbSet<user> user { get; set; }
         public virtual DbSet<Writer> Writer { get; set; }
-        public virtual DbSet<Images> Images { get; set; }
     }
 }

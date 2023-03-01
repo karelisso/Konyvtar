@@ -23,5 +23,7 @@ namespace Könyvtár
         public string Descrpition { get; set; }
         public Nullable<long> imageID { get; set; }
         public string demo { get; set; }
+        public int Quantity { get; set; }
+        public int Available_Quantity { get; set; }
     }
 }
