@@ -345,6 +345,7 @@
     <Content Include="Views\Default\book_detail.cshtml" />
     <Content Include="Views\Default\TheMetaViewer.cshtml" />
     <Content Include="Szalamandra könyvtár\img\Thumbs.db" />
+    <Content Include="Views\Default\reader_card.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

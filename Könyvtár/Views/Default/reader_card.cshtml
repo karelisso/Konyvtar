@@ -1,0 +1,71 @@
+﻿@{
+    //Layout = null;
+    Reader_Card rc;
+    Rent[] rent;
+    int puinishment = 0;
+    using (book_vs19Entities1 bullshit = new book_vs19Entities1())
+    {
+        rc = bullshit.Reader_Card.Where(q => q.User_ID.Equals(Session["userid"])).First();
+        rent = bullshit.Rent.Where(q=>q.Card_ID.Equals(rc.Id)).ToArray();
+    }
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title></title>
+</head>
+<body>
+    <div>
+        <table>
+            <tr>
+                <td>Név:</td>
+                <td>@(Session["username"]) </td>
+            </tr>
+            <tr>
+                <td>Kölcsönzések:</td>
+            </tr>
+            @foreach (var item in rent)
+            {
+                <tr>
+                    <td>Könyv azonositó</td>
+                    <td>@item.Book_ID </td>
+                </tr>
+                <tr>
+                    <td>kölcsönzés ideje</td>
+                    <td>@item.Rent_Date </td>
+                </tr>
+                <tr>
+                    <td>vissza adás határideje</td>
+                    <td>@item.Due_Date </td>
+                </tr>
+                <tr>
+
+                    <td>visszavitel ideje</td>
+                    @if (item.Return_Date.ToString().Length > 2)
+                    {
+                        <td>@item.Return_Date </td>
+                    }
+                    else
+                    {
+                        <td>@item.Book_ID </td>
+                    }
+                </tr>
+                <tr>
+                    <td>Bünti</td>
+                    <td>@item.Punishment </td>
+                    @{puinishment += int.Parse(item.Punishment.ToString());
+                    }
+                </tr>
+            }
+        <tr>
+            <td>Teljes Bünti</td>
+            <td>@puinishment </td>
+        </tr>
+            
+        </table>
+    </div>
+</body>
+</html>

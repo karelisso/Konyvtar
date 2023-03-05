@@ -58,7 +58,8 @@
           </Key>
           <Property Name="Id" Type="int" Nullable="false" />
           <Property Name="User_ID" Type="nchar" MaxLength="10" />
-          <Property Name="Rent_ID" Type="nchar" MaxLength="10" />
+          <Property Name="Rent_ID_Bundle" Type="nchar" MaxLength="10" />
+          <Property Name="peoplecard_ID" Type="nchar" MaxLength="20" />
         </EntityType>
         <EntityType Name="Relation_AuthorWriterBook">
           <Key>
@@ -103,6 +104,7 @@
           <Property Name="Due_Date" Type="datetime" />
           <Property Name="Return_Date" Type="datetime" />
           <Property Name="Punishment" Type="money" />
+          <Property Name="Card_ID" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="staff_role">
           <Key>
@@ -220,7 +222,8 @@
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" />
           <Property Name="User_ID" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
-          <Property Name="Rent_ID" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="Rent_ID_Bundle" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="peoplecard_ID" Type="String" MaxLength="20" FixedLength="true" Unicode="true" />
         </EntityType>
         <EntityType Name="Relation_AuthorWriterBook">
           <Key>
@@ -265,6 +268,7 @@
           <Property Name="Due_Date" Type="DateTime" Precision="3" />
           <Property Name="Return_Date" Type="DateTime" Precision="3" />
           <Property Name="Punishment" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="Card_ID" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="staff_role">
           <Key>
@@ -354,7 +358,8 @@
           <EntitySetMapping Name="Reader_Card">
             <EntityTypeMapping TypeName="book_vs19Model.Reader_Card">
               <MappingFragment StoreEntitySet="Reader_Card">
-                <ScalarProperty Name="Rent_ID" ColumnName="Rent_ID" />
+                <ScalarProperty Name="peoplecard_ID" ColumnName="peoplecard_ID" />
+                <ScalarProperty Name="Rent_ID_Bundle" ColumnName="Rent_ID_Bundle" />
                 <ScalarProperty Name="User_ID" ColumnName="User_ID" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
@@ -400,6 +405,7 @@
           <EntitySetMapping Name="Rent">
             <EntityTypeMapping TypeName="book_vs19Model.Rent">
               <MappingFragment StoreEntitySet="Rent">
+                <ScalarProperty Name="Card_ID" ColumnName="Card_ID" />
                 <ScalarProperty Name="Punishment" ColumnName="Punishment" />
                 <ScalarProperty Name="Return_Date" ColumnName="Return_Date" />
                 <ScalarProperty Name="Due_Date" ColumnName="Due_Date" />

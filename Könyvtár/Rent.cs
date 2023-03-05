@@ -20,5 +20,6 @@ namespace Könyvtár
         public Nullable<System.DateTime> Due_Date { get; set; }
         public Nullable<System.DateTime> Return_Date { get; set; }
         public Nullable<decimal> Punishment { get; set; }
+        public int Card_ID { get; set; }
     }
 }
