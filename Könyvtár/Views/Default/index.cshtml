@@ -12,8 +12,11 @@
     <meta name="viewport" content="width=device-width" />
     <title></title>
     @Styles.Render("~/Content/css")
-    @*@Styles.Render("~/Szalamandra könyvtár/css/styles.css")*@
+    @Styles.Render("~/Szalamandra könyvtár/css/styles.css")
     @Scripts.Render("~/bundles/modernizr")
+    <!-- Latest compiled and minified CSS -->
+
+
 </head>
 
 @*<body>
@@ -25,40 +28,100 @@
      
 </body>*@
 
-<body >
+<body>
     @*<iframe src="/Default/Load_Image" style="max-width: 100%; max-height: 100%;">*@
     @*<img src="/Default/Load_Image" alt="Alternate Text" />*@
+    <!-- White h1 heading -->
 
-    @if (Session["username"] == null)
-    {
-        <div>
-            veeemo <br />
-            @Html.ActionLink("Bejelentkezés", "Secnd");
-        </div>
-    }
-    else
-    {
-        <div class="bg-success text-white ">
-            username: <br />
-            @(Session["username"]) <br>
-            userid: <br />
-            @(Session["userid"]) <br />
-            usermail: <br />
-            @(Session["usermail"]) <br />
-        </div>
+    <div class="container mt-3 text-white">
+        <h3>Könyvek keresése</h3>
+        <p>A szépirodalmi művektől a ponyvaregényekig.</p>
+    </div>
 
-        <div class="bg-muted text-dark">
-            @RenderPage("book_add.cshtml")
+    <div class="container mt-3 text-white">
+        <p>Könyvek keresése a megadott szempont alapján:</p>
+        <div class="input-group mb-3">
+            <button type="button" class="btn btn-primary dropdown-toggle" id="searchType" data-bs-toggle="dropdown">
+                Szempont
+            </button>
+            <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="#">Szerző</a></li>
+                <li><a class="dropdown-item" href="#">Cím</a></li>
+                <li><a class="dropdown-item" href="#">Tárgyszó</a></li>
+                <li><a class="dropdown-item" href="#">Kulcsszó</a></li>
+                <li><a class="dropdown-item" href="#">ISBN/ISSN</a></li>
+            </ul>
+            <input type="text" class="form-control" placeholder="Könyvek és időszaki kiadványok keresése" id="livesearchtags">
+            <button class="btn btn-success" type="submit" id="searchbutton">Keresés</button>
         </div>
+    </div>
+
+    @if (Session["username"] != null)
+    {
+    <div class="text-white ">
+        username: <br />
+        @(Session["username"]) <br>
+        userid: <br />
+        @(Session["userid"]) <br />
+        usermail: <br />
+        @(Session["usermail"]) <br />
+    </div>
+
+    <div class="bg-muted text-dark">
+        @RenderPage("book_add.cshtml")
+    </div>
     }
-     @*@Html.ActionLink("Legelső kijelölt könyv megtekintése", "BookPage")*@
-    
+    @*@Html.ActionLink("Legelső kijelölt könyv megtekintése", "BookPage")*@
+
 
     @RenderPage("book_render.cshtml")
 
     <script>
+        $(".dropdown-toggle").next(".dropdown-menu").children().on("click", function () {
+            $(this).closest(".dropdown-menu").prev(".dropdown-toggle").text($(this).text());
+        })
         //const tablerows = document.querySelectorAll(".clickable-table");
         const hide = document.getElementById("showBook");
+        document.getElementById("searchbutton").addEventListener('click', () => {
+            LiveSearch();
+        });
+
+        function LiveSearch() {
+            //Get the input value
+            let value = document.getElementById('livesearchtags').value
+            let type = document.getElementById('searchType').innerText;
+            if (type == "Cím") {
+                $.ajax({
+                    type: "POST",
+                    // You can use the absolute url eg www.site.com/MyControllerName/LiveTagSearch or the relative path live below  
+                    url: "/Default/LiveSearchName",
+                    // Attach the value to a parameter called search
+                    data: { search: value },
+                    datatype: "html",
+                    success: function (data) {
+                        // Insert the returned search results html into the result element 
+                        console.log(data);
+                        document.getElementById('booktable').innerHTML = data;
+                    }
+                });
+            }
+            else if (type == "Szerző") {
+                $.ajax({
+                    type: "POST",
+                    // You can use the absolute url eg www.site.com/MyControllerName/LiveTagSearch or the relative path live below  
+                    url: "/Default/LiveSearchWriter",
+                    // Attach the value to a parameter called search
+                    data: { search: value },
+                    datatype: "html",
+                    success: function (data) {
+                        // Insert the returned search results html into the result element 
+                        console.log(data);
+                        document.getElementById('booktable').innerHTML = data;
+                    },
+                });
+            }
+            
+        }
     </script>
 </body>
 

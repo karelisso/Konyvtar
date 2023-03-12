@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="8ffa809404ec4e3bb326043ca85b61b7" Name="Diagram1" ZoomLevel="66">
+      <Diagram DiagramId="8ffa809404ec4e3bb326043ca85b61b7" Name="Diagram1" ZoomLevel="86">
         <EntityTypeShape EntityType="book_vs19Model.Author" Width="1.5" PointX="0.75" PointY="0.75" />
         <EntityTypeShape EntityType="book_vs19Model.Categories" Width="1.5" PointX="2.75" PointY="0.75" />
         <EntityTypeShape EntityType="book_vs19Model.Images" Width="1.5" PointX="0.75" PointY="3.75" />
@@ -17,7 +17,7 @@
         <EntityTypeShape EntityType="book_vs19Model.Relation_UserCategorie" Width="1.5" PointX="6.75" PointY="6.75" />
         <EntityTypeShape EntityType="book_vs19Model.Rent" Width="1.5" PointX="2.75" PointY="7.75" />
         <EntityTypeShape EntityType="book_vs19Model.staff_role" Width="1.5" PointX="8.75" PointY="0.75" />
-        <EntityTypeShape EntityType="book_vs19Model.user" Width="1.5" PointX="8.75" PointY="3.75" />
+        <EntityTypeShape EntityType="book_vs19Model.user" Width="1.5" PointX="9" PointY="3.75" />
         <EntityTypeShape EntityType="book_vs19Model.Writer" Width="1.5" PointX="8.75" PointY="6.75" />
       </Diagram>
     </edmx:Diagrams>

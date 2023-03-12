@@ -11,6 +11,7 @@ using System.IO;
 using Antlr.Runtime.Tree;
 using System.Drawing;
 using Microsoft.Ajax.Utilities;
+using System.Data.Entity.ModelConfiguration.Configuration;
 
 namespace Könyvtár.App_Data
 {
@@ -24,6 +25,11 @@ namespace Könyvtár.App_Data
             Random rng = new Random();
             return View("index");
         }
+        public ActionResult Main()
+        {
+            return View("main_page");
+        }
+        
         public ActionResult Third()
         {
             Session["username"] = null;
@@ -172,27 +178,31 @@ namespace Könyvtár.App_Data
             catch { }
             return null;
         }
-        public String LiveTagSearch(string search)
+        public String LiveSearchWriter(string search)
         {
 
             search = search.Trim();
             if (search.Length < 1) return "";
             string html_code = "";
             int occurances = 0;
+           
             foreach (var item in db_book.Writer)
             {
                 
                 if (item.writer_name.ToLower().Contains(search.ToLower()))
                 {
                     occurances++;
-                    html_code += $"<div>{item.writer_name} </div> <br>";
+                    //html_code += $"<div>{item.writer_name} </div> <br>";
+
                 }
                 else if (item.real_name.ToLower().Contains(search.ToLower()))
                 {
                     occurances++;
-                    html_code += $"<div>{item.real_name} </div> <br>";
+                    //html_code += $"<div>{item.real_name} </div> <br>";
                 }
             }
+
+
             if (occurances<=0)
             {
                 Dictionary<string, int> writers = new Dictionary<string, int>();
@@ -224,8 +234,18 @@ namespace Könyvtár.App_Data
                 {
                     counter++;
                     Writer wm = db_book.Writer.Where(q => q.writer_name == item.Key).FirstOrDefault();
-                    html_code += $"<div>{wm.writer_name} </div> <br>";
-                    if(counter > 1)
+                    //html_code += $"<div>{wm.writer_name} </div> <br>";
+
+                    foreach (var item2 in db_book.konyv)
+                    {
+                        if (item2.authorId.Equals(wm.Id))
+                        {
+                            occurances++;
+                            html_code += $" <tr class=\"clickable-table\"> <td>{item2.Id} </td>\r\n                    <td>{item2.ISBN}</td>\r\n                    <td> {db_book.Writer.Where(q => q.Id == item2.authorId).FirstOrDefault().writer_name} </td>\r\n                    <td>{item2.name}</td>\r\n                    <td> <img src=\"/Default/Load_Image_File_Id/{item2.imageID}\" alt=\"Alternate Text\" height=\"50px\" /> </td>\r\n                    <td> @item2.Available_Quantity @*<input type=\"number\" min=\"0\" name=\"name\" value=\"@item2.Available_Quantity\" />*@  </td>    \r\n                </tr> ";
+                        }
+                    }
+
+                    if (counter > 1)
                     {
                         break;
                     }
@@ -233,6 +253,67 @@ namespace Könyvtár.App_Data
             }
             return html_code;
         }
+
+        public String LiveSearchName(string search)
+        {
+
+            search = search.Trim();
+            if (search.Length < 1) return "";
+            string html_code = "";
+            int occurances = 0;
+            foreach (var item in db_book.konyv)
+            {
+                if (item.name.ToLower().Contains(search.ToLower()))
+                {
+                    occurances++;
+                    html_code +=$" <tr class=\"clickable-table\"> <td>{ item.Id } </td>\r\n                    <td>{item.ISBN}</td>\r\n                    <td> {db_book.Writer.Where(q => q.Id == item.authorId).FirstOrDefault().writer_name} </td>\r\n                    <td>{item.name}</td>\r\n                    <td> <img src=\"/Default/Load_Image_File_Id/{item.imageID}\" alt=\"Alternate Text\" height=\"50px\" /> </td>\r\n                    <td> @item.Available_Quantity @*<input type=\"number\" min=\"0\" name=\"name\" value=\"@item.Available_Quantity\" />*@  </td>    \r\n                </tr> ";
+                }
+            }
+            //if (occurances <= 0)
+            //{
+            //    Dictionary<string, int> writers = new Dictionary<string, int>();
+            //    foreach (var item in db_book.konyv)
+            //    {
+            //        writers.Add(item.name.ToLower(), LevenshteinDistance(search.Trim().ToLower(), item.name.ToLower().Trim()));
+            //        if (!writers.ContainsKey(item.name.ToLower()))
+            //        {
+            //            writers.Add(item.name.ToLower(), LevenshteinDistance(search.Trim().ToLower(), item.real_name.ToLower().Trim()));
+            //        }
+            //        else if (LevenshteinDistance(search.Trim().ToLower(), item.real_name.ToLower().Trim()) < writers[item.name.ToLower()])
+            //        {
+            //            writers.Add(item.name.ToLower(), LevenshteinDistance(search.Trim().ToLower(), item.real_name.ToLower().Trim()));
+            //        }
+            //        //if (LevenshteinDistance(search.Trim().ToLower(),item.writer_name.ToLower().Trim()) < 3 + search.Length / 4 + item.writer_name.Length)
+            //        //{
+            //        //    occurances++;
+            //        //    html_code += $"<div>{item.writer_name} </div> <br>";
+            //        //}
+            //        //if (LevenshteinDistance(search.ToLower(), item.real_name.ToLower().Trim()) < 3 + search.Length / 4 + item.real_name.Length)
+            //        //{
+            //        //    occurances++;
+            //        //    html_code += $"<div>{item.writer_name} </div> <br>";
+            //        //}
+            //    }
+            //    writers = writers.OrderBy(q => q.Value).ToDictionary(w => w.Key, w => w.Value);
+            //    int counter = 0;
+            //    foreach (var item in writers)
+            //    {
+            //        counter++;
+            //        Writer wm = db_book.Writer.Where(q => q.writer_name == item.Key).FirstOrDefault();
+            //        html_code += $"<div>{wm.writer_name} </div> <br>";
+            //        if (counter > 1)
+            //        {
+            //            break;
+            //        }
+            //    }
+            //}
+            return html_code;
+        }
+
+        //public List<T> SearchByWriter()
+        //{
+
+        //}
         static int LevenshteinDistance(string a, string b)
         {
             int[,] distance = new int[a.Length + 1, b.Length + 1];

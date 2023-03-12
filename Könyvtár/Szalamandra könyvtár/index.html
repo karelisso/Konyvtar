@@ -20,7 +20,7 @@
 </head>
 <body>
 
-<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+<nav class="navbar navbar-expand-sm bg-dark navbar-dark text-white">
   <a href="#"><img src="img/icon.png" alt="logo" width="60"></a>
   <div class="container-fluid">
     <ul class="navbar-nav">
@@ -39,12 +39,12 @@
   </div>
 </nav>
 
-<div class="container mt-3">
+<div class="container mt-3 text-white">
   <h3>Könyvek keresése</h3>
   <p>A szépirodalmi művektől a ponyvaregényekig.</p>
 </div>
 
-<div class="container mt-3">
+<div class="container mt-3 text-white">
   <p>Könyvek keresése a megadott szempont alapján:</p>
     <div class="input-group mb-3">
     <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown">
@@ -60,7 +60,7 @@
       <input type="text" class="form-control" placeholder="Könyvek és időszaki kiadványok keresése">
       <button class="btn btn-success" type="submit">Keresés</button> 
     </div>
-  </div>
+ </div>
 <script>
   $(".dropdown-toggle").next(".dropdown-menu").children().on("click",function(){
     $(this).closest(".dropdown-menu").prev(".dropdown-toggle").text($(this).text());
