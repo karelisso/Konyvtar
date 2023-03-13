@@ -8,45 +8,49 @@
         AllWriter = bullshit.Writer.ToArray();
         images = bullshit.Images.ToArray();
     }
-} 
+}
 <!--<form action="/" method="post">
     <select name="auth">
             <option value="ertek">iras</option>
 
     </select>-->
-    @*<input id="livesearchtags" name="livesearchtags" placeholder="Search" autocomplete="off" />*@
+@*<input id="livesearchtags" name="livesearchtags" placeholder="Search" autocomplete="off" />*@
 
 <!--</form>-->
-<table class="table table-bordered text-light">
+@if (true)
+{
+    <table class="table table-bordered text-light">
 
-    <thead style="position: sticky;top: 0">
+        <thead style="position: sticky;top: 0">
 
-        <tr class="text-light">
-            <td class="text-light">ID</td>
-            <td>ISBN </td>
-            <td>kiado</td>
-            <td>cím</td>
-            <td>kep</td>
-            <td>Darab</td>
-        </tr>
-        
-    </thead>
+            <tr class="text-light">
+                <td class="text-light">ID</td>
+                <td>ISBN </td>
+                <td>kiado</td>
+                <td>cím</td>
+                <td>kep</td>
+                <td>Darab</td>
+            </tr>
+
+        </thead>
         <tbody id="booktable">
             @*foreach (var item in AllBook)
-            {
-                <tr class="clickable-table">
-                    <td>item.Id </td>
-                    <td>item.ISBN</td>
-                    <td> AllWriter.Where(q => q.Id == item.authorId).FirstOrDefault().writer_name </td>
-                    <td>item.name</td>
-                    <td> <img src="/Default/Load_Image_File_Id/item.imageID" alt="Alternate Text" height="50px" /> </td>
-                    <td> item.Available_Quantity <input type="number" min="0" name="name" value="item.Available_Quantity" /> </td>    
-                </tr>
-            }*@
+                {
+                    <tr class="clickable-table">
+                        <td>item.Id </td>
+                        <td>item.ISBN</td>
+                        <td> AllWriter.Where(q => q.Id == item.authorId).FirstOrDefault().writer_name </td>
+                        <td>item.name</td>
+                        <td> <img src="/Default/Load_Image_File_Id/item.imageID" alt="Alternate Text" height="50px" /> </td>
+                        <td> item.Available_Quantity <input type="number" min="0" name="name" value="item.Available_Quantity" /> </td>
+                    </tr>
+                }*@
         </tbody>
 
-    @* find every active table row, use the id from the table to delete it from the datbase! *@
-</table>
+        @* find every active table row, use the id from the table to delete it from the datbase! *@
+    </table>
+}
+
 @if (Session["username"] != null)
 {
     <button class="btn btn-dark btn-block btn-lg text-dark" onclick="Dell()"> torles</button>
@@ -127,7 +131,7 @@ else
 
         });
     }
-  
+
     function Dell() {
         let selectedrows = document.getElementsByClassName(".selected").innerText;
         console.log($(".selected td:first-child").text());
