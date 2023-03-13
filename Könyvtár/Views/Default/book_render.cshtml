@@ -17,7 +17,7 @@
     @*<input id="livesearchtags" name="livesearchtags" placeholder="Search" autocomplete="off" />*@
 
 <!--</form>-->
-<table class="table table-bordered bg-secondary text-light">
+<table class="table table-bordered text-light">
 
     <thead style="position: sticky;top: 0">
 
@@ -32,17 +32,17 @@
         
     </thead>
         <tbody id="booktable">
-            @foreach (var item in AllBook)
+            @*foreach (var item in AllBook)
             {
                 <tr class="clickable-table">
-                    <td>@item.Id </td>
-                    <td>@item.ISBN</td>
-                    <td> @AllWriter.Where(q => q.Id == item.authorId).FirstOrDefault().writer_name </td>
-                    <td>@item.name</td>
-                    <td> <img src="/Default/Load_Image_File_Id/@item.imageID" alt="Alternate Text" height="50px" /> </td>
-                    <td> @item.Available_Quantity @*<input type="number" min="0" name="name" value="@item.Available_Quantity" />*@  </td>    
+                    <td>item.Id </td>
+                    <td>item.ISBN</td>
+                    <td> AllWriter.Where(q => q.Id == item.authorId).FirstOrDefault().writer_name </td>
+                    <td>item.name</td>
+                    <td> <img src="/Default/Load_Image_File_Id/item.imageID" alt="Alternate Text" height="50px" /> </td>
+                    <td> item.Available_Quantity <input type="number" min="0" name="name" value="item.Available_Quantity" /> </td>    
                 </tr>
-            }
+            }*@
         </tbody>
 
     @* find every active table row, use the id from the table to delete it from the datbase! *@
@@ -53,43 +53,81 @@
 }
 else
 {
-    <a href="/Default/Secnd"><button class="btn btn-dark btn-block btn-lg" href=""> jelentkezz be a  torleshez</button></a>
+    <a href="/Default/Secnd"><button class="btn btn-dark btn-block btn-lg" href=""> jelentkezz be a változtatáshoz</button></a>
 }
 <script>
-    const tablerows = document.querySelectorAll(".clickable-table");
+    let tablerows = document.querySelectorAll(".clickable-table");
     let bookset = false;
-    tablerows.forEach(function (ellement) {
-        ellement.addEventListener('click', function () {
-            ellement.classList.toggle("bg-success");
-            ellement.classList.toggle("selected");
-            tablerows.forEach(function (innerelement) {
-                innerelement.classList.remove("bg-warning");
-                innerelement.classList.remove("super-selected");
-            })
+    function tbclick(ellement) {
+        ellement.classList.toggle("bg-success");
+        ellement.classList.toggle("selected");
+        tablerows.forEach(function (innerelement) {
+            innerelement.classList.remove("bg-warning");
+            innerelement.classList.remove("super-selected");
+        })
+    }
+    function tbdbclick(ellement) {
+        tablerows.forEach(function (innerelement) {
+            innerelement.classList.remove("bg-success");
+            innerelement.classList.remove("bg-warning");
+            innerelement.classList.remove("super-selected");
+            innerelement.classList.remove("selected");
+        })
+        ellement.classList.toggle("bg-warning");
+        ellement.classList.toggle("super-selected");
+        console.log(ellement.children[0].innerText);
+        // $.post("/Default/SetSession", { 'name': "cur_book", 'value': ellement.children[0].innerText });
+        $.ajax({
+            url: "/Default/SetSession",
+            type: "POST",
+            data: { 'name': "cur_book", 'value': ellement.children[0].innerText },
+            success: function () { window.location.href = "/Default/BookPage"; },
+            error: function () { alert("error"); }
         });
-        ellement.addEventListener('dblclick', function () {
-            tablerows.forEach(function (innerelement) {
-                innerelement.classList.remove("bg-success");
-                innerelement.classList.remove("bg-warning");
-                innerelement.classList.remove("super-selected");
-                innerelement.classList.remove("selected");
-            })
-            ellement.classList.toggle("bg-warning");
-            ellement.classList.toggle("super-selected");
-            console.log(ellement.children[0].innerText);
-           // $.post("/Default/SetSession", { 'name': "cur_book", 'value': ellement.children[0].innerText });
-            $.ajax({
-                url: "/Default/SetSession",
-                type: "POST",
-                data: { 'name': "cur_book", 'value': ellement.children[0].innerText },
-                success: function () { window.location.href = "/Default/BookPage"; },
-                error: function () { alert("error"); }
-               });
-            bookset = true;
-            //window.location.href = "/Default/BookPage";
-        });
+        bookset = true;
+    }
+    const gennevent = function () {
+        tablerows = document.querySelectorAll(".clickable-table");
 
-    });
+        $(".clickable-table").on("click", function () {
+            console.log("Fdssdf")
+        });
+        document.querySelectorAll(".clickable-table").forEach(function (ellement) {
+
+            ellement.addEventListener('click', function () {
+                ellement.classList.toggle("bg-success");
+                ellement.classList.toggle("selected");
+                tablerows.forEach(function (innerelement) {
+                    innerelement.classList.remove("bg-warning");
+                    innerelement.classList.remove("super-selected");
+                })
+            });
+
+            ellement.addEventListener('dblclick', function () {
+                tablerows.forEach(function (innerelement) {
+                    innerelement.classList.remove("bg-success");
+                    innerelement.classList.remove("bg-warning");
+                    innerelement.classList.remove("super-selected");
+                    innerelement.classList.remove("selected");
+                })
+                ellement.classList.toggle("bg-warning");
+                ellement.classList.toggle("super-selected");
+                console.log(ellement.children[0].innerText);
+                // $.post("/Default/SetSession", { 'name': "cur_book", 'value': ellement.children[0].innerText });
+                $.ajax({
+                    url: "/Default/SetSession",
+                    type: "POST",
+                    data: { 'name': "cur_book", 'value': ellement.children[0].innerText },
+                    success: function () { window.location.href = "/Default/BookPage"; },
+                    error: function () { alert("error"); }
+                });
+                bookset = true;
+                //window.location.href = "/Default/BookPage";
+            });
+
+        });
+    }
+  
     function Dell() {
         let selectedrows = document.getElementsByClassName(".selected").innerText;
         console.log($(".selected td:first-child").text());

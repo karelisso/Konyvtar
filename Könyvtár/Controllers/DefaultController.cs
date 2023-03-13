@@ -51,6 +51,11 @@ namespace Könyvtár.App_Data
 
             Session[name] = value;
         }
+        public string GetSession(string name)
+        {
+
+           return Session[name]?.ToString();
+        }
         public ActionResult CreateWriter(string name, string name2, string life, string about)
         {
             Writer wm = new Writer();
@@ -61,6 +66,7 @@ namespace Könyvtár.App_Data
                 name = "anonimus";
                 name2 = "";
             }
+            wm.Id = db_book.Writer.Max(q=>q.Id) +1;
             wm.writer_name = name;
             wm.real_name = name2;
             wm.aboutpath = about;
@@ -71,6 +77,7 @@ namespace Könyvtár.App_Data
         public ActionResult CreateCategory(string name)
         {
             Categories cp = new Categories();
+            cp.Id = db_book.Categories.Max(q => q.Id) + 1;
             cp.Name = name;
             db_book.Categories.Add(cp);
             db_book.SaveChanges();
@@ -79,6 +86,7 @@ namespace Könyvtár.App_Data
         public ActionResult CreateAuthor(string name ,string life)
         {
             Author ath = new Author();
+            ath.Id = db_book.Author.Max(q => q.Id) + 1;
             ath.name = name;
             ath.Date = life;
             db_book.Author.Add(ath);
@@ -185,11 +193,37 @@ namespace Könyvtár.App_Data
             if (search.Length < 1) return "";
             string html_code = "";
             int occurances = 0;
-           
+
+
+
+
+            if (true)
+            {
+                Dictionary<string, int> irok = new Dictionary<string, int>();
+                foreach (var wr in db_book.Writer)
+                {
+                    foreach (var bk in db_book.konyv)
+                    {
+                        //if (LevenshteinDistance(search.Trim().ToLower(), wr.real_name.ToLower().Trim()) < 10)
+                        //{
+                        //    html_code += $" <tr class=\"clickable-table\"> <td>{bk.Id} </td>\r\n                    <td>{bk.ISBN}</td>\r\n                    <td> {db_book.Writer.Where(q => q.Id == bk.authorId).FirstOrDefault().writer_name} </td>\r\n                    <td>{bk.name}</td>\r\n                    <td> <img src=\"/Default/Load_Image_File_Id/{bk.imageID}\" alt=\"Alternate Text\" height=\"50px\" /> </td>\r\n                    <td> @bk.Available_Quantity @*<input type=\"number\" min=\"0\" name=\"name\" value=\"@bk.Available_Quantity\" />*@  </td>    \r\n                </tr> ";
+
+                        //}
+                        if (wr.real_name.ToLower().Contains(search.ToLower()) || wr.writer_name.ToLower().Contains(search.ToLower()))
+                        {
+                            if(bk.authorId.Equals(wr.Id))
+                            html_code += $" <tr  onclick=\"tbclick(this)\" ondblclick=\"tbdbclick(this)\" class=\"clickable-table\"> <td>{bk.Id} </td>\r\n                    <td>{bk.ISBN}</td>\r\n                    <td> {db_book.Writer.Where(q => q.Id == bk.authorId).FirstOrDefault().writer_name} </td>\r\n                    <td>{bk.name}</td>\r\n                    <td> <img src=\"/Default/Load_Image_File_Id/{bk.imageID}\" alt=\"Alternate Text\" height=\"50px\" /> </td>\r\n                    {"" }    \r\n                </tr> ";
+
+                        }
+                    }
+                }
+              
+                return html_code;
+            }
             foreach (var item in db_book.Writer)
             {
                 
-                if (item.writer_name.ToLower().Contains(search.ToLower()))
+                if (item.Id.Equals(search.ToLower()))
                 {
                     occurances++;
                     //html_code += $"<div>{item.writer_name} </div> <br>";
@@ -203,7 +237,7 @@ namespace Könyvtár.App_Data
             }
 
 
-            if (occurances<=0)
+            if (occurances>0)
             {
                 Dictionary<string, int> writers = new Dictionary<string, int>();
                 foreach (var item in db_book.Writer)
@@ -217,16 +251,32 @@ namespace Könyvtár.App_Data
                     {
                         writers.Add(item.writer_name.ToLower(), LevenshteinDistance(search.Trim().ToLower(), item.real_name.ToLower().Trim()));
                     }
-                    //if (LevenshteinDistance(search.Trim().ToLower(),item.writer_name.ToLower().Trim()) < 3 + search.Length / 4 + item.writer_name.Length)
-                    //{
-                    //    occurances++;
-                    //    html_code += $"<div>{item.writer_name} </div> <br>";
-                    //}
-                    //if (LevenshteinDistance(search.ToLower(), item.real_name.ToLower().Trim()) < 3 + search.Length / 4 + item.real_name.Length)
-                    //{
-                    //    occurances++;
-                    //    html_code += $"<div>{item.writer_name} </div> <br>";
-                    //}
+                    if (LevenshteinDistance(search.Trim().ToLower(), item.writer_name.ToLower().Trim()) < 3 + search.Length / 4 + item.writer_name.Length)
+                    {
+                        occurances++;
+                        //html_code += $"<div>{item.writer_name} </div> <br>";
+                        foreach (var item2 in db_book.konyv)
+                        {
+                            if (item2.authorId.Equals(item.Id))
+                            {
+                                occurances++;
+                                html_code += $" <tr class=\"clickable-table\"> <td>{item2.Id} </td>\r\n                    <td>{item2.ISBN}</td>\r\n                    <td> {db_book.Writer.Where(q => q.Id == item2.authorId).FirstOrDefault().writer_name} </td>\r\n                    <td>{item2.name}</td>\r\n                    <td> <img src=\"/Default/Load_Image_File_Id/{item2.imageID}\" alt=\"Alternate Text\" height=\"50px\" /> </td>\r\n                    { ""}    \r\n                </tr> ";
+                            }
+                        }
+                    }
+                    else if (LevenshteinDistance(search.ToLower(), item.real_name.ToLower().Trim()) < 3 + search.Length / 4 + item.real_name.Length)
+                    {
+                        occurances++;
+                        //html_code += $"<div>{item.writer_name} </div> <br>";
+                        foreach (var item2 in db_book.konyv)
+                        {
+                            if (item2.authorId.Equals(item.Id))
+                            {
+                                occurances++;
+                                html_code += $" <tr class=\"clickable-table\"> <td>{item2.Id} </td>\r\n                    <td>{item2.ISBN}</td>\r\n                    <td> {db_book.Writer.Where(q => q.Id == item2.authorId).FirstOrDefault().writer_name} </td>\r\n                    <td>{item2.name}</td>\r\n                    <td> <img src=\"/Default/Load_Image_File_Id/{item2.imageID}\" alt=\"Alternate Text\" height=\"50px\" /> </td>\r\n                    { ""}    \r\n                </tr> ";
+                            }
+                        }
+                    }
                 }
                 writers= writers.OrderBy(q => q.Value).ToDictionary(w => w.Key, w => w.Value);
                 int counter = 0;
@@ -238,17 +288,17 @@ namespace Könyvtár.App_Data
 
                     foreach (var item2 in db_book.konyv)
                     {
-                        if (item2.authorId.Equals(wm.Id))
+                        if (item2.authorId.Equals(wm.Id) || item2.writerID.Equals(wm.Id))
                         {
                             occurances++;
-                            html_code += $" <tr class=\"clickable-table\"> <td>{item2.Id} </td>\r\n                    <td>{item2.ISBN}</td>\r\n                    <td> {db_book.Writer.Where(q => q.Id == item2.authorId).FirstOrDefault().writer_name} </td>\r\n                    <td>{item2.name}</td>\r\n                    <td> <img src=\"/Default/Load_Image_File_Id/{item2.imageID}\" alt=\"Alternate Text\" height=\"50px\" /> </td>\r\n                    <td> @item2.Available_Quantity @*<input type=\"number\" min=\"0\" name=\"name\" value=\"@item2.Available_Quantity\" />*@  </td>    \r\n                </tr> ";
+                            //html_code += $" <tr class=\"clickable-table\"> <td>{item2.Id} </td>\r\n                    <td>{item2.ISBN}</td>\r\n                    <td> {db_book.Writer.Where(q => q.Id == item2.authorId).FirstOrDefault().writer_name} </td>\r\n                    <td>{item2.name}</td>\r\n                    <td> <img src=\"/Default/Load_Image_File_Id/{item2.imageID}\" alt=\"Alternate Text\" height=\"50px\" /> </td>\r\n                    <td> @item2.Available_Quantity @*<input type=\"number\" min=\"0\" name=\"name\" value=\"@item2.Available_Quantity\" />*@  </td>    \r\n                </tr> ";
                         }
                     }
 
-                    if (counter > 1)
-                    {
-                        break;
-                    }
+                    //if (counter > 1)
+                    //{
+                    //    break;
+                    //}
                 }
             }
             return html_code;
@@ -266,7 +316,7 @@ namespace Könyvtár.App_Data
                 if (item.name.ToLower().Contains(search.ToLower()))
                 {
                     occurances++;
-                    html_code +=$" <tr class=\"clickable-table\"> <td>{ item.Id } </td>\r\n                    <td>{item.ISBN}</td>\r\n                    <td> {db_book.Writer.Where(q => q.Id == item.authorId).FirstOrDefault().writer_name} </td>\r\n                    <td>{item.name}</td>\r\n                    <td> <img src=\"/Default/Load_Image_File_Id/{item.imageID}\" alt=\"Alternate Text\" height=\"50px\" /> </td>\r\n                    <td> @item.Available_Quantity @*<input type=\"number\" min=\"0\" name=\"name\" value=\"@item.Available_Quantity\" />*@  </td>    \r\n                </tr> ";
+                    html_code += $" <tr  onclick=\"tbclick(this)\" ondblclick=\"tbdbclick(this)\"> <td>{ item.Id } </td>\r\n                    <td>{item.ISBN}</td>\r\n                    <td> {db_book.Writer.Where(q => q.Id == item.authorId).FirstOrDefault().writer_name} </td>\r\n                    <td>{item.name}</td>\r\n                    <td> <img src=\"/Default/Load_Image_File_Id/{item.imageID}\" alt=\"Alternate Text\" height=\"50px\" /> </td>\r\n                    {/* <td> @item.Available_Quantity @*<input type=\"number\" min=\"0\" name=\"name\" value=\"@item.Available_Quantity\" /></td>*/"" }    \r\n                </tr> ";
                 }
             }
             //if (occurances <= 0)
@@ -310,10 +360,21 @@ namespace Könyvtár.App_Data
             return html_code;
         }
 
-        //public List<T> SearchByWriter()
-        //{
+        public String LiveSearchISBN(string search)
+        {
 
-        //}
+            search = search.Trim();
+            if (search.Length < 1) return "";
+            string html_code = "";
+            foreach (var item in db_book.konyv)
+            {
+                if (item.ISBN.Contains(search))
+                {
+                    html_code += $" <tr onclick=\"tbclick(this)\"   ondblclick=\"tbdbclick(this)\" > <td>{item.Id} </td>\r\n                    <td>{item.ISBN}</td>\r\n                    <td> {db_book.Writer.Where(q => q.Id == item.authorId).FirstOrDefault().writer_name} </td>\r\n                    <td>{item.name}</td>\r\n                    <td> <img src=\"/Default/Load_Image_File_Id/{item.imageID}\" alt=\"Alternate Text\" height=\"50px\" /> </td>\r\n                    {/* <td> @item.Available_Quantity @*<input type=\"number\" min=\"0\" name=\"name\" value=\"@item.Available_Quantity\" /></td>*/"" }   \r\n                </tr> ";
+                }
+            }
+            return html_code;
+        }
         static int LevenshteinDistance(string a, string b)
         {
             int[,] distance = new int[a.Length + 1, b.Length + 1];

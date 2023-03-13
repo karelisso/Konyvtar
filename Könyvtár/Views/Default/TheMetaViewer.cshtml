@@ -11,11 +11,11 @@
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 </head>
-<body class="container-fluid bg-danger text-warning">
+<body class="container-fluid bg-danger text-white">
     <div>
         @*This is category  *@
 
-        <form action="CreateCategory" method="post" class="bg-info text-muted">
+        <form action="CreateCategory" method="post" class="bg-info bg-opacity-50">
             <h3>Kategoria w.i.p.</h3> <br />
             <label>Name</label> <input type="text" name="name" value="" required /> <br />
             <input type="submit" name="no" value="sublimálás" />
@@ -23,7 +23,7 @@
         <br />
 
         @*This is author  *@
-    <form action="CreateAuthor" method="post" class="bg-success text-muted">
+    <form action="CreateAuthor" method="post" class="bg-success bg-opacity-50">
         <h3>Kiadó w.i.p.</h3>
         <label>Name</label> <input type="text" name="name" value="" required /> <br />
         <label>Élt(évszám)</label> <input type="text" name="life" autocomplete="off" value="" placeholder="1000-2000" /> <br />
@@ -32,8 +32,8 @@
         <br />
 
         @*This is writer  *@
-        <form action="CreateWriter" method="post" class="bg-warning">
-            <h3>Író</h3>
+        <form action="CreateWriter" method="post" class="bg-warning bg-opacity-50">
+            <h3 class="opacity-100">Író</h3>
             <label>Name</label> <input type="text" name="name" value="" autocomplete="off"/> <br />
             <label>real Name</label> <input type="text" name="name2" value="" autocomplete="off"/> <br />
             <label>Élt(évszám)</label> <input type="text" name="life" autocomplete="off" value="" placeholder="1000-2000" /> <br />

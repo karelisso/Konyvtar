@@ -7,11 +7,11 @@
     }
 }
 <form action="AddBook" method="post" enctype="multipart/form-data" class="text-white">
-    <label>Name</label>  <input type="type" name="name" value="" required autocomplete="off"/> <br />
+    <label>Cím</label>  <input type="type" name="name" value="" required autocomplete="off"/> <br />
     <label>ISBNcode</label><input type="type" name="isbn" value="" required autocomplete="off"/> <br />
     @*<label>AUTH int only!!!!</label><input type="number" name="auth" value="0" required/> <br />*@
-    <input type="file" accept="image/*" name="img" required /> <!-- all image types -->
-    <input type="text" name="demo" autocomplete="off"/>
+    <input type="file" accept="image/*" name="img" required /> <br /> <!-- all image types -->
+    <label>Összefoglaló</label><input type="text" name="demo" autocomplete="off"/> <br />
     <select name="auth">
             @foreach (var item in wrt)
             {
@@ -19,14 +19,14 @@
             }
 
     </select>
-    <input id="livesearchtags" name="livesearchtags" placeholder="Search" autocomplete="off" />
+    <input id="livesearchtags" name="livesearchtags" placeholder="Search" autocomplete="off" hidden/>
     <div id="result" class="tag-results">
     <input type="submit" name="btnSubmit" value="hozzáadás" />
 </form>
 <script>
     document.getElementById('livesearchtags').addEventListener('keyup', function (e) {
         //Run LiveSearch on ever key up 
-        LiveSearch()
+        //LiveSearch()
     });
 
     function LiveSearch() {

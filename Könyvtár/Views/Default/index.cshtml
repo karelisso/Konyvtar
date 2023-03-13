@@ -47,9 +47,10 @@
             <ul class="dropdown-menu">
                 <li><a class="dropdown-item" href="#">Szerző</a></li>
                 <li><a class="dropdown-item" href="#">Cím</a></li>
-                <li><a class="dropdown-item" href="#">Tárgyszó</a></li>
-                <li><a class="dropdown-item" href="#">Kulcsszó</a></li>
                 <li><a class="dropdown-item" href="#">ISBN/ISSN</a></li>
+                <li><a class="dropdown-item text-secondary" >Tárgyszó</a></li>
+                <li><a class="dropdown-item text-secondary" >Kulcsszó</a></li>
+
             </ul>
             <input type="text" class="form-control" placeholder="Könyvek és időszaki kiadványok keresése" id="livesearchtags">
             <button class="btn btn-success" type="submit" id="searchbutton">Keresés</button>
@@ -86,10 +87,51 @@
             LiveSearch();
         });
 
+
+        window.onload = (event) =>{
+            $.ajax({
+                url: "/Default/GetSession",
+                type: "GET",
+                data: { 'name': "LastSearch" },
+                success: function (data1) {
+                    document.getElementById('livesearchtags').value = data1;
+                    $.ajax({
+                        url: "/Default/GetSession",
+                        type: "POST",
+                        data: { 'name': "LastType" },
+                        success: function (data2) {
+                            document.getElementById('searchType').innerText = data2
+                            LiveSearch();
+                        },
+                        error: function () { alert("error tags"); }
+                    });
+                },
+                error: function () { alert("error name"); }
+            });
+            
+        }
+            
+        
+
+
         function LiveSearch() {
             //Get the input value
-            let value = document.getElementById('livesearchtags').value
+            let value = document.getElementById('livesearchtags').value;
             let type = document.getElementById('searchType').innerText;
+            $.ajax({
+                url: "/Default/SetSession",
+                type: "POST",
+                data: { 'name': "LastSearch", 'value': value },
+                success: function () {
+                    $.ajax({
+                        url: "/Default/SetSession",
+                        type: "POST",
+                        data: { 'name': "LastType", 'value': type },
+                        success: function () {  },
+                        error: function () { alert("error"); }
+                    }); },
+                error: function () { alert("error"); }
+            });
             if (type == "Cím") {
                 $.ajax({
                     type: "POST",
@@ -100,7 +142,6 @@
                     datatype: "html",
                     success: function (data) {
                         // Insert the returned search results html into the result element 
-                        console.log(data);
                         document.getElementById('booktable').innerHTML = data;
                     }
                 });
@@ -120,7 +161,23 @@
                     },
                 });
             }
-            
+            else if (type == "ISBN/ISSN") {
+                $.ajax({
+                    type: "POST",
+                    // You can use the absolute url eg www.site.com/MyControllerName/LiveTagSearch or the relative path live below  
+                    url: "/Default/LiveSearchISBN",
+                    // Attach the value to a parameter called search
+                    data: { search: value },
+                    datatype: "html",
+                    success: function (data) {
+                        // Insert the returned search results html into the result element 
+                        console.log(data);
+                        document.getElementById('booktable').innerHTML = data;
+                    },
+                });
+            }
+
+            //genevent();
         }
     </script>
 </body>

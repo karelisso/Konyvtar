@@ -15,14 +15,14 @@
     <meta name="viewport" content="width=device-width" />
     <title></title>
 </head>
-<body class="bg-warning text-dark">
+<body class="bg-warning text-white">
     <div>
-        <p>Log in with your Logins!</p>
+        <p>jelentkezz be!</p>
         <form action="LoginUser" method="post">
             <label>User name</label> <input type="text" name="Uname" placeholder="username or mail"/> <br />
             <label>Password</label> <input type="password" name="Upp" placeholder="password"/> <br />
-            <input type="checkbox" name="RegYet" />
-            <label> I don't have an account</label> <br />
+            <input type="checkbox" name="RegYet" hidden/>
+            @*<label> I don't have an account</label> <br />*@
             <input type="submit" value="Submit" class="submit" />
         </form>
         <a href="Index">mégse</a>
