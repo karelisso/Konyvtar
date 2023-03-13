@@ -50,8 +50,7 @@
                 <li><a class="dropdown-item" href="#">Szerző</a></li>
                 <li><a class="dropdown-item" href="#">Cím</a></li>
                 <li><a class="dropdown-item" href="#">ISBN/ISSN</a></li>
-                <li><a class="dropdown-item text-secondary" >Tárgyszó</a></li>
-                <li><a class="dropdown-item text-secondary" >Kulcsszó</a></li>
+                <li><a class="dropdown-item text-secondary" >kateegoria</a></li>
 
             </ul>
             <input type="text" class="form-control" placeholder="Könyvek és időszaki kiadványok keresése" id="livesearchtags">
@@ -183,7 +182,20 @@
                     },
                 });
             }
-            
+            else {
+                $.ajax({
+                    type: "POST",
+                    // You can use the absolute url eg www.site.com/MyControllerName/LiveTagSearch or the relative path live below  
+                    url: "/Default/LiveSearchISBN",
+                    // Attach the value to a parameter called search
+                    data: { search: "" },
+                    datatype: "html",
+                    success: function (data) {
+                        // Insert the returned search results html into the result element 
+                        document.getElementById('booktable').innerHTML = data;
+                    },
+                });
+            }
             //genevent();
         }
     </script>
