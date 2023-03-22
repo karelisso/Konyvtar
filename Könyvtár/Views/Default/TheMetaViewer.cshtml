@@ -16,38 +16,41 @@
         @*This is category  *@
 
         <form action="CreateCategory" method="post" class="bg-info bg-opacity-50">
-            <h3>Kategoria w.i.p.</h3> <br />
-            <label>Name</label> <input type="text" name="name" value="" required /> <br />
-            <input type="submit" name="no" value="sublimálás" />
+            <h3>Kategoria</h3> <br />
+            <label>Megnevezés</label> <input type="text" name="name" value="" required /> <br />
+            <input type="submit" name="no" value="hozzáadás" />
         </form>
         <br />
 
         @*This is author  *@
-    <form action="CreateAuthor" method="post" class="bg-success bg-opacity-50">
-        <h3>Kiadó w.i.p.</h3>
-        <label>Name</label> <input type="text" name="name" value="" required /> <br />
-        <label>Élt(évszám)</label> <input type="text" name="life" autocomplete="off" value="" placeholder="1000-2000" /> <br />
-        <input type="submit" name="no" value="sublimálás" />
-    </form>
+        <form action="CreateAuthor" method="post" class="bg-success bg-opacity-50">
+            <h3>Kiadó</h3>
+            <label>nÉV</label> <input type="text" name="name" value="" required /> <br />
+            <label>Élt(évszám)</label> <input type="text" name="life" autocomplete="off" value="" placeholder="1000-2000" /> <br />
+            <input type="submit" name="no" value="hozzáadás" />
+        </form>
         <br />
 
         @*This is writer  *@
         <form action="CreateWriter" method="post" class="bg-warning bg-opacity-50">
             <h3 class="opacity-100">Író</h3>
-            <label>Name</label> <input type="text" name="name" value="" autocomplete="off"/> <br />
-            <label>real Name</label> <input type="text" name="name2" value="" autocomplete="off"/> <br />
+            <label>íroi Név</label> <input type="text" name="name" value="" autocomplete="off" /> <br />
+            <label>Születési név(hatudjuk)</label> <input type="text" name="name2" value="" autocomplete="off" /> <br />
             <label>Élt(évszám)</label> <input type="text" name="life" autocomplete="off" value="" placeholder="1000-2000" /> <br />
-            <label>Egyéb</label> <input type="text" name="about" value="" autocomplete="off"/> <br />
-            <input type="submit" name="no" value="sublimálás" />
+            <label>Egyéb</label> <input type="text" name="about" value="" autocomplete="off" /> <br />
+            <input type="submit" name="no" value="hozzáadás" />
         </form>
+
+        <div class="bg-muted text-dark">
+            @RenderPage("book_add.cshtml")
+        </div>
+
         @*this is for rent_cards*@
         <form action="/" method="post">
-
         </form>
         @* this is for rents*@
-    <form action="/" method="post">
-
-    </form>
+        <form action="/" method="post">
+        </form>
     </div>
     <a href="/Default/Index"><button class="btn btn-dark btn-block btn-lg"> vissza a föoldara</button></a>
 </body>

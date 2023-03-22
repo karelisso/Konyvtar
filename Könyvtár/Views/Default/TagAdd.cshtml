@@ -1,0 +1,30 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title></title>
+</head>
+<body>
+    <div>
+        <div class="bg-info container">
+            <p>Tag felvétele</p>
+            <form action="CreateUser" method="post">
+                <label>Felhasználónév</label> <input type="text" name="Uname" required />            <br />
+                <label>E-mail cím</label> <input type="email" name="mail" required />               <br />
+                <label>jelszó</label> <input type="password" name="Upp" required />           <br />
+                <label>jelszó megerősítése</label> <input type="password" name="UppR" required />    <br />
+                @*<label>Admin</label> <input type="checkbox" name="Adm" />    <br />*@
+                <input type="submit" value="Megerősítés" class="submit" />
+            </form>
+
+            <a href="Index">mégse</a>
+        </div>
+</body>
+    </div>
+</body>
+</html>

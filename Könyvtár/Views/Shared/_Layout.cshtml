@@ -35,10 +35,7 @@
         <a href="#"><img src="~/Szalamandra könyvtár/img/icon.png" alt="logo" width="60"></a>
         <div @*class="container-fluid"*@>
             <ul class="navbar-nav navbar-collapse collapse" id="navbarSupportedContent">
-                <li class="nav-item">
-                    @Html.ActionLink("Súgó", "Index", "Default", new { area = "" }, new { @class = "navbar-brand" })
 
-                </li>
                 @if (Session["username"] == null)
                 {
                     <li class="nav-item">
@@ -49,16 +46,48 @@
                         @Html.ActionLink("Bejelentkezés", "Secnd", "Default", new { area = "" }, new { @class = "navbar-brand" })
 
                     </li>
+                    <li class="nav-item m-2">
+                        Álomány kezelés
+
+                    </li>
+                    <li class="nav-item m-2">
+                        Szolgáltatás
+                    </li>
+                    <li class="nav-item">
+                        @Html.ActionLink("Súgó", "Index", "Default", new { area = "" }, new { @class = "navbar-brand navbar-right" })
+
+                    </li>
+                    <li class="nav-item m-2">
+                        Kijelentkezés
+                    </li>
+
                 }
                 else
                 {
                     <li class="nav-item">
-                        @Html.ActionLink("MetaPage", "MetaPage", "Default", new { area = "" }, new { @class = "navbar-brand" })
+                        @Html.ActionLink("Regisztráció", "RegisterUser", "Default", new { area = "" }, new { @class = "navbar-brand" })
+
+                    </li>
+                    <li class="nav-item">
+                        @Html.ActionLink("Bejelentkezés", "Secnd", "Default", new { area = "" }, new { @class = "navbar-brand" })
+
+                    </li>
+                    <li class="nav-item">
+                        @Html.ActionLink("Álomány kezelés", "MetaPage", "Default", new { area = "" }, new { @class = "navbar-brand" })
+                    </li>
+                    <li class="nav-item">
+                        @Html.ActionLink("Szolgáltatás", "Index", "Default", new { area = "" }, new { @class = "navbar-brand navbar-right" })
+
+                    </li>
+                    <li class="nav-item">
+                        @Html.ActionLink("Súgó", "Index", "Default", new { area = "" }, new { @class = "navbar-brand navbar-right" })
+
                     </li>
                     <li class="nav-item">
                         @Html.ActionLink("Kijelentkezés", "Third", "Default", new { area = "" }, new { @class = "navbar-brand" })
                     </li>
                 }
+
             </ul>
             </li>
             </ul>

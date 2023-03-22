@@ -58,22 +58,6 @@
         </div>
     </div>
 
-    @if (Session["username"] != null)
-    {
-    <div class="text-white ">
-        username: <br />
-        @(Session["username"]) <br>
-        userid: <br />
-        @(Session["userid"]) <br />
-        usermail: <br />
-        @(Session["usermail"]) <br />
-    </div>
-
-    <div class="bg-muted text-dark">
-        @RenderPage("book_add.cshtml")
-    </div>
-    }
-    @*@Html.ActionLink("Legelső kijelölt könyv megtekintése", "BookPage")*@
 
 
     @RenderPage("book_render.cshtml")

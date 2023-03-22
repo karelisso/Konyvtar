@@ -17,15 +17,41 @@
 </head>
 <body class="bg-warning text-white">
     <div>
-        <p>jelentkezz be!</p>
+       
         <form action="LoginUser" method="post">
-            <label>User name</label> <input type="text" name="Uname" placeholder="username or mail"/> <br />
-            <label>Password</label> <input type="password" name="Upp" placeholder="password"/> <br />
-            <input type="checkbox" name="RegYet" hidden/>
-            @*<label> I don't have an account</label> <br />*@
-            <input type="submit" value="Submit" class="submit" />
+            <section class="h-100 h-custom">
+                <div class="container py-5 h-100">
+                    <div class="row d-flex justify-content-start align-items-center h-100">
+                        <div class="col-lg-8 col-xl-6">
+                            <div class=" rounded-3">
+
+                                <div class="card-body p-4 p-md-5">
+                                    <h3 class="mb-4 pb-2 pb-md-0 mb-md-5 px-md-2 text-white">Jelentkezz be!</h3>
+
+                                    <div class="form-outline mb-4 text-white">
+                                        <label>Felhasználónév</label> <input type="text" name="Uname" required />
+                                    </div>
+                                    @*<div class="form-outline mb-4 text-white" ">
+            <label>E-mail cím</label> <input type="email" name="mail" required />
+        </div>*@
+                                    <div class="row">
+
+                                        <div class="col-md-6 mb-4 text-white" ">
+                                            <label>jelszó</label> <input type="password" name="Upp" required />
+                                        </div>
+
+                                    </div>
+
+                                    <input type="submit" value="Bejelentkezek" class="submit" />
+                                    <p class="text-white">@Html.ActionLink("Mégse", "Third", "Default", new { area = "" }, new { @class = "navbar-brand" })</p>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
         </form>
-        <a href="Index">mégse</a>
     </div>
 </body>
 </html>

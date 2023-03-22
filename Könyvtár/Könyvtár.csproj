@@ -377,6 +377,8 @@
     <Content Include="Szalamandra könyvtár\img\Thumbs.db" />
     <Content Include="Views\Default\reader_card.cshtml" />
     <Content Include="Views\Default\main_page.cshtml" />
+    <Content Include="Views\Default\TagAdd.cshtml" />
+    <Content Include="Views\Default\emptypage.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

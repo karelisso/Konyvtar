@@ -12,19 +12,53 @@
     <meta name="viewport" content="width=device-width" />
     <title></title>
 </head>
-<body>
-    <div class="bg-info container">
-            <p>Create new user!</p>
-            <form action="CreateUser" method="post">
-                <label>User name</label> <input type="text" name="Uname" required />            <br />
-                <label>E-mail</label> <input type="email" name="mail" required />               <br />
-                <label>Password</label> <input type="password" name="Upp" required />           <br />
-                <label>Password again</label> <input type="password" name="UppR" required />    <br />
-                <label>Admin</label> <input type="checkbox" name="Adm"/>    <br />
-                <input type="submit" value="Submit" class="submit" />
-            </form>
+<body class="container-fluid">
+    <div class=" container">
+        <form action="CreateUser" method="post">
+            <section class="h-100 h-custom">
+                <div class="container py-5 h-100">
+                    <div class="row d-flex justify-content-center align-items-center h-100">
+                        <div class="col-lg-8 col-xl-6">
+                            <div class=" rounded-3">
 
-        <a href="Index">mégse</a>
+                                <div class="card-body p-4 p-md-5">
+                                    <h3 class="mb-4 pb-2 pb-md-0 mb-md-5 px-md-2 text-white">Új dologozó felvétele!</h3>
+
+                                    <div class="form-outline mb-4 text-white">
+                                        <label>Felhasználónév</label> <input type="text" name="Uname" required />
+                                    </div>
+                                    <div class="form-outline mb-4 text-white" ">
+                                        <label>E-mail cím</label> <input type="email" name="mail" required />
+                                    </div>
+                                    <div class="row">
+
+                                        <div class="col-md-6 mb-4 text-white" ">
+                                            <label>jelszó</label> <input type="password" name="Upp" required />
+                                        </div>
+                                        <div class="col-md-6 mb-4">
+
+                                            <div class="form-outline text-white" ">
+                                                <label>jelszó megerősítése</label> <input type="password" name="UppR" required />
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                    <input type="submit" value="Regisztrálás" class="submit" />
+                                    <p class="text-white">@Html.ActionLink("Mégse", "Third", "Default", new { area = "" }, new { @class = "navbar-brand" })</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </form>
+
+        
     </div>
+
+
+
 </body>
 </html>

@@ -32,10 +32,8 @@ namespace Könyvtár.App_Data
         
         public ActionResult Third()
         {
-            Session["username"] = null;
-            Session["usermail"] = null;
-            Session["userid"] = null;
-            return View("Index");
+            Session.Clear();
+            return View("emptypage");
         }
         public ActionResult MetaPage()
         {
@@ -215,7 +213,8 @@ namespace Könyvtár.App_Data
                         if (wr.real_name.ToLower().Contains(search.ToLower()) || wr.writer_name.ToLower().Contains(search.ToLower()))
                         {
                             if(item.authorId.Equals(wr.Id))
-                                html_code += $" <tr  onclick=\"tbclick(this)\" ondblclick=\"tbdbclick(this)\"> <td>{item.Id} </td>\r\n                    <td>{item.ISBN}</td>\r\n                    <td> {db_book.Writer.Where(q => q.Id == item.authorId).FirstOrDefault().writer_name} </td>\r\n                    <td>{item.name}</td>\r\n                    <td> <img src=\"/Default/Load_Image_File_Id/{item.imageID}\" alt=\"Alternate Text\" height=\"50px\" /> </td>\r\n                    {"<td>" + item.Quantity + "</td>"}    \r\n                </tr> ";
+                                //html_code += $" <tr  onclick=\"tbclick(this)\" ondblclick=\"tbdbclick(this)\"> <td>{item.Id} </td>\r\n                    <td>{item.ISBN}</td>\r\n                    <td> {db_book.Writer.Where(q => q.Id == item.authorId).FirstOrDefault().writer_name} </td>\r\n                    <td>{item.name}</td>\r\n                    <td> <img src=\"/Default/Load_Image_File_Id/{item.imageID}\" alt=\"Alternate Text\" height=\"50px\" /> </td>\r\n                    {"<td>" + item.Quantity + "</td>"}    \r\n                </tr> ";
+                                html_code += $" <tr  onclick=\"tbclick(this)\" ondblclick=\"tbdbclick(this)\"> <td>{item.Id} </td>\r\n                    <td>{item.ISBN}</td>\r\n                    <td> {db_book.Writer.Where(q => q.Id == item.authorId).FirstOrDefault().writer_name} </td>\r\n                    <td>{item.name}</td>\r\n                          <td>{db_book.Categories.Where(q => q.Id == item.Categories).FirstOrDefault().Name}</td>\r\n                    {"<td>" + item.Quantity + "</td>"}    \r\n                </tr> ";
 
                         }
                     }
@@ -264,6 +263,7 @@ namespace Könyvtár.App_Data
                             {
                                 occurances++;
                                 html_code += $" <tr class=\"clickable-table\"> <td>{item2.Id} </td>\r\n                    <td>{item2.ISBN}</td>\r\n                    <td> {db_book.Writer.Where(q => q.Id == item2.authorId).FirstOrDefault().writer_name} </td>\r\n                    <td>{item2.name}</td>\r\n                    <td> <img src=\"/Default/Load_Image_File_Id/{item2.imageID}\" alt=\"Alternate Text\" height=\"50px\" /> </td>\r\n                    { ""}    \r\n                </tr> ";
+
                             }
                         }
                     }
@@ -322,7 +322,8 @@ namespace Könyvtár.App_Data
                 if (item.name.ToLower().Contains(search.ToLower()))
                 {
                     occurances++;
-                    html_code += $" <tr  onclick=\"tbclick(this)\" ondblclick=\"tbdbclick(this)\"> <td>{ item.Id } </td>\r\n                    <td>{item.ISBN}</td>\r\n                    <td> {db_book.Writer.Where(q => q.Id == item.authorId).FirstOrDefault().writer_name} </td>\r\n                    <td>{item.name}</td>\r\n                    <td> <img src=\"/Default/Load_Image_File_Id/{item.imageID}\" alt=\"Alternate Text\" height=\"50px\" /> </td>\r\n                    { "<td>" + item.Quantity + "</td>" }    \r\n                </tr> ";
+                    //html_code += $" <tr  onclick=\"tbclick(this)\" ondblclick=\"tbdbclick(this)\"> <td>{ item.Id } </td>\r\n                    <td>{item.ISBN}</td>\r\n                    <td> {db_book.Writer.Where(q => q.Id == item.authorId).FirstOrDefault().writer_name} </td>\r\n                    <td>{item.name}</td>\r\n                    <td> <img src=\"/Default/Load_Image_File_Id/{item.imageID}\" alt=\"Alternate Text\" height=\"50px\" /> </td>\r\n                    { "<td>" + item.Quantity + "</td>" }    \r\n                </tr> ";
+                    html_code += $" <tr  onclick=\"tbclick(this)\" ondblclick=\"tbdbclick(this)\"> <td>{item.Id} </td>\r\n                    <td>{item.ISBN}</td>\r\n                    <td> {db_book.Writer.Where(q => q.Id == item.authorId).FirstOrDefault().writer_name} </td>\r\n                    <td>{item.name}</td>\r\n                          <td>{db_book.Categories.Where(q => q.Id == item.Categories).FirstOrDefault().Name}</td>\r\n                    {"<td>" + item.Quantity + "</td>"}    \r\n                </tr> ";
                 }
             }
             //if (occurances <= 0)
@@ -379,7 +380,8 @@ namespace Könyvtár.App_Data
             {
                 if (item.ISBN.Contains(search))
                 {
-                    html_code += $" <tr  onclick=\"tbclick(this)\" ondblclick=\"tbdbclick(this)\"> <td>{item.Id} </td>\r\n                    <td>{item.ISBN}</td>\r\n                    <td> {db_book.Writer.Where(q => q.Id == item.authorId).FirstOrDefault().writer_name} </td>\r\n                    <td>{item.name}</td>\r\n                    <td> <img src=\"/Default/Load_Image_File_Id/{item.imageID}\" alt=\"Alternate Text\" height=\"50px\" /> </td>\r\n                    {"<td>" + item.Quantity + "</td>"}    \r\n                </tr> ";
+                    //html_code += $" <tr  onclick=\"tbclick(this)\" ondblclick=\"tbdbclick(this)\"> <td>{item.Id} </td>\r\n                    <td>{item.ISBN}</td>\r\n                    <td> {db_book.Writer.Where(q => q.Id == item.authorId).FirstOrDefault().writer_name} </td>\r\n                    <td>{item.name}</td>\r\n                    <td> <img src=\"/Default/Load_Image_File_Id/{item.imageID}\" alt=\"Alternate Text\" height=\"50px\" /> </td>\r\n                    {"<td>" + item.Quantity + "</td>"}    \r\n                </tr> ";
+                    html_code += $" <tr  onclick=\"tbclick(this)\" ondblclick=\"tbdbclick(this)\"> <td>{item.Id} </td>\r\n                    <td>{item.ISBN}</td>\r\n                    <td> {db_book.Writer.Where(q => q.Id == item.authorId).FirstOrDefault().writer_name} </td>\r\n                    <td>{item.name}</td>\r\n                          <td>{db_book.Categories.Where(q => q.Id == item.Categories).FirstOrDefault().Name}</td>\r\n                    {"<td>" + item.Quantity + "</td>"}    \r\n                </tr> ";
                 }
             }
             return html_code;
@@ -390,7 +392,8 @@ namespace Könyvtár.App_Data
             string html_code = "";
                 foreach (var item in db_book.konyv)
                 {
-                html_code += $" <tr  onclick=\"tbclick(this)\" ondblclick=\"tbdbclick(this)\"> <td>{item.Id} </td>\r\n                    <td>{item.ISBN}</td>\r\n                    <td> {db_book.Writer.Where(q => q.Id == item.authorId).FirstOrDefault().writer_name} </td>\r\n                    <td>{item.name}</td>\r\n                    <td> <img src=\"/Default/Load_Image_File_Id/{item.imageID}\" alt=\"Alternate Text\" height=\"50px\" /> </td>\r\n                    {"<td>" + item.Quantity + "</td>"}    \r\n                </tr> ";
+                //html_code += $" <tr  onclick=\"tbclick(this)\" ondblclick=\"tbdbclick(this)\"> <td>{item.Id} </td>\r\n                    <td>{item.ISBN}</td>\r\n                    <td> {db_book.Writer.Where(q => q.Id == item.authorId).FirstOrDefault().writer_name} </td>\r\n                    <td>{item.name}</td>\r\n                    <td> <img src=\"/Default/Load_Image_File_Id/{item.imageID}\" alt=\"Alternate Text\" height=\"50px\" /> </td>\r\n                    {"<td>" + item.Quantity + "</td>"}    \r\n                </tr> ";
+                html_code += $" <tr  onclick=\"tbclick(this)\" ondblclick=\"tbdbclick(this)\"> <td>{item.Id} </td>\r\n                    <td>{item.ISBN}</td>\r\n                    <td> {db_book.Writer.Where(q => q.Id == item.authorId).FirstOrDefault().writer_name} </td>\r\n                    <td>{item.name}</td>\r\n                          <td>{db_book.Categories.Where(q => q.Id ==item.Categories).FirstOrDefault().Name}</td>\r\n                    {"<td>" + item.Quantity + "</td>"}    \r\n                </tr> ";
             }
             return html_code;
         }
