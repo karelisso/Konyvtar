@@ -18,7 +18,8 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" Nullable="false" />
-          <Property Name="Name" Type="nchar" MaxLength="255" />
+          <Property Name="Name" Type="nchar" MaxLength="255" Nullable="false" />
+          <Property Name="description" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="Images">
           <Key>
@@ -32,7 +33,7 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" Nullable="false" />
-          <Property Name="BundleID" Type="nchar" MaxLength="10" Nullable="false" />
+          <Property Name="BundleID" Type="bigint" Nullable="false" />
           <Property Name="Information_Type" Type="nvarchar(max)" Nullable="false" />
           <Property Name="InformationID" Type="bigint" Nullable="false" />
         </EntityType>
@@ -52,14 +53,23 @@
           <Property Name="Quantity" Type="int" Nullable="false" />
           <Property Name="Available_Quantity" Type="int" Nullable="false" />
         </EntityType>
+        <EntityType Name="Log">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="who" Type="int" Nullable="false" />
+          <Property Name="when" Type="datetime" Nullable="false" />
+          <Property Name="what" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
         <EntityType Name="Reader_Card">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" Nullable="false" />
-          <Property Name="User_ID" Type="nchar" MaxLength="10" />
-          <Property Name="Rent_ID_Bundle" Type="nchar" MaxLength="10" />
-          <Property Name="peoplecard_ID" Type="nchar" MaxLength="20" />
+          <Property Name="User_ID" Type="int" />
+          <Property Name="Rent_ID_Bundle" Type="bigint" />
+          <Property Name="Personel_ID_Card" Type="nchar" MaxLength="20" />
         </EntityType>
         <EntityType Name="Relation_AuthorWriterBook">
           <Key>
@@ -122,6 +132,7 @@
           <Property Name="role" Type="nchar" MaxLength="10" />
           <Property Name="admin" Type="int" />
           <Property Name="special_password" Type="nchar" MaxLength="10" />
+          <Property Name="user_id" Type="int" />
         </EntityType>
         <EntityType Name="Writer">
           <Key>
@@ -139,6 +150,7 @@
           <EntitySet Name="Images" EntityType="Self.Images" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="InformationBundle" EntityType="Self.InformationBundle" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="konyv" EntityType="Self.konyv" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Log" EntityType="Self.Log" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Reader_Card" EntityType="Self.Reader_Card" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Relation_AuthorWriterBook" EntityType="Self.Relation_AuthorWriterBook" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Relation_BookCategorie" EntityType="Self.Relation_BookCategorie" Schema="dbo" store:Type="Tables" />
@@ -159,6 +171,7 @@
           <EntitySet Name="Images" EntityType="book_vs19Model.Images" />
           <EntitySet Name="InformationBundle" EntityType="book_vs19Model.InformationBundle" />
           <EntitySet Name="konyv" EntityType="book_vs19Model.konyv" />
+          <EntitySet Name="Log" EntityType="book_vs19Model.Log" />
           <EntitySet Name="Reader_Card" EntityType="book_vs19Model.Reader_Card" />
           <EntitySet Name="Relation_AuthorWriterBook" EntityType="book_vs19Model.Relation_AuthorWriterBook" />
           <EntitySet Name="Relation_BookCategorie" EntityType="book_vs19Model.Relation_BookCategorie" />
@@ -182,7 +195,8 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" />
-          <Property Name="Name" Type="String" MaxLength="255" FixedLength="true" Unicode="true" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="255" FixedLength="true" Unicode="true" />
+          <Property Name="description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="Images">
           <Key>
@@ -196,7 +210,7 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" />
-          <Property Name="BundleID" Type="String" Nullable="false" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="BundleID" Type="Int64" Nullable="false" />
           <Property Name="Information_Type" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="InformationID" Type="Int64" Nullable="false" />
         </EntityType>
@@ -216,14 +230,23 @@
           <Property Name="Quantity" Type="Int32" Nullable="false" />
           <Property Name="Available_Quantity" Type="Int32" Nullable="false" />
         </EntityType>
+        <EntityType Name="Log">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="who" Type="Int32" Nullable="false" />
+          <Property Name="when" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="what" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
         <EntityType Name="Reader_Card">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" />
-          <Property Name="User_ID" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
-          <Property Name="Rent_ID_Bundle" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
-          <Property Name="peoplecard_ID" Type="String" MaxLength="20" FixedLength="true" Unicode="true" />
+          <Property Name="User_ID" Type="Int32" />
+          <Property Name="Rent_ID_Bundle" Type="Int64" />
+          <Property Name="Personel_ID_Card" Type="String" MaxLength="20" FixedLength="true" Unicode="true" />
         </EntityType>
         <EntityType Name="Relation_AuthorWriterBook">
           <Key>
@@ -286,6 +309,7 @@
           <Property Name="role" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
           <Property Name="admin" Type="Int32" />
           <Property Name="special_password" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="user_id" Type="Int32" />
         </EntityType>
         <EntityType Name="Writer">
           <Key>
@@ -315,6 +339,7 @@
           <EntitySetMapping Name="Categories">
             <EntityTypeMapping TypeName="book_vs19Model.Categories">
               <MappingFragment StoreEntitySet="Categories">
+                <ScalarProperty Name="description" ColumnName="description" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
@@ -355,10 +380,20 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="Log">
+            <EntityTypeMapping TypeName="book_vs19Model.Log">
+              <MappingFragment StoreEntitySet="Log">
+                <ScalarProperty Name="what" ColumnName="what" />
+                <ScalarProperty Name="when" ColumnName="when" />
+                <ScalarProperty Name="who" ColumnName="who" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Reader_Card">
             <EntityTypeMapping TypeName="book_vs19Model.Reader_Card">
               <MappingFragment StoreEntitySet="Reader_Card">
-                <ScalarProperty Name="peoplecard_ID" ColumnName="peoplecard_ID" />
+                <ScalarProperty Name="Personel_ID_Card" ColumnName="Personel_ID_Card" />
                 <ScalarProperty Name="Rent_ID_Bundle" ColumnName="Rent_ID_Bundle" />
                 <ScalarProperty Name="User_ID" ColumnName="User_ID" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
@@ -426,6 +461,7 @@
           <EntitySetMapping Name="user">
             <EntityTypeMapping TypeName="book_vs19Model.user">
               <MappingFragment StoreEntitySet="user">
+                <ScalarProperty Name="user_id" ColumnName="user_id" />
                 <ScalarProperty Name="special_password" ColumnName="special_password" />
                 <ScalarProperty Name="admin" ColumnName="admin" />
                 <ScalarProperty Name="role" ColumnName="role" />

@@ -30,7 +30,7 @@ namespace Könyvtár.App_Data
             return View("main_page");
         }
         
-        public ActionResult Third()
+        public ActionResult start()
         {
             Session.Clear();
             return View("emptypage");
@@ -460,7 +460,7 @@ namespace Könyvtár.App_Data
             System.Diagnostics.Debug.WriteLine(kv[0].ToString());
             Response.Write( kv[0].ToString());
         }
-        public ActionResult CreateUser(string Uname, string mail, string Upp, string UppR, bool? Adm)
+        public ActionResult CreateUser(string Uname, string mail, string Upp, string UppR, bool? Adm,string phone)
         {
             if (Upp != UppR)
                 return View("Regist");
@@ -473,34 +473,75 @@ namespace Könyvtár.App_Data
             account2.Username = Uname;
             account1.Userpassword = Upp;
             account1.email = mail;
-            account1.phone = "+36-30-555-5555";
+            account1.phone = phone;
             if (Adm ==null)
                 Adm = false;
-            account2.admin = (bool)Adm ? 1 : 0;
+            account2.admin = (bool)Adm ? 2 : 1;
             account2.special_password = Upp;
             //try
             //{
                 db_user.User_sus.Add(account1);
                 db_user.SaveChanges();
 
-                account2.id = db_user.User_sus.Where(q => q.Username == account1.Username && q.email == account1.email).FirstOrDefault().Id;
+                account2.user_id = db_user.User_sus.Where(q => q.Username == account1.Username && q.email == account1.email).FirstOrDefault().Id;
                 db_book.user.Add(account2);
                
                 db_book.SaveChanges();
 
-                //Session["username"] = Uname;
+            //Session["username"] = Uname;
             //}
             //catch (Exception)
             //{
             //   // return View("Regist");
             //}
-            
+            Session.Clear();
             return View("LogIn");
         }
+        public ActionResult CreateReader(string name, string mail, string Upp, string UppR, string phone,string szid)
+        {
+            if (Upp != UppR)
+                return View("Regist");
+
+            User_sus account1 = new User_sus();
+            user account2 = new user();
+            Reader_Card rc = new Reader_Card();
+            //this should be fine until i find out to use auto increment.
+            //account.id = bullshit.user.Count() + 1;
+            account1.Username = name;
+            account2.Username = name;
+            account1.Userpassword = Upp;
+            account1.email = mail;
+            account1.phone = phone;
+            account2.admin = 0;
+            account2.special_password = Upp;
+            db_user.User_sus.Add(account1);
+            db_user.SaveChanges();
+
+            account2.id = db_user.User_sus.Where(q => q.Username == account1.Username && q.email == account1.email).FirstOrDefault().Id;
+            rc.Personel_ID_Card = szid;
+            //todo change every id to int!!!
+            rc.User_ID = account2.user_id;
+            //?why is this even in here?
+            ////rc.Rent_ID_Bundle 
+            db_book.user.Add(account2);
+            db_book.Reader_Card.Add(rc);
+            db_book.SaveChanges();
+
+            //Session["username"] = Uname;
+            //}
+            //catch (Exception)
+            //{
+            //   // return View("Regist");
+            //}
+            return View("TheMetaViewer");
+        }
+
+
+
         public ActionResult LogInUser(string Uname,string Upp,string RegYet)
         {
-            if (RegYet != null)
-                return RegisterUser();
+            //if (RegYet != null)
+            //    return RegisterUser();
                 //Session["username"] = Uname;
                 foreach (var item in db_user.User_sus)
                 {
@@ -513,6 +554,8 @@ namespace Könyvtár.App_Data
                             Session["username"] = Uname;
                             Session["usermail"] = item.email;
                             Session["userid"] = item.Id;
+                            Session["level"] = db_book.user.Where(q => q.user_id == item.Id).FirstOrDefault().admin;
+                            Log(item.Id, "Bejelentkezett");
                             return View("Index");                            
                             }
                         }
@@ -522,6 +565,7 @@ namespace Könyvtár.App_Data
                     }
                    
                 }
+            Session.Clear();
             return View("/error");
         }
         public ActionResult RegisterUser()
@@ -530,6 +574,7 @@ namespace Könyvtár.App_Data
         }
         public ActionResult Secnd()
         {
+            Session.Clear();
             return View("LogIn");
         }
         // GET: Default/Details/5
@@ -603,10 +648,23 @@ namespace Könyvtár.App_Data
                 return View();
             }
         }
+        public void Log(int id,string what)
+        {
+            Log data = new Log();
+            data.who = id;
+            data.what = what;
+            data.when = DateTime.Now;
+            db_book.Log.Add(data);
+            db_book.SaveChanges();
+        }
         public string[] KonyvSTR(konyv inp)
         {
             String[] vm = new string[4] { inp.Id.ToString(), inp.ISBN, inp.name, "author" + db_book.Author.Where(q=>q.Id == inp.authorId).First().name   };
             return vm;
+        }
+        public ActionResult LogView()
+        {
+            return View("LogView");
         }
     }
 }

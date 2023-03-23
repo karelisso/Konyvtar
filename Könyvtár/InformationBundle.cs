@@ -15,7 +15,7 @@ namespace Könyvtár
     public partial class InformationBundle
     {
         public int Id { get; set; }
-        public string BundleID { get; set; }
+        public long BundleID { get; set; }
         public string Information_Type { get; set; }
         public long InformationID { get; set; }
     }

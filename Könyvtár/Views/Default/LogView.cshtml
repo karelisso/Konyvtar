@@ -1,0 +1,34 @@
+﻿@{
+    List<Log> logok = new List<Log>();
+    using (book_vs19Entities1 bullshit = new book_vs19Entities1())
+    {
+        logok = bullshit.Log.ToList();
+    }
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title></title>
+</head>
+<body>
+    <div>
+        <tbody id="booktable">
+            @foreach (var item in logok)
+            {
+                <tr class="clickable-table">
+                    <td>@item.who</td>
+                </tr>
+                <tr class="clickable-table">
+                    <td>@item.when</td>
+                </tr>
+                <tr class="clickable-table">
+                    <td>@item.what</td>
+                </tr>
+            }
+        </tbody>
+    </div>
+</body>
+</html>

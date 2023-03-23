@@ -13,23 +13,22 @@
 </head>
 <body class="container-fluid bg-danger text-white">
     <div>
-        @*This is category  *@
 
+        @*This is category  *@
+        <h1 class="fixed-bottom bg-black bg-opacity-50 w-100 text-center">Állomány bevitele</h1>
         <form action="CreateCategory" method="post" class="bg-info bg-opacity-50">
             <h3>Kategoria</h3> <br />
             <label>Megnevezés</label> <input type="text" name="name" value="" required /> <br />
             <input type="submit" name="no" value="hozzáadás" />
         </form>
-        <br />
-
-        @*This is author  *@
-        <form action="CreateAuthor" method="post" class="bg-success bg-opacity-50">
+        @* This is author  *@
+        @*<form action="CreateAuthor" method="post" class="bg-success bg-opacity-50">
             <h3>Kiadó</h3>
             <label>nÉV</label> <input type="text" name="name" value="" required /> <br />
             <label>Élt(évszám)</label> <input type="text" name="life" autocomplete="off" value="" placeholder="1000-2000" /> <br />
             <input type="submit" name="no" value="hozzáadás" />
         </form>
-        <br />
+        <br />*@
 
         @*This is writer  *@
         <form action="CreateWriter" method="post" class="bg-warning bg-opacity-50">
@@ -41,13 +40,28 @@
             <input type="submit" name="no" value="hozzáadás" />
         </form>
 
-        <div class="bg-muted text-dark">
+        <div class="bg-muted text-white bg-success bg-opacity-50">
+            <h3 class="opacity-100">Könyv</h3>
             @RenderPage("book_add.cshtml")
         </div>
 
         @*this is for rent_cards*@
-        <form action="/" method="post">
-        </form>
+    <form action="CreateReader" method="post" class="text-white bg-dark bg-opacity-50">
+        <h3 class="opacity-100">Olvasó</h3>
+        <label>Személyi igazolvány szám</label> <input type="text" name="szid" value="" autocomplete="off" /> <br />
+        <label>Név</label> <input type="text" name="name" value="" autocomplete="off" /> <br />
+        <label>tel</label> <input type="tel" name="phone" value="" autocomplete="off" /> <br />
+        <label>Email cím</label> <input type="email" name="mail" value="" autocomplete="off" /> <br />
+        <div class="col-md-6 mb-4 text-white" ">
+            <label>jelszó</label> <input type="password" name="Upp" required />
+        </div>
+        <div class="col-md-6 mb-4">
+            <div class="form-outline text-white" ">
+                <label>jelszó megerősítése</label> <input type="password" name="UppR" required />
+            </div>
+        </div>s
+
+    </form>
         @* this is for rents*@
         <form action="/" method="post">
         </form>

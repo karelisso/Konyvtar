@@ -29,7 +29,7 @@
                                     <h3 class="mb-4 pb-2 pb-md-0 mb-md-5 px-md-2 text-white">Jelentkezz be!</h3>
 
                                     <div class="form-outline mb-4 text-white">
-                                        <label>Felhasználónév</label> <input type="text" name="Uname" required />
+                                        <label>Felhasználónév</label> <input type="text" name="Uname" placeholder="fiók név/email" required />
                                     </div>
                                     @*<div class="form-outline mb-4 text-white" ">
             <label>E-mail cím</label> <input type="email" name="mail" required />
@@ -43,7 +43,7 @@
                                     </div>
 
                                     <input type="submit" value="Bejelentkezek" class="submit" />
-                                    <p class="text-white">@Html.ActionLink("Mégse", "Third", "Default", new { area = "" }, new { @class = "navbar-brand" })</p>
+                                    <p class="text-white">@Html.ActionLink("Mégse", "start", "Default", new { area = "" }, new { @class = "navbar-brand" })</p>
 
                                 </div>
                             </div>

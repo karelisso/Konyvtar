@@ -15,8 +15,8 @@ namespace Könyvtár
     public partial class Reader_Card
     {
         public int Id { get; set; }
-        public string User_ID { get; set; }
-        public string Rent_ID_Bundle { get; set; }
-        public string peoplecard_ID { get; set; }
+        public Nullable<int> User_ID { get; set; }
+        public Nullable<long> Rent_ID_Bundle { get; set; }
+        public string Personel_ID_Card { get; set; }
     }
 }

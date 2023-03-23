@@ -19,5 +19,6 @@ namespace Könyvtár
         public string role { get; set; }
         public Nullable<int> admin { get; set; }
         public string special_password { get; set; }
+        public Nullable<int> user_id { get; set; }
     }
 }

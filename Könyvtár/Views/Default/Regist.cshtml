@@ -30,23 +30,24 @@
                                     <div class="form-outline mb-4 text-white" ">
                                         <label>E-mail cím</label> <input type="email" name="mail" required />
                                     </div>
+                                    <div class="form-outline mb-4 text-white" ">
+                                        <label>Tel</label> <input type="tel" name="phone" required />
+                                    </div>
                                     <div class="row">
 
                                         <div class="col-md-6 mb-4 text-white" ">
                                             <label>jelszó</label> <input type="password" name="Upp" required />
                                         </div>
                                         <div class="col-md-6 mb-4">
-
                                             <div class="form-outline text-white" ">
                                                 <label>jelszó megerősítése</label> <input type="password" name="UppR" required />
                                             </div>
-
                                         </div>
 
                                     </div>
 
                                     <input type="submit" value="Regisztrálás" class="submit" />
-                                    <p class="text-white">@Html.ActionLink("Mégse", "Third", "Default", new { area = "" }, new { @class = "navbar-brand" })</p>
+                                    <p class="text-white">@Html.ActionLink("Mégse", "start", "Default", new { area = "" }, new { @class = "navbar-brand" })</p>
                                 </div>
                             </div>
                         </div>
