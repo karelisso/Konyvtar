@@ -1,5 +1,10 @@
 ﻿@{
     //Layout = null;
+    konyv[] kv;
+    Reader_Card[] cr;
+    book_vs19Entities1 bullshit = new book_vs19Entities1();
+        kv = bullshit.konyv.ToArray();
+        cr = bullshit.Reader_Card.ToArray();
 }
 
 <!DOCTYPE html>
@@ -49,7 +54,7 @@
             @RenderPage("book_add.cshtml")
         </div>
 
-        @*this is for rent_cards*@
+            @*this is for rent_cards*@
     <form action="CreateReader" method="post" class="text-white bg-dark bg-opacity-50">
         <h3 class="opacity-100">Olvasó</h3>
         <label>Személyi igazolvány szám</label> <input type="text" name="szid" value="" autocomplete="off" /> <br />
@@ -64,11 +69,27 @@
                 <label>jelszó megerősítése</label> <input type="password" name="UppR" required />
             </div>
         </div>s
-
+        <input type="submit" name="no" value="hozzáadás" />
     </form>
-        @* this is for rents*@
-        <form action="/" method="post">
-        </form>
+            @* this is for rents*@
+    <form action="CreateRent" method="post" class="text-white bg-info bg-opacity-50">
+        <h3 class="opacity-100">Kölcsönzés</h3>
+        <label>Név</label>  <select name="id">
+            @foreach (var item in cr)
+            {
+                <option value="@item.User_ID">  @bullshit.user.Where(q=>q.id == item.User_ID).FirstOrDefault().Username</option>
+            }
+
+        </select><br />
+        <label>könyv</label>  <select name="book_id">
+            @foreach (var item in kv)
+            {
+                <option value="@item.Id">@item.name @item.Available_Quantity</option>
+            }
+
+        </select><br />
+        <input type="submit" name="no" value="hozzáadás" />
+    </form>
     </div>
     <a href="/Default/Index"><button class="btn btn-dark btn-block btn-lg"> vissza a föoldara</button></a>
 </body>

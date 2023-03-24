@@ -221,7 +221,8 @@ namespace Könyvtár.App_Data
             rent.Book_ID = book_id;
             rent.Rent_Date = DateTime.Now;
             rent.Due_Date = DateTime.Now.AddDays(14);
-            db_book.konyv.Where(q => q.Id == int.Parse(book_id)).First().Available_Quantity -= 1;
+            int wichkonyv = int.Parse(book_id);
+            db_book.konyv.Where(q => q.Id == wichkonyv).First().Available_Quantity -= 1;
             db_book.SaveChanges();
             Log("Kiadot egy könyvet", id + "");
             return View("TheMetaViewer");
@@ -230,7 +231,8 @@ namespace Könyvtár.App_Data
         {
             Rent rent = db_book.Rent.Where(q=>q.Id == int.Parse(id)).First();
             rent.Return_Date = DateTime.Now;
-            db_book.konyv.Where(q => q.Id == int.Parse(rent.Book_ID)).First().Available_Quantity += 1;
+            int wichkonyv = int.Parse(rent.Book_ID);
+            db_book.konyv.Where(q => q.Id == wichkonyv ).First().Available_Quantity += 1;
             db_book.SaveChanges();
             Log("visszahozott egy könyvet", id + "");
             return View("TheMetaViewer");
