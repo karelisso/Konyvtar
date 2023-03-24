@@ -36,7 +36,7 @@
 
 
     <div class="container mt-3 text-white">
-        <h3>Könyvek keresése @Session["level"]</h3>
+        <h3>Könyvek keresése @(Session["level"])</h3>
         <p>A szépirodalmi művektől a ponyvaregényekig.</p>
     </div>
 
@@ -50,8 +50,15 @@
                 <li><a class="dropdown-item" href="#">Szerző</a></li>
                 <li><a class="dropdown-item" href="#">Cím</a></li>
                 <li><a class="dropdown-item" href="#">ISBN/ISSN</a></li>
-                <li><a class="dropdown-item text-secondary" >kateegoria</a></li>
-
+                <li><a class="dropdown-item" href="#">kategoria</a></li>
+                @if (int.Parse(Session["level"].ToString()) > 0)
+                {
+                    <li><a class="dropdown-item" href="#">Olvasók</a></li>
+                }
+                else
+                {
+                    <li><a class="dropdown-item" href="#">nálad</a></li>
+                }
             </ul>
             <input type="text" class="form-control" placeholder="Könyvek és időszaki kiadványok keresése" id="livesearchtags">
             <button class="btn btn-success" type="submit" id="searchbutton">Keresés</button>
@@ -157,6 +164,54 @@
                     url: "/Default/LiveSearchISBN",
                     // Attach the value to a parameter called search
                     data: { search: value },
+                    datatype: "html",
+                    success: function (data) {
+                        // Insert the returned search results html into the result element 
+                        console.log(data);
+                        console.log(data);
+                        document.getElementById('booktable').innerHTML = data;
+                    },
+                });
+            }
+            else if (type == "kategoria") {
+                $.ajax({
+                    type: "POST",
+                    // You can use the absolute url eg www.site.com/MyControllerName/LiveTagSearch or the relative path live below  
+                    url: "/Default/LiveSearchISBN",
+                    // Attach the value to a parameter called search
+                    data: { search: value },
+                    datatype: "html",
+                    success: function (data) {
+                        // Insert the returned search results html into the result element 
+                        console.log(data);
+                        console.log(data);
+                        document.getElementById('booktable').innerHTML = data;
+                    },
+                });
+            }
+            else if (type == "Olvasók") {
+                $.ajax({
+                    type: "POST",
+                    // You can use the absolute url eg www.site.com/MyControllerName/LiveTagSearch or the relative path live below  
+                    url: "/Default/LiveSearchISBN",
+                    // Attach the value to a parameter called search
+                    data: { search: value },
+                    datatype: "html",
+                    success: function (data) {
+                        // Insert the returned search results html into the result element 
+                        console.log(data);
+                        console.log(data);
+                        document.getElementById('booktable').innerHTML = data;
+                    },
+                });
+            }
+            else if (type == "nálad") {
+                $.ajax({
+                    type: "POST",
+                    // You can use the absolute url eg www.site.com/MyControllerName/LiveTagSearch or the relative path live below  
+                    url: "/Default/LiveSearchISBN",
+                    // Attach the value to a parameter called search
+                    data: '',
                     datatype: "html",
                     success: function (data) {
                         // Insert the returned search results html into the result element 

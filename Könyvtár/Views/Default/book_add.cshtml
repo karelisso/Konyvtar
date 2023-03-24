@@ -1,31 +1,42 @@
 ﻿@{
     konyv km = new konyv();
     Writer[] wrt;
+    Categories[] crt;
     using (book_vs19Entities1 bullshit = new book_vs19Entities1())
     {
         wrt = bullshit.Writer.ToArray();
+        crt = bullshit.Categories.ToArray();
     }
 }
-<form action="AddBook" method="post" enctype="multipart/form-data" class="text-white">
-    <label>Cím</label>  <input type="type" name="name" value="" required autocomplete="off"/> <br />
-    <label>ISBNcode</label><input type="type" name="isbn" value="" required autocomplete="off"/> <br />
+<form action="CreateBook" method="post" enctype="multipart/form-data" class="text-white">
+    <label>Cím</label>  <input type="type" name="name" value="" required autocomplete="off" /> <br />
+    <label>ISBNcode</label><input type="type" name="isbn" value="" required autocomplete="off" /> <br />
     @*<label>AUTH int only!!!!</label><input type="number" name="auth" value="0" required/> <br />*@
-    <input type="file" accept="image/*" name="img" required /> <br /> <!-- all image types -->
-    <label>Összefoglaló</label><input type="text" name="demo" autocomplete="off"/> <br />
+    <label>Boritó kép</label><input type="file" accept="image/*" name="img" required /> <br /> <!-- all image types -->
+    <label>Összefoglaló</label><input type="text" name="demo" autocomplete="off" /> <br />
+    <label>Kategoria</label>
+    <select name="categorie">
+        @foreach (var item in crt)
+        {
+            <option value="@item.Id">@item.Name</option>
+        }
+
+    </select><br>
+    <label>Író</label>
     <select name="auth">
-            @foreach (var item in wrt)
-            {
-                <option value="@item.Id">@item.writer_name</option>
-            }
+        @foreach (var item in wrt)
+        {
+            <option value="@item.Id">@item.writer_name</option>
+        }
 
     </select>
-    <input id="livesearchtags" name="livesearchtags" placeholder="Search" autocomplete="off" hidden/>
+    <input id="livesearchtags" name="livesearchtags" placeholder="Search" autocomplete="off" hidden />
     <div id="result" class="tag-results">
-    <input type="submit" name="btnSubmit" value="hozzáadás" />
+        <input type="submit" name="btnSubmit" value="hozzáadás" />
 </form>
 <script>
     document.getElementById('livesearchtags').addEventListener('keyup', function (e) {
-        //Run LiveSearch on ever key up 
+        //Run LiveSearch on ever key up
         //LiveSearch()
     });
 
@@ -35,13 +46,13 @@
 
         $.ajax({
             type: "POST",
-            // You can use the absolute url eg www.site.com/MyControllerName/LiveTagSearch or the relative path live below  
+            // You can use the absolute url eg www.site.com/MyControllerName/LiveTagSearch or the relative path live below
             url: "/Default/LiveTagSearch",
             // Attach the value to a parameter called search
             data: { search: value },
             datatype: "html",
             success: function (data) {
-                // Insert the returned search results html into the result element 
+                // Insert the returned search results html into the result element
                 $('#result').html(data);
             }
         });

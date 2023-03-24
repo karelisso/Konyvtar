@@ -32,6 +32,7 @@ namespace Könyvtár.App_Data
         
         public ActionResult start()
         {
+            if (Session["username"] != null) Log("kijelentkezett");
             Session.Clear();
             return View("emptypage");
         }
@@ -54,6 +55,7 @@ namespace Könyvtár.App_Data
 
            return Session[name]?.ToString();
         }
+
         public ActionResult CreateWriter(string name, string name2, string life, string about)
         {
             Writer wm = new Writer();
@@ -70,6 +72,7 @@ namespace Könyvtár.App_Data
             wm.aboutpath = about;
             db_book.Writer.Add(wm);
             db_book.SaveChanges();
+            Log("hozzáadott egy Írót", wm.Id+"");
             return View("TheMetaViewer");
         }
         public ActionResult CreateCategory(string name)
@@ -79,21 +82,21 @@ namespace Könyvtár.App_Data
             cp.Name = name;
             db_book.Categories.Add(cp);
             db_book.SaveChanges();
+            Log("hozzáadott egy kategoriát", cp.Id+"");
             return View("TheMetaViewer");
         }
-        public ActionResult CreateAuthor(string name ,string life)
-        {
-            Author ath = new Author();
-            ath.Id = db_book.Author.Max(q => q.Id) + 1;
-            ath.name = name;
-            ath.Date = life;
-            db_book.Author.Add(ath);
-            db_book.SaveChanges();
-            return View("TheMetaViewer");
-        }
-
-
-        public ActionResult AddBook(string name, string isbn, string auth,string img,string demo)
+        //public ActionResult CreateAuthor(string name ,string life)
+        //{
+        //    Author ath = new Author();
+        //    ath.Id = db_book.Author.Max(q => q.Id) + 1;
+        //    ath.name = name;
+        //    ath.Date = life;
+        //    db_book.Author.Add(ath);
+        //    db_book.SaveChanges();
+        //    Log("hozzáadott egy kiadót", ath.Id+"");
+        //    return View("TheMetaViewer");
+        //}
+        public ActionResult CreateBook(string name, string isbn, string auth,string img,string demo,string categorie)
         {
             konyv kv = new konyv();
             //long? pictureimage;
@@ -130,9 +133,113 @@ namespace Könyvtár.App_Data
             }
             db_book.konyv.Add(kv);
             db_book.SaveChanges();
-            
+            Log("hozzáadott egy könyvet", kv.Id+"");
             return View("Index");
         }
+        public ActionResult CreateUser(string Uname, string mail, string Upp, string UppR, bool? Adm, string phone)
+        {
+            //if (Upp != UppR)
+            //    return View("Regist");
+
+            User_sus account1 = new User_sus();
+            user account2 = new user();
+            //this should be fine until i find out to use auto increment.
+            //account.id = bullshit.user.Count() + 1;
+            account1.Username = Uname;
+            account2.Username = Uname;
+            account1.Userpassword = Upp;
+            account1.email = mail;
+            account1.phone = phone;
+            if (Adm == null)
+                Adm = false;
+            account2.admin = (bool)Adm ? 2 : 1;
+            account2.special_password = Upp;
+            //try
+            //{
+            db_user.User_sus.Add(account1);
+            db_user.SaveChanges();
+
+            account2.user_id = db_user.User_sus.Where(q => q.Username == account1.Username && q.email == account1.email).FirstOrDefault().Id;
+            db_book.user.Add(account2);
+
+            db_book.SaveChanges();
+
+            //Session["username"] = Uname;
+            //}
+            //catch (Exception)
+            //{
+            //   // return View("Regist");
+            //}
+            Log("Létrehozott egy Dologozót", account2.user_id + "");
+            //Session.Clear();
+            return View("index");
+        }
+        public ActionResult CreateReader(string name, string mail, string Upp, string UppR, string phone, string szid)
+        {
+            if (Upp != UppR)
+                return View("Regist");
+
+            User_sus account1 = new User_sus();
+            user account2 = new user();
+            Reader_Card rc = new Reader_Card();
+            //this should be fine until i find out to use auto increment.
+            //account.id = bullshit.user.Count() + 1;
+            account1.Username = name;
+            account2.Username = name;
+            account1.Userpassword = Upp;
+            account1.email = mail;
+            account1.phone = phone;
+            account2.admin = 0;
+            account2.special_password = Upp;
+            db_user.User_sus.Add(account1);
+            db_user.SaveChanges();
+
+            account2.user_id = db_user.User_sus.Where(q => q.Username == account1.Username && q.email == account1.email).FirstOrDefault().Id;
+            rc.Personel_ID_Card = szid;
+            //todo change every id to int!!!
+            rc.User_ID = account2.user_id;
+            //?why is this even in here?
+            ////rc.Rent_ID_Bundle 
+            db_book.user.Add(account2);
+            db_book.Reader_Card.Add(rc);
+            db_book.SaveChanges();
+
+            //Session["username"] = Uname;
+            //}
+            //catch (Exception)
+            //{
+            //   // return View("Regist");
+            //}
+            Log("Létrehozott egy Tagot", account2.user_id + "");
+            return View("TheMetaViewer");
+        }
+
+        public ActionResult CreateRent(string id,string book_id)
+        {
+            Rent rent = new Rent();
+            rent.Card_ID = int.Parse(id);
+            rent.Book_ID = book_id;
+            rent.Rent_Date = DateTime.Now;
+            rent.Due_Date = DateTime.Now.AddDays(14);
+            db_book.konyv.Where(q => q.Id == int.Parse(book_id)).First().Available_Quantity -= 1;
+            db_book.SaveChanges();
+            Log("Kiadot egy könyvet", id + "");
+            return View("TheMetaViewer");
+        }
+        public ActionResult DelRent(string id)
+        {
+            Rent rent = db_book.Rent.Where(q=>q.Id == int.Parse(id)).First();
+            rent.Return_Date = DateTime.Now;
+            db_book.konyv.Where(q => q.Id == int.Parse(rent.Book_ID)).First().Available_Quantity += 1;
+            db_book.SaveChanges();
+            Log("visszahozott egy könyvet", id + "");
+            return View("TheMetaViewer");
+        }
+
+
+
+
+
         public String Load_Image_Base()
         {
 
@@ -429,7 +536,9 @@ namespace Könyvtár.App_Data
                     if (namesplit[i].Length <= 0) continue; 
                     int tempid = int.Parse(namesplit[i]);
                     konyv torolj = bullshit.konyv.Where(q => q.Id.Equals(tempid)).FirstOrDefault();
+                    Log("Törölt egy könyvet",torolj.Id +"");
                     bullshit.konyv.Remove(torolj);
+                   
                 }
                 bullshit.SaveChanges();
             }
@@ -460,85 +569,7 @@ namespace Könyvtár.App_Data
             System.Diagnostics.Debug.WriteLine(kv[0].ToString());
             Response.Write( kv[0].ToString());
         }
-        public ActionResult CreateUser(string Uname, string mail, string Upp, string UppR, bool? Adm,string phone)
-        {
-            if (Upp != UppR)
-                return View("Regist");
-               
-            User_sus account1 = new User_sus();
-            user account2 = new user();
-            //this should be fine until i find out to use auto increment.
-            //account.id = bullshit.user.Count() + 1;
-            account1.Username = Uname;
-            account2.Username = Uname;
-            account1.Userpassword = Upp;
-            account1.email = mail;
-            account1.phone = phone;
-            if (Adm ==null)
-                Adm = false;
-            account2.admin = (bool)Adm ? 2 : 1;
-            account2.special_password = Upp;
-            //try
-            //{
-                db_user.User_sus.Add(account1);
-                db_user.SaveChanges();
-
-                account2.user_id = db_user.User_sus.Where(q => q.Username == account1.Username && q.email == account1.email).FirstOrDefault().Id;
-                db_book.user.Add(account2);
-               
-                db_book.SaveChanges();
-
-            //Session["username"] = Uname;
-            //}
-            //catch (Exception)
-            //{
-            //   // return View("Regist");
-            //}
-            Session.Clear();
-            return View("LogIn");
-        }
-        public ActionResult CreateReader(string name, string mail, string Upp, string UppR, string phone,string szid)
-        {
-            if (Upp != UppR)
-                return View("Regist");
-
-            User_sus account1 = new User_sus();
-            user account2 = new user();
-            Reader_Card rc = new Reader_Card();
-            //this should be fine until i find out to use auto increment.
-            //account.id = bullshit.user.Count() + 1;
-            account1.Username = name;
-            account2.Username = name;
-            account1.Userpassword = Upp;
-            account1.email = mail;
-            account1.phone = phone;
-            account2.admin = 0;
-            account2.special_password = Upp;
-            db_user.User_sus.Add(account1);
-            db_user.SaveChanges();
-
-            account2.id = db_user.User_sus.Where(q => q.Username == account1.Username && q.email == account1.email).FirstOrDefault().Id;
-            rc.Personel_ID_Card = szid;
-            //todo change every id to int!!!
-            rc.User_ID = account2.user_id;
-            //?why is this even in here?
-            ////rc.Rent_ID_Bundle 
-            db_book.user.Add(account2);
-            db_book.Reader_Card.Add(rc);
-            db_book.SaveChanges();
-
-            //Session["username"] = Uname;
-            //}
-            //catch (Exception)
-            //{
-            //   // return View("Regist");
-            //}
-            return View("TheMetaViewer");
-        }
-
-
-
-        public ActionResult LogInUser(string Uname,string Upp,string RegYet)
+      public ActionResult LogInUser(string Uname,string Upp,string RegYet)
         {
             //if (RegYet != null)
             //    return RegisterUser();
@@ -560,100 +591,61 @@ namespace Könyvtár.App_Data
                             }
                         }
                     }
-                    catch (Exception)
+                    catch (Exception e)
                     {
                     }
                    
                 }
             Session.Clear();
-            return View("/error");
+            return View("error");
         }
-        public ActionResult RegisterUser()
+        public ActionResult RegisterUserPage()
         {
             return View("Regist");
         }
         public ActionResult Secnd()
         {
+            if(Session["username"] != null) Log("kijelentkezett");
             Session.Clear();
             return View("LogIn");
         }
-        // GET: Default/Details/5
-        public ActionResult Details(int id)
+        public void Log(string what)
         {
-            return View();
+            Log data = new Log();
+            data.who = int.Parse(Session["userid"].ToString());
+            data.what = what;
+            data.when = DateTime.Now;
+            data.whom = "--";
+            db_book.Log.Add(data);
+            db_book.SaveChanges();
         }
-
-        // GET: Default/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: Default/Create
-        [HttpPost]
-        public ActionResult Create(FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add insert logic here
-
-                return RedirectToAction("secondary");
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: Default/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
-
-        // POST: Default/Edit/5
-        [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add update logic here
-
-                return RedirectToAction("secondary");
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: Default/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: Default/Delete/5
-        [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add delete logic here
-
-                return RedirectToAction("secondary");
-            }
-            catch
-            {
-                return View();
-            }
-        }
-        public void Log(int id,string what)
+        public void Log(int id, string what)
         {
             Log data = new Log();
             data.who = id;
             data.what = what;
             data.when = DateTime.Now;
+            data.whom = "--";
+            db_book.Log.Add(data);
+            db_book.SaveChanges();
+        }
+        public void Log(int id,string what,string whom)
+        {
+            Log data = new Log();
+            data.who = id;
+            data.what = what;
+            data.when = DateTime.Now;
+            data.whom = whom;
+            db_book.Log.Add(data);
+            db_book.SaveChanges();
+        }
+        public void Log(string what, string whom)
+        {
+            Log data = new Log();
+            data.who = int.Parse(Session["userid"].ToString());
+            data.what = what;
+            data.when = DateTime.Now;
+            data.whom = whom;
             db_book.Log.Add(data);
             db_book.SaveChanges();
         }

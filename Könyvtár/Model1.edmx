@@ -57,10 +57,19 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="who" Type="int" Nullable="false" />
           <Property Name="when" Type="datetime" Nullable="false" />
-          <Property Name="what" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="what_ID" Type="int" />
+          <Property Name="whom" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="what" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="LogDetail">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="text" Type="nvarchar(max)" Nullable="false" />
         </EntityType>
         <EntityType Name="Reader_Card">
           <Key>
@@ -109,8 +118,8 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" Nullable="false" />
-          <Property Name="Book_ID" Type="nchar" MaxLength="10" />
-          <Property Name="Rent_Date" Type="datetime" />
+          <Property Name="Book_ID" Type="nchar" MaxLength="10" Nullable="false" />
+          <Property Name="Rent_Date" Type="datetime" Nullable="false" />
           <Property Name="Due_Date" Type="datetime" />
           <Property Name="Return_Date" Type="datetime" />
           <Property Name="Punishment" Type="money" />
@@ -151,6 +160,7 @@
           <EntitySet Name="InformationBundle" EntityType="Self.InformationBundle" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="konyv" EntityType="Self.konyv" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Log" EntityType="Self.Log" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="LogDetail" EntityType="Self.LogDetail" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Reader_Card" EntityType="Self.Reader_Card" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Relation_AuthorWriterBook" EntityType="Self.Relation_AuthorWriterBook" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Relation_BookCategorie" EntityType="Self.Relation_BookCategorie" Schema="dbo" store:Type="Tables" />
@@ -172,6 +182,7 @@
           <EntitySet Name="InformationBundle" EntityType="book_vs19Model.InformationBundle" />
           <EntitySet Name="konyv" EntityType="book_vs19Model.konyv" />
           <EntitySet Name="Log" EntityType="book_vs19Model.Log" />
+          <EntitySet Name="LogDetail" EntityType="book_vs19Model.LogDetail" />
           <EntitySet Name="Reader_Card" EntityType="book_vs19Model.Reader_Card" />
           <EntitySet Name="Relation_AuthorWriterBook" EntityType="book_vs19Model.Relation_AuthorWriterBook" />
           <EntitySet Name="Relation_BookCategorie" EntityType="book_vs19Model.Relation_BookCategorie" />
@@ -234,10 +245,19 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="who" Type="Int32" Nullable="false" />
           <Property Name="when" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="what" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="what_ID" Type="Int32" />
+          <Property Name="whom" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="what" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="LogDetail">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="text" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="Reader_Card">
           <Key>
@@ -286,8 +306,8 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" />
-          <Property Name="Book_ID" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
-          <Property Name="Rent_Date" Type="DateTime" Precision="3" />
+          <Property Name="Book_ID" Type="String" Nullable="false" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="Rent_Date" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="Due_Date" Type="DateTime" Precision="3" />
           <Property Name="Return_Date" Type="DateTime" Precision="3" />
           <Property Name="Punishment" Type="Decimal" Precision="19" Scale="4" />
@@ -384,8 +404,18 @@
             <EntityTypeMapping TypeName="book_vs19Model.Log">
               <MappingFragment StoreEntitySet="Log">
                 <ScalarProperty Name="what" ColumnName="what" />
+                <ScalarProperty Name="whom" ColumnName="whom" />
+                <ScalarProperty Name="what_ID" ColumnName="what_ID" />
                 <ScalarProperty Name="when" ColumnName="when" />
                 <ScalarProperty Name="who" ColumnName="who" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LogDetail">
+            <EntityTypeMapping TypeName="book_vs19Model.LogDetail">
+              <MappingFragment StoreEntitySet="LogDetail">
+                <ScalarProperty Name="text" ColumnName="text" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

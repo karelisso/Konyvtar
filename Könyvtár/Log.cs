@@ -17,6 +17,8 @@ namespace Könyvtár
         public int Id { get; set; }
         public int who { get; set; }
         public System.DateTime when { get; set; }
+        public Nullable<int> what_ID { get; set; }
+        public string whom { get; set; }
         public string what { get; set; }
     }
 }

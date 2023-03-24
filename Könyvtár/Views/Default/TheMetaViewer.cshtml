@@ -15,7 +15,11 @@
     <div>
 
         @*This is category  *@
-        <h1 class="fixed-bottom bg-black bg-opacity-50 w-100 text-center">Állomány bevitele</h1>
+        <h1 class="fixed-bottom bg-black bg-opacity-50 w-100 row">
+            <p class="col-4">Állomány bevitele</p>
+            <p class="col-4">Állomány modosÍtása</p>
+            <p class="col-4">Állomány törlése</p>
+        </h1>
         <form action="CreateCategory" method="post" class="bg-info bg-opacity-50">
             <h3>Kategoria</h3> <br />
             <label>Megnevezés</label> <input type="text" name="name" value="" required /> <br />

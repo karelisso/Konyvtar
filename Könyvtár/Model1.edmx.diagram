@@ -11,15 +11,16 @@
         <EntityTypeShape EntityType="book_vs19Model.InformationBundle" Width="1.5" PointX="2.75" PointY="3.75" />
         <EntityTypeShape EntityType="book_vs19Model.konyv" Width="1.5" PointX="4.75" PointY="0.75" />
         <EntityTypeShape EntityType="book_vs19Model.Log" Width="1.5" PointX="4.75" PointY="4.75" />
-        <EntityTypeShape EntityType="book_vs19Model.Reader_Card" Width="1.5" PointX="6.75" PointY="0.75" />
-        <EntityTypeShape EntityType="book_vs19Model.Relation_AuthorWriterBook" Width="1.5" PointX="0.75" PointY="6.75" />
-        <EntityTypeShape EntityType="book_vs19Model.Relation_BookCategorie" Width="1.5" PointX="6.75" PointY="3.75" />
-        <EntityTypeShape EntityType="book_vs19Model.Relation_UserBook" Width="1.5" PointX="6.75" PointY="6.75" />
-        <EntityTypeShape EntityType="book_vs19Model.Relation_UserCategorie" Width="1.5" PointX="2.75" PointY="7.75" />
-        <EntityTypeShape EntityType="book_vs19Model.Rent" Width="1.5" PointX="8.75" PointY="0.75" />
-        <EntityTypeShape EntityType="book_vs19Model.staff_role" Width="1.5" PointX="8.75" PointY="4.75" />
-        <EntityTypeShape EntityType="book_vs19Model.user" Width="1.5" PointX="8.75" PointY="7.75" />
-        <EntityTypeShape EntityType="book_vs19Model.Writer" Width="1.5" PointX="4.75" PointY="9.75" />
+        <EntityTypeShape EntityType="book_vs19Model.LogDetail" Width="1.5" PointX="6.75" PointY="0.75" />
+        <EntityTypeShape EntityType="book_vs19Model.Reader_Card" Width="1.5" PointX="0.75" PointY="6.75" />
+        <EntityTypeShape EntityType="book_vs19Model.Relation_AuthorWriterBook" Width="1.5" PointX="6.75" PointY="3.75" />
+        <EntityTypeShape EntityType="book_vs19Model.Relation_BookCategorie" Width="1.5" PointX="6.75" PointY="6.75" />
+        <EntityTypeShape EntityType="book_vs19Model.Relation_UserBook" Width="1.5" PointX="2.75" PointY="7.75" />
+        <EntityTypeShape EntityType="book_vs19Model.Relation_UserCategorie" Width="1.5" PointX="8.75" PointY="0.75" />
+        <EntityTypeShape EntityType="book_vs19Model.Rent" Width="1.5" PointX="8.75" PointY="3.75" />
+        <EntityTypeShape EntityType="book_vs19Model.staff_role" Width="1.5" PointX="8.75" PointY="7.75" />
+        <EntityTypeShape EntityType="book_vs19Model.user" Width="1.5" PointX="4.75" PointY="9.75" />
+        <EntityTypeShape EntityType="book_vs19Model.Writer" Width="1.5" PointX="10.75" PointY="0.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

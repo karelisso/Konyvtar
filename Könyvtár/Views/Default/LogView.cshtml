@@ -13,22 +13,28 @@
     <meta name="viewport" content="width=device-width" />
     <title></title>
 </head>
-<body>
+<body class="container">
     <div>
-        <tbody id="booktable">
-            @foreach (var item in logok)
-            {
-                <tr class="clickable-table">
-                    <td>@item.who</td>
-                </tr>
-                <tr class="clickable-table">
-                    <td>@item.when</td>
-                </tr>
-                <tr class="clickable-table">
-                    <td>@item.what</td>
-                </tr>
-            }
-        </tbody>
+        <table class="table table-bordered text-white">
+            <thead>
+            <td> Tettes</td>
+            <td> Időpont</td>
+            <td> tevékenység</td>
+            <td> Mivel/Kivel</td>
+            </thead>
+            <tbody>
+                @foreach (var item in logok)
+                {
+                    <tr>
+                        <td> @item.who</td>
+                        <td> @item.when</td>
+                        <td> @item.what</td>
+                        <td> @item.whom</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        
     </div>
 </body>
 </html>

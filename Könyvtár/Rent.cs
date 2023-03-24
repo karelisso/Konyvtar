@@ -16,7 +16,7 @@ namespace Könyvtár
     {
         public int Id { get; set; }
         public string Book_ID { get; set; }
-        public Nullable<System.DateTime> Rent_Date { get; set; }
+        public System.DateTime Rent_Date { get; set; }
         public Nullable<System.DateTime> Due_Date { get; set; }
         public Nullable<System.DateTime> Return_Date { get; set; }
         public Nullable<decimal> Punishment { get; set; }

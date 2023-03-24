@@ -300,6 +300,9 @@
     <Compile Include="Log.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="LogDetail.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="Model1.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -383,6 +386,7 @@
     <Content Include="Views\Default\TagAdd.cshtml" />
     <Content Include="Views\Default\emptypage.cshtml" />
     <Content Include="Views\Default\LogView.cshtml" />
+    <Content Include="Views\Default\Reader.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
