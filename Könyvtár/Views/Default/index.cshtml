@@ -4,6 +4,12 @@
 @{
     ActionResult kep;
     Session["cur_book"] = null;
+    konyv[] kv;
+    Reader_Card[] cr;
+    book_vs19Entities1 bullshit = new book_vs19Entities1();
+    kv = bullshit.konyv.ToArray();
+    cr = bullshit.Reader_Card.ToArray();
+
 }
 <!DOCTYPE html>
 
@@ -39,6 +45,47 @@
         <h3>Könyvek keresése @(Session["level"])</h3>
         <p>A szépirodalmi művektől a ponyvaregényekig.</p>
     </div>
+
+
+    <p>Tag felvétele</p>
+    @*this is for rent_cards*@
+    <form action="CreateReader" method="post" class="text-white bg-dark bg-opacity-50">
+        <h3 class="opacity-100">Olvasó</h3>
+        <label>Személyi igazolvány szám</label> <input type="text" name="szid" value="" autocomplete="off" /> <br />
+        <label>Név</label> <input type="text" name="name" value="" autocomplete="off" /> <br />
+        <label>tel</label> <input type="tel" name="phone" value="" autocomplete="off" /> <br />
+        <label>Email cím</label> <input type="email" name="mail" value="" autocomplete="off" /> <br />
+        <div class="col-md-6 mb-4 text-white" ">
+            <label>jelszó</label> <input type="password" name="Upp" required />
+        </div>
+        <div class="col-md-6 mb-4">
+            <div class="form-outline text-white" ">
+                <label>jelszó megerősítése</label> <input type="password" name="UppR" required />
+            </div>
+        </div>
+        <input type="submit" name="no" value="regisztrál" />
+
+    </form>
+
+    @* this is for rents*@
+    <form action="CreateRent" method="post" class="text-white bg-info bg-opacity-50">
+        <h3 class="opacity-100">Kölcsönzés</h3>
+        <label>Név</label>  <select name="id">
+            @foreach (var item in cr)
+            {
+                <option value="@item.User_ID">  @bullshit.user.Where(q => q.id == item.User_ID).FirstOrDefault().Username</option>
+            }
+
+        </select><br />
+        <label>könyv</label>  <select name="book_id">
+            @foreach (var item in kv)
+            {
+                <option value="@item.Id">@item.name @item.Available_Quantity</option>
+            }
+
+        </select><br />
+        <input type="submit" name="no" value="hozzáadás" />
+    </form>
 
     <div class="container mt-3 text-white">
         <p>Könyvek keresése a megadott szempont alapján:</p>
@@ -80,7 +127,7 @@
         });
 
 
-        window.onload = (event) =>{
+        window.onload = (event) => {
             $.ajax({
                 url: "/Default/GetSession",
                 type: "GET",
@@ -100,9 +147,9 @@
                 },
                 error: function () { alert("error name"); }
             });
-            
+
         }
-            
+
 
         function LiveSearch() {
             //Get the input value
@@ -125,17 +172,17 @@
                     error: function () { alert("error"); }
                 });
             }
-           
+
             if (type == "Cím") {
                 $.ajax({
                     type: "POST",
-                    // You can use the absolute url eg www.site.com/MyControllerName/LiveTagSearch or the relative path live below  
+                    // You can use the absolute url eg www.site.com/MyControllerName/LiveTagSearch or the relative path live below
                     url: "/Default/LiveSearchName",
                     // Attach the value to a parameter called search
                     data: { search: value },
                     datatype: "html",
                     success: function (data) {
-                        // Insert the returned search results html into the result element 
+                        // Insert the returned search results html into the result element
                         console.log(data);
                         document.getElementById('booktable').innerHTML = data;
                     }
@@ -144,13 +191,13 @@
             else if (type == "Szerző") {
                 $.ajax({
                     type: "POST",
-                    // You can use the absolute url eg www.site.com/MyControllerName/LiveTagSearch or the relative path live below  
+                    // You can use the absolute url eg www.site.com/MyControllerName/LiveTagSearch or the relative path live below
                     url: "/Default/LiveSearchWriter",
                     // Attach the value to a parameter called search
                     data: { search: value },
                     datatype: "html",
                     success: function (data) {
-                        // Insert the returned search results html into the result element 
+                        // Insert the returned search results html into the result element
 
                         console.log(data);
                         document.getElementById('booktable').innerHTML = data;
@@ -160,13 +207,13 @@
             else if (type == "ISBN/ISSN") {
                 $.ajax({
                     type: "POST",
-                    // You can use the absolute url eg www.site.com/MyControllerName/LiveTagSearch or the relative path live below  
+                    // You can use the absolute url eg www.site.com/MyControllerName/LiveTagSearch or the relative path live below
                     url: "/Default/LiveSearchISBN",
                     // Attach the value to a parameter called search
                     data: { search: value },
                     datatype: "html",
                     success: function (data) {
-                        // Insert the returned search results html into the result element 
+                        // Insert the returned search results html into the result element
                         console.log(data);
                         console.log(data);
                         document.getElementById('booktable').innerHTML = data;
@@ -176,13 +223,13 @@
             else if (type == "kategoria") {
                 $.ajax({
                     type: "POST",
-                    // You can use the absolute url eg www.site.com/MyControllerName/LiveTagSearch or the relative path live below  
+                    // You can use the absolute url eg www.site.com/MyControllerName/LiveTagSearch or the relative path live below
                     url: "/Default/LiveSearchISBN",
                     // Attach the value to a parameter called search
                     data: { search: value },
                     datatype: "html",
                     success: function (data) {
-                        // Insert the returned search results html into the result element 
+                        // Insert the returned search results html into the result element
                         console.log(data);
                         console.log(data);
                         document.getElementById('booktable').innerHTML = data;
@@ -192,13 +239,13 @@
             else if (type == "Olvasók") {
                 $.ajax({
                     type: "POST",
-                    // You can use the absolute url eg www.site.com/MyControllerName/LiveTagSearch or the relative path live below  
+                    // You can use the absolute url eg www.site.com/MyControllerName/LiveTagSearch or the relative path live below
                     url: "/Default/LiveSearchISBN",
                     // Attach the value to a parameter called search
                     data: { search: value },
                     datatype: "html",
                     success: function (data) {
-                        // Insert the returned search results html into the result element 
+                        // Insert the returned search results html into the result element
                         console.log(data);
                         console.log(data);
                         document.getElementById('booktable').innerHTML = data;
@@ -208,13 +255,13 @@
             else if (type == "nálad") {
                 $.ajax({
                     type: "POST",
-                    // You can use the absolute url eg www.site.com/MyControllerName/LiveTagSearch or the relative path live below  
+                    // You can use the absolute url eg www.site.com/MyControllerName/LiveTagSearch or the relative path live below
                     url: "/Default/LiveSearchISBN",
                     // Attach the value to a parameter called search
                     data: '',
                     datatype: "html",
                     success: function (data) {
-                        // Insert the returned search results html into the result element 
+                        // Insert the returned search results html into the result element
                         console.log(data);
                         console.log(data);
                         document.getElementById('booktable').innerHTML = data;
@@ -224,13 +271,13 @@
             else {
                 $.ajax({
                     type: "POST",
-                    // You can use the absolute url eg www.site.com/MyControllerName/LiveTagSearch or the relative path live below  
+                    // You can use the absolute url eg www.site.com/MyControllerName/LiveTagSearch or the relative path live below
                     url: "/Default/LiveSearchISBN",
                     // Attach the value to a parameter called search
                     data: { search: "" },
                     datatype: "html",
                     success: function (data) {
-                        // Insert the returned search results html into the result element 
+                        // Insert the returned search results html into the result element
                         document.getElementById('booktable').innerHTML = data;
                     },
                 });

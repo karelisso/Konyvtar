@@ -50,8 +50,17 @@
           <Property Name="Descrpition" Type="nchar" MaxLength="255" />
           <Property Name="imageID" Type="bigint" />
           <Property Name="demo" Type="text" />
-          <Property Name="Quantity" Type="int" Nullable="false" />
           <Property Name="Available_Quantity" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="KonyvPeldany">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="book_id" Type="nchar" MaxLength="10" Nullable="false" />
+          <Property Name="AddedTime" Type="date" Nullable="false" />
+          <Property Name="RemovedTime" Type="date" />
+          <Property Name="quantity" Type="nchar" MaxLength="10" />
         </EntityType>
         <EntityType Name="Log">
           <Key>
@@ -159,6 +168,7 @@
           <EntitySet Name="Images" EntityType="Self.Images" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="InformationBundle" EntityType="Self.InformationBundle" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="konyv" EntityType="Self.konyv" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="KonyvPeldany" EntityType="Self.KonyvPeldany" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Log" EntityType="Self.Log" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="LogDetail" EntityType="Self.LogDetail" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Reader_Card" EntityType="Self.Reader_Card" Schema="dbo" store:Type="Tables" />
@@ -181,6 +191,7 @@
           <EntitySet Name="Images" EntityType="book_vs19Model.Images" />
           <EntitySet Name="InformationBundle" EntityType="book_vs19Model.InformationBundle" />
           <EntitySet Name="konyv" EntityType="book_vs19Model.konyv" />
+          <EntitySet Name="KonyvPeldany" EntityType="book_vs19Model.KonyvPeldany" />
           <EntitySet Name="Log" EntityType="book_vs19Model.Log" />
           <EntitySet Name="LogDetail" EntityType="book_vs19Model.LogDetail" />
           <EntitySet Name="Reader_Card" EntityType="book_vs19Model.Reader_Card" />
@@ -238,8 +249,17 @@
           <Property Name="Descrpition" Type="String" MaxLength="255" FixedLength="true" Unicode="true" />
           <Property Name="imageID" Type="Int64" />
           <Property Name="demo" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="Quantity" Type="Int32" Nullable="false" />
           <Property Name="Available_Quantity" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="KonyvPeldany">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="book_id" Type="String" Nullable="false" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="AddedTime" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="RemovedTime" Type="DateTime" Precision="0" />
+          <Property Name="quantity" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
         </EntityType>
         <EntityType Name="Log">
           <Key>
@@ -387,7 +407,6 @@
             <EntityTypeMapping TypeName="book_vs19Model.konyv">
               <MappingFragment StoreEntitySet="konyv">
                 <ScalarProperty Name="Available_Quantity" ColumnName="Available_Quantity" />
-                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
                 <ScalarProperty Name="demo" ColumnName="demo" />
                 <ScalarProperty Name="imageID" ColumnName="imageID" />
                 <ScalarProperty Name="Descrpition" ColumnName="Descrpition" />
@@ -396,6 +415,17 @@
                 <ScalarProperty Name="authorId" ColumnName="authorId" />
                 <ScalarProperty Name="writerID" ColumnName="writerID" />
                 <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="KonyvPeldany">
+            <EntityTypeMapping TypeName="book_vs19Model.KonyvPeldany">
+              <MappingFragment StoreEntitySet="KonyvPeldany">
+                <ScalarProperty Name="quantity" ColumnName="quantity" />
+                <ScalarProperty Name="RemovedTime" ColumnName="RemovedTime" />
+                <ScalarProperty Name="AddedTime" ColumnName="AddedTime" />
+                <ScalarProperty Name="book_id" ColumnName="book_id" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

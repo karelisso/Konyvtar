@@ -30,6 +30,7 @@ namespace Könyvtár
         public virtual DbSet<Images> Images { get; set; }
         public virtual DbSet<InformationBundle> InformationBundle { get; set; }
         public virtual DbSet<konyv> konyv { get; set; }
+        public virtual DbSet<KonyvPeldany> KonyvPeldany { get; set; }
         public virtual DbSet<Log> Log { get; set; }
         public virtual DbSet<LogDetail> LogDetail { get; set; }
         public virtual DbSet<Reader_Card> Reader_Card { get; set; }

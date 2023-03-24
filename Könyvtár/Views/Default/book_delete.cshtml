@@ -1,0 +1,50 @@
+﻿@{
+    konyv[] km;
+    Writer[] wrt;
+    Categories[] crt;
+    using (book_vs19Entities1 bullshit = new book_vs19Entities1())
+    {
+        wrt = bullshit.Writer.ToArray();
+        crt = bullshit.Categories.ToArray();
+        km = bullshit.konyv.ToArray();
+    }
+}
+<form action="delBook" method="post" enctype="multipart/form-data" class="text-white">
+
+    @*<label>Könyv</label>
+        <select name="name">
+            @foreach (var item in km)
+            {
+                <option value="@item.Id">@item.name</option>
+            }
+
+        </select>
+        <input id="livesearchtags" name="livesearchtags" placeholder="Search" autocomplete="off" hidden />*@
+    @RenderPage("book_render.cshtml")
+    <div id="result" class="tag-results"> </div>
+    <input type="submit" name="btnSubmit" value="Törlés" />
+</form>
+<script>
+    document.getElementById('livesearchtags').addEventListener('keyup', function (e) {
+        //Run LiveSearch on ever key up
+        //LiveSearch()
+    });
+
+    function LiveSearch() {
+        //Get the input value
+        let value = document.getElementById('livesearchtags').value
+
+        $.ajax({
+            type: "POST",
+            // You can use the absolute url eg www.site.com/MyControllerName/LiveTagSearch or the relative path live below
+            url: "/Default/LiveTagSearch",
+            // Attach the value to a parameter called search
+            data: { search: value },
+            datatype: "html",
+            success: function (data) {
+                // Insert the returned search results html into the result element
+                $('#result').html(data);
+            }
+        });
+    }
+</script>

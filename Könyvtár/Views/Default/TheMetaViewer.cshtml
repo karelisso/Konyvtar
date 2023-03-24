@@ -18,18 +18,74 @@
 </head>
 <body class="container-fluid bg-danger text-white">
     <div>
+         
+            <div >
+                @*This is category  *@
+                <div id="Addiptive">
+                    <h1 class="fixed-bottom bg-black bg-opacity-50 w-100 row">
+                        <button class="col-6 btn btn-success" onclick="enableAdd()">Állomány növekedés</button>
+                        @* <button class="col-4">Állomány modosÍtása</button> *@
+                        <button class="col-6 btn btn-dark" " onclick="enableDell()">Állomány törlése</button>
+                    </h1>
+                    <h1>
+                        Állomány növekedés
+                    </h1>
+                    <div class="bg-muted text-white bg-success bg-opacity-50">
+                        <h3 class="opacity-100">Könyv</h3>
+                        @RenderPage("book_add.cshtml")
+                    </div>
 
-        @*This is category  *@
-        <h1 class="fixed-bottom bg-black bg-opacity-50 w-100 row">
-            <p class="col-4">Állomány bevitele</p>
-            <p class="col-4">Állomány modosÍtása</p>
-            <p class="col-4">Állomány törlése</p>
-        </h1>
-        <form action="CreateCategory" method="post" class="bg-info bg-opacity-50">
-            <h3>Kategoria</h3> <br />
-            <label>Megnevezés</label> <input type="text" name="name" value="" required /> <br />
-            <input type="submit" name="no" value="hozzáadás" />
-        </form>
+                    <form action="CreateWriter" method="post" class="bg-warning bg-opacity-50">
+                        <h3 class="opacity-100">Író</h3>
+                        <label>Szerző</label> <input type="text" name="name" value="" autocomplete="off" /> <br />
+                        <label>Születési név(hatudjuk)</label> <input type="text" name="name2" value="" autocomplete="off" /> <br />
+                        <label>Élt(évszám)</label> <input type="text" name="life" autocomplete="off" value="" placeholder="1000-2000" /> <br />
+                        <label>Egyéb</label> <input type="text" name="about" value="" autocomplete="off" /> <br />
+                        <input type="submit" name="no" value="hozzáadás" />
+                    </form>
+
+                    <form action="CreateCategory" method="post" class="bg-info bg-opacity-50">
+                        <h3>Kategoria</h3> <br />
+                        <label>Megnevezés</label> <input type="text" name="name" value="" required /> <br />
+                        <input type="submit" name="no" value="hozzáadás" />
+                    </form>
+                </div>
+            </div>
+            
+            <div id="Dell">
+                @*This is category  *@
+                <h1 class="fixed-bottom bg-black bg-opacity-50 w-100 row">
+                    <button class="col-6 btn btn-dark" onclick="enableAdd()">Állomány növekedés</button>
+                    @* <button class="col-4">Állomány modosÍtása</button> *@
+                    <button class="col-6 btn btn-success" " onclick="enableDell()">Állomány törlése</button>
+                </h1>
+                <h1>
+                    Állomány kivétele
+                </h1>
+
+                <div class="bg-muted text-white bg-success bg-opacity-50">
+                    <h3 class="opacity-100">Könyv</h3>
+                    @RenderPage("book_delete.cshtml")
+                </div>
+
+                <form action="delWriter" method="post" class="bg-warning bg-opacity-50">
+                    <h3 class="opacity-100">Író</h3>
+                    <label>íroi Név</label> <input type="text" name="name" value="" autocomplete="off" /> <br />
+                    <label>Születési név(hatudjuk)</label> <input type="text" name="name2" value="" autocomplete="off" /> <br />
+                    <label>Élt(évszám)</label> <input type="text" name="life" autocomplete="off" value="" placeholder="1000-2000" /> <br />
+                    <label>Egyéb</label> <input type="text" name="about" value="" autocomplete="off" /> <br />
+                    <input type="submit" name="no" value="hozzáadás" />
+                </form>
+
+                <form action="delCategory" method="post" class="bg-info bg-opacity-50">
+                    <h3>Kategoria</h3> <br />
+                    <label>Megnevezés</label> <input type="text" name="name" value="" required /> <br />
+                    <input type="submit" name="no" value="hozzáadás" />
+                </form>
+            </div>
+
+
+
         @* This is author  *@
         @*<form action="CreateAuthor" method="post" class="bg-success bg-opacity-50">
             <h3>Kiadó</h3>
@@ -40,56 +96,24 @@
         <br />*@
 
         @*This is writer  *@
-        <form action="CreateWriter" method="post" class="bg-warning bg-opacity-50">
-            <h3 class="opacity-100">Író</h3>
-            <label>íroi Név</label> <input type="text" name="name" value="" autocomplete="off" /> <br />
-            <label>Születési név(hatudjuk)</label> <input type="text" name="name2" value="" autocomplete="off" /> <br />
-            <label>Élt(évszám)</label> <input type="text" name="life" autocomplete="off" value="" placeholder="1000-2000" /> <br />
-            <label>Egyéb</label> <input type="text" name="about" value="" autocomplete="off" /> <br />
-            <input type="submit" name="no" value="hozzáadás" />
-        </form>
 
-        <div class="bg-muted text-white bg-success bg-opacity-50">
-            <h3 class="opacity-100">Könyv</h3>
-            @RenderPage("book_add.cshtml")
-        </div>
+    <script>
+        $(window).on('load', function () {
+            $("#Dell").hide();
+            $("#Addiptive").show();
+        })       
+        function enableAdd() {
+            $("#Dell").hide();
+            $("#Addiptive").show();
+        }
+        function enableDell() {
+            $("#Dell").show();
+            $("#Addiptive").hide();
+        }
+    </script>
 
-            @*this is for rent_cards*@
-    <form action="CreateReader" method="post" class="text-white bg-dark bg-opacity-50">
-        <h3 class="opacity-100">Olvasó</h3>
-        <label>Személyi igazolvány szám</label> <input type="text" name="szid" value="" autocomplete="off" /> <br />
-        <label>Név</label> <input type="text" name="name" value="" autocomplete="off" /> <br />
-        <label>tel</label> <input type="tel" name="phone" value="" autocomplete="off" /> <br />
-        <label>Email cím</label> <input type="email" name="mail" value="" autocomplete="off" /> <br />
-        <div class="col-md-6 mb-4 text-white" ">
-            <label>jelszó</label> <input type="password" name="Upp" required />
-        </div>
-        <div class="col-md-6 mb-4">
-            <div class="form-outline text-white" ">
-                <label>jelszó megerősítése</label> <input type="password" name="UppR" required />
-            </div>
-        </div>s
-        <input type="submit" name="no" value="hozzáadás" />
-    </form>
-            @* this is for rents*@
-    <form action="CreateRent" method="post" class="text-white bg-info bg-opacity-50">
-        <h3 class="opacity-100">Kölcsönzés</h3>
-        <label>Név</label>  <select name="id">
-            @foreach (var item in cr)
-            {
-                <option value="@item.User_ID">  @bullshit.user.Where(q=>q.id == item.User_ID).FirstOrDefault().Username</option>
-            }
 
-        </select><br />
-        <label>könyv</label>  <select name="book_id">
-            @foreach (var item in kv)
-            {
-                <option value="@item.Id">@item.name @item.Available_Quantity</option>
-            }
 
-        </select><br />
-        <input type="submit" name="no" value="hozzáadás" />
-    </form>
     </div>
     <a href="/Default/Index"><button class="btn btn-dark btn-block btn-lg"> vissza a föoldara</button></a>
 </body>

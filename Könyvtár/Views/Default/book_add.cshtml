@@ -9,20 +9,7 @@
     }
 }
 <form action="CreateBook" method="post" enctype="multipart/form-data" class="text-white">
-    <label>Cím</label>  <input type="type" name="name" value="" required autocomplete="off" /> <br />
-    <label>ISBNcode</label><input type="type" name="isbn" value="" required autocomplete="off" /> <br />
-    @*<label>AUTH int only!!!!</label><input type="number" name="auth" value="0" required/> <br />*@
-    <label>Boritó kép</label><input type="file" accept="image/*" name="img" required /> <br /> <!-- all image types -->
-    <label>Összefoglaló</label><input type="text" name="demo" autocomplete="off" /> <br />
-    <label>Kategoria</label>
-    <select name="categorie">
-        @foreach (var item in crt)
-        {
-            <option value="@item.Id">@item.Name</option>
-        }
-
-    </select><br>
-    <label>Író</label>
+    <label>Szerző</label>
     <select name="auth">
         @foreach (var item in wrt)
         {
@@ -30,8 +17,27 @@
         }
 
     </select>
+    <label>Cím</label>  <input type="type" name="name" value="" required autocomplete="off" /> <br />
+    <label>ISBNcode</label><input type="type" name="isbn" value="" required autocomplete="off" /> <br />
+    <label>Beszerzés dátuma</label>  <input type="type" name="date" value="" required autocomplete="off" /> <br />
+    <label>Darabszám</label>  <input type="type" name="quantity" value="" required autocomplete="off" /> <br />
+    @*<label>AUTH int only!!!!</label><input type="number" name="auth" value="0" required/> <br />*@
+    <!--<label>Boritó kép</label><input type="file" accept="image/*" name="img" required /> <br />--> <!-- all image types -->
+    <!--<label>Összefoglaló</label><input type="text" name="demo" autocomplete="off" /> <br />
+    <label>Kategoria</label>
+
+    <select name="categorie">
+        @foreach (var item in crt)
+        {
+            <option value="@item.Id">@item.Name</option>
+        }
+
+    </select><br>
+
     <input id="livesearchtags" name="livesearchtags" placeholder="Search" autocomplete="off" hidden />
-    <div id="result" class="tag-results">
+    <div id="result" class="tag-results">-->
+    
+
         <input type="submit" name="btnSubmit" value="hozzáadás" />
 </form>
 <script>

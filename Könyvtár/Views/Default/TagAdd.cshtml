@@ -13,13 +13,23 @@
     <div>
         <div class="bg-info container">
             <p>Tag felvétele</p>
-            <form action="CreateUser" method="post">
-                <label>Felhasználónév</label> <input type="text" name="Uname" required />            <br />
-                <label>E-mail cím</label> <input type="email" name="mail" required />               <br />
-                <label>jelszó</label> <input type="password" name="Upp" required />           <br />
-                <label>jelszó megerősítése</label> <input type="password" name="UppR" required />    <br />
-                @*<label>Admin</label> <input type="checkbox" name="Adm" />    <br />*@
-                <input type="submit" value="Megerősítés" class="submit" />
+            @*this is for rent_cards*@
+            <form action="CreateReader" method="post" class="text-white bg-dark bg-opacity-50">
+                <h3 class="opacity-100">Olvasó</h3>
+                <label>Személyi igazolvány szám</label> <input type="text" name="szid" value="" autocomplete="off" /> <br />
+                <label>Név</label> <input type="text" name="name" value="" autocomplete="off" /> <br />
+                <label>tel</label> <input type="tel" name="phone" value="" autocomplete="off" /> <br />
+                <label>Email cím</label> <input type="email" name="mail" value="" autocomplete="off" /> <br />
+                <div class="col-md-6 mb-4 text-white" ">
+                    <label>jelszó</label> <input type="password" name="Upp" required />
+                </div>
+                <div class="col-md-6 mb-4">
+                    <div class="form-outline text-white" ">
+                        <label>jelszó megerősítése</label> <input type="password" name="UppR" required />
+                    </div>
+                </div>
+                <input type="submit" name="no" value="regisztrál" />
+
             </form>
 
             <a href="Index">mégse</a>
