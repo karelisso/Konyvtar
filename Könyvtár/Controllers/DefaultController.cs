@@ -34,6 +34,11 @@ namespace Könyvtár.App_Data
             return View("main_page");
         }
         
+        public ActionResult ReaderCard()
+        {
+            return View("reader_card");
+        }
+
         public ActionResult start()
         {
             if (Session["username"] != null) Log("kijelentkezett");

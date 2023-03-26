@@ -1,12 +1,18 @@
 ﻿@{
     //Layout = null;
+    book_vs19Entities1 bullshit = new book_vs19Entities1();
+
+    konyv[] kv;
+    kv = bullshit.konyv.ToArray();
+    Reader_Card[] cr = bullshit.Reader_Card.ToArray();
     Reader_Card rc;
-    Rent[] rent;
+    List<Rent> rent = new List<Rent>();
     int puinishment = 0;
-    using (book_vs19Entities1 bullshit = new book_vs19Entities1())
+    int sessionuid =int.Parse(  Session["userid"].ToString());
+    rc = bullshit.Reader_Card.Where(q => q.User_ID ==sessionuid).FirstOrDefault();
+    if (rc != null)
     {
-        rc = bullshit.Reader_Card.Where(q => q.User_ID.Equals(Session["userid"])).First();
-        rent = bullshit.Rent.Where(q=>q.Card_ID.Equals(rc.Id)).ToArray();
+        rent = bullshit.Rent.Where(q => q.Card_ID.Equals(rc.Id)).ToList();
     }
 }
 
@@ -19,6 +25,47 @@
 </head>
 <body>
     <div>
+
+        <p>Tag felvétele</p>
+        @*this is for rent_cards*@
+        <form action="CreateReader" method="post" class="text-white bg-dark bg-opacity-50">
+            <h3 class="opacity-100">Olvasó</h3>
+            <label>Személyi igazolvány szám</label> <input type="text" name="szid" value="" autocomplete="off" /> <br />
+            <label>Név</label> <input type="text" name="name" value="" autocomplete="off" /> <br />
+            <label>tel</label> <input type="tel" name="phone" value="" autocomplete="off" /> <br />
+            <label>Email cím</label> <input type="email" name="mail" value="" autocomplete="off" /> <br />
+            <div class="col-md-6 mb-4 text-white" ">
+                <label>jelszó</label> <input type="password" name="Upp" required />
+            </div>
+            <div class="col-md-6 mb-4">
+                <div class="form-outline text-white" ">
+                    <label>jelszó megerősítése</label> <input type="password" name="UppR" required />
+                </div>
+            </div>
+            <input type="submit" name="no" value="regisztrál" />
+
+        </form>
+
+        @* this is for rents*@
+        <form action="CreateRent" method="post" class="text-white bg-info bg-opacity-50">
+            <h3 class="opacity-100">Kölcsönzés</h3>
+            <label>Név</label>  <select name="id">
+                @foreach (var item in cr)
+                {
+                    <option value="@item.User_ID">  @bullshit.user.Where(q => q.id == item.User_ID).FirstOrDefault().Username</option>
+                }
+
+            </select><br />
+            <label>könyv</label>  <select name="book_id">
+                @foreach (var item in kv)
+                {
+                    <option value="@item.Id">@item.name @item.Available_Quantity</option>
+                }
+
+            </select><br />
+            <input type="submit" name="no" value="hozzáadás" />
+        </form>
+
         <table>
             <tr>
                 <td>Név:</td>
@@ -27,6 +74,10 @@
             <tr>
                 <td>Kölcsönzések:</td>
             </tr>
+            @if (rc == null)
+            {
+                <tr> jelenleg nincs kikölcsönzött könyve </tr>
+            }
             @foreach (var item in rent)
             {
                 <tr>
@@ -60,11 +111,11 @@
                     }
                 </tr>
             }
-        <tr>
-            <td>Teljes Bünti</td>
-            <td>@puinishment </td>
-        </tr>
-            
+            <tr>
+                <td>Teljes Bünti</td>
+                <td>@puinishment </td>
+            </tr>
+
         </table>
     </div>
 </body>

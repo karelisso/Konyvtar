@@ -60,7 +60,7 @@
           <Property Name="book_id" Type="nchar" MaxLength="10" Nullable="false" />
           <Property Name="AddedTime" Type="date" Nullable="false" />
           <Property Name="RemovedTime" Type="date" />
-          <Property Name="quantity" Type="nchar" MaxLength="10" />
+          <Property Name="PeldanyId" Type="bigint" Nullable="false" />
         </EntityType>
         <EntityType Name="Log">
           <Key>
@@ -259,7 +259,7 @@
           <Property Name="book_id" Type="String" Nullable="false" MaxLength="10" FixedLength="true" Unicode="true" />
           <Property Name="AddedTime" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="RemovedTime" Type="DateTime" Precision="0" />
-          <Property Name="quantity" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="PeldanyId" Type="Int64" Nullable="false" />
         </EntityType>
         <EntityType Name="Log">
           <Key>
@@ -422,7 +422,7 @@
           <EntitySetMapping Name="KonyvPeldany">
             <EntityTypeMapping TypeName="book_vs19Model.KonyvPeldany">
               <MappingFragment StoreEntitySet="KonyvPeldany">
-                <ScalarProperty Name="quantity" ColumnName="quantity" />
+                <ScalarProperty Name="PeldanyId" ColumnName="PeldanyId" />
                 <ScalarProperty Name="RemovedTime" ColumnName="RemovedTime" />
                 <ScalarProperty Name="AddedTime" ColumnName="AddedTime" />
                 <ScalarProperty Name="book_id" ColumnName="book_id" />
