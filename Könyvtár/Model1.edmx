@@ -56,7 +56,7 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="book_id" Type="nchar" MaxLength="10" Nullable="false" />
           <Property Name="AddedTime" Type="date" Nullable="false" />
           <Property Name="RemovedTime" Type="date" />
@@ -255,7 +255,7 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="book_id" Type="String" Nullable="false" MaxLength="10" FixedLength="true" Unicode="true" />
           <Property Name="AddedTime" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="RemovedTime" Type="DateTime" Precision="0" />

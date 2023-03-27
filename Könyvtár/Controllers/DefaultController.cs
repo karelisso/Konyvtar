@@ -105,9 +105,12 @@ namespace Könyvtár.App_Data
         //    Log("hozzáadott egy kiadót", ath.Id+"");
         //    return View("TheMetaViewer");
         //}
-        public ActionResult CreateBook(string name, string isbn, string auth,string img,string demo,string categorie)
+        public ActionResult CreateBook(string name, string isbn, string auth,string img,string demo,string categori, int quantity,string date)
         {
             konyv kv = new konyv();
+
+            DateTime addedtime;
+            if (DateTime.TryParse(date, out addedtime)) addedtime = DateTime.Now;
             //long? pictureimage;
             if(Request.Files.Count > 0)
             {
@@ -140,6 +143,17 @@ namespace Könyvtár.App_Data
 
                 kv.Id = 0;
             }
+            KonyvPeldany[] kvp = new KonyvPeldany[quantity];
+            int startindex = db_book.KonyvPeldany.Where(q=>q.book_id == kv.ISBN).Count();
+            for (int i = 0; i < kvp.Length; i++)
+            {
+                kvp[i] = new KonyvPeldany();
+                kvp[i].AddedTime = addedtime;
+                kvp[i].book_id = kv.ISBN;
+                kvp[i].PeldanyId = startindex;
+                startindex++;
+            }
+            db_book.KonyvPeldany.AddRange(kvp);
             db_book.konyv.Add(kv);
             db_book.SaveChanges();
             Log("hozzáadott egy könyvet", kv.Id+"");
