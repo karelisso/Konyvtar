@@ -18,6 +18,6 @@ namespace Könyvtár
         public string book_id { get; set; }
         public System.DateTime AddedTime { get; set; }
         public Nullable<System.DateTime> RemovedTime { get; set; }
-        public long PeldanyId { get; set; }
+        public int PeldanyId { get; set; }
     }
 }
