@@ -11,7 +11,7 @@
         km = bullshit.konyv.ToArray();
     }
 }
-<form action="Delbooks" method="post" enctype="multipart/form-data" class="text-white">
+<form action="Delbooks" method="post" enctype="multipart/form-data" class="text-white" onsubmit="return confirm('Biztos hogy Törölni szeretnéd ezt a könyvet az állományból');">
 
     @*<label>Könyv</label>
         <select name="name">
@@ -24,7 +24,7 @@
         <input id="livesearchtags" name="livesearchtags" placeholder="Search" autocomplete="off" hidden />*@
     @*@RenderPage("book_render.cshtml")*@
     <div class="autocomplete text-dark ">
-        <input type="type" name="name" value="" id="konv" required placeholder="Country" />
+        <input type="type" name="name" value="" id="konv" required placeholder="Country" autocomplete="nope"/>
     </div>
     <div id="result" class="tag-results"> </div>
     <input type="submit" name="btnSubmit" value="Törlés" />
