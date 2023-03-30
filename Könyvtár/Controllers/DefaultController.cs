@@ -211,7 +211,7 @@ namespace Könyvtár.App_Data
             //Session.Clear();
             return View("index");
         }
-        public ActionResult CreateReader(string name, string mail, string Upp, string UppR, string phone, string szid)
+        public ActionResult CreateReader(string name,string name2, string mail, string Upp, string UppR, string phone, string szid,string home,string birthday,string birthpalace)
         {
             if (Upp != UppR)
                 return View("Regist");
@@ -223,7 +223,7 @@ namespace Könyvtár.App_Data
             //account.id = bullshit.user.Count() + 1;
             account1.Username = name;
             account2.Username = name;
-            account1.Userpassword = Upp;
+            account1.Userpassword =Upp;
             account1.email = mail;
             account1.phone = phone;
             account2.admin = 0;
@@ -233,6 +233,11 @@ namespace Könyvtár.App_Data
 
             account2.user_id = db_user.User_sus.Where(q => q.Username == account1.Username && q.email == account1.email).FirstOrDefault().Id;
             rc.Personel_ID_Card = szid;
+            rc.home = home;
+            DateTime addedtime;
+            if (DateTime.TryParse(birthday, out addedtime)) addedtime = DateTime.Now;
+            rc.Birthday = addedtime;
+            rc.Birtpalace = birthpalace;
             //todo change every id to int!!!
             rc.User_ID = account2.user_id;
             //?why is this even in here?
@@ -295,14 +300,12 @@ namespace Könyvtár.App_Data
         //}
         public ActionResult Delbooks(string name)
         {
-
-            using (book_vs19Entities1 bullshit = new book_vs19Entities1())
-            {
                 string namesplit = name.Split(';')[0];
                 int wwwm = int.Parse(name.Split(';')[1]);
-                KonyvPeldany kmp = db_book.KonyvPeldany.Where(q => q.book_id == namesplit).Where(q => q.PeldanyId == wwwm).First();
+               /* KonyvPeldany kmp =*/ db_book.KonyvPeldany.Where(q => q.book_id == namesplit).Where(q => q.PeldanyId == wwwm).First().RemovedTime = DateTime.Now;
 
-                kmp.RemovedTime= DateTime.Now;
+                //kmp.RemovedTime= DateTime.Now;
+                //db_book.KonyvPeldany.Where(q => q.book_id == namesplit).Where(q => q.PeldanyId == wwwm).First() = kmp;
                 //for (int i = 0; i < namesplit.Length; i++)
                 //{
                 //    if (namesplit[i].Length <= 0) continue;
@@ -312,8 +315,8 @@ namespace Könyvtár.App_Data
                 //    bullshit.konyv.Remove(torolj);
 
                 //}
-                bullshit.SaveChanges();
-            }
+                db_book.SaveChanges();
+
             return View("index");
         }
         //public ActionResult DelUser(string Uname, string mail, string Upp, string UppR, bool? Adm, string phone)
@@ -459,7 +462,13 @@ namespace Könyvtár.App_Data
 
         public string RenderBook(konyv item)
         {
-            return $" <tr  onclick=\"tbclick(this)\" ondblclick=\"tbdbclick(this)\"> <td>{item.Id} </td>\r\n                    <td>{item.ISBN}</td>\r\n                    <td> {db_book.Writer.Where(q => q.Id == item.authorId).FirstOrDefault().writer_name} </td>\r\n                    <td>{item.name}</td>\r\n                          <td>{db_book.Categories.Where(q => q.Id == item.Categories).FirstOrDefault().Name}</td>\r\n                    {"<td>" + db_book.KonyvPeldany.Count(q => q.book_id == item.ISBN) + "</td>"}    \r\n                </tr> ";
+            return $" <tr  onclick=\"tbclick(this)\" ondblclick=\"tbdbclick(this)\"> <td>{item.Id} </td>\r\n                    <td>{item.ISBN}</td>\r\n                    <td> {db_book.Writer.Where(q => q.Id == item.authorId).FirstOrDefault().writer_name} </td>\r\n                    <td>{item.name}</td>\r\n                          <td>{db_book.Categories.Where(q => q.Id == item.Categories).FirstOrDefault().Name}</td>\r\n                    {"<td>" + db_book.KonyvPeldany.Where(q => q.book_id == item.ISBN).Count(q => !q.RemovedTime.HasValue) + "</td>"}    \r\n                </tr> ";
+        }
+        public string RenderBookItem(string isbn)
+        {
+            string issbn = isbn.Split(';')[0];
+            konyv item = db_book.konyv.First(q=>q.ISBN == issbn);
+            return $" <tr  onclick=\"tbclick(this)\" ondblclick=\"tbdbclick(this)\"> <td>{item.Id} </td>\r\n                    <td>{item.ISBN}</td>\r\n                    <td> {db_book.Writer.Where(q => q.Id == item.authorId).FirstOrDefault().writer_name} </td>\r\n                    <td>{item.name}</td>\r\n                          <td>{db_book.Categories.Where(q => q.Id == item.Categories).FirstOrDefault().Name}</td>\r\n                    {"<td>" + db_book.KonyvPeldany.Where(q => q.book_id == item.ISBN).Count(q => !q.RemovedTime.HasValue) + "</td>"}    \r\n                </tr> ";
 
         }
         public String LiveSearchWriter(string search)
@@ -499,7 +508,7 @@ namespace Könyvtár.App_Data
                         }
                     }
                 }
-              
+                if (html_code.Length < 3) { html_code = "A keresett könyv nincs meg nálunk"; }
                 return html_code;
             }
             foreach (var item in db_book.Writer)
@@ -647,6 +656,7 @@ namespace Könyvtár.App_Data
             //        }
             //    }
             //}
+            if (html_code.Length < 3) { html_code = "A keresett könyv nincs meg nálunk"; }
             return html_code;
         }
 
@@ -669,6 +679,7 @@ namespace Könyvtár.App_Data
                     html_code += RenderBook(item);
                 }
             }
+            if (html_code.Length < 3) { html_code = "A keresett könyv nincs meg nálunk"; }
             return html_code;
         }
 
@@ -676,12 +687,14 @@ namespace Könyvtár.App_Data
         {
             string html_code = "";
             string compare = "";
-                foreach (var item in db_book.konyv)
+            //todo create pagenation 25
+                 foreach (var item in db_book.konyv)
                 {
                 compare = item.ISBN.ToString();
                 //html_code += $" <tr  onclick=\"tbclick(this)\" ondblclick=\"tbdbclick(this)\"> <td>{item.Id} </td>\r\n                    <td>{item.ISBN}</td>\r\n                    <td> {db_book.Writer.Where(q => q.Id == item.authorId).FirstOrDefault().writer_name} </td>\r\n                    <td>{item.name}</td>\r\n                    <td> <img src=\"/Default/Load_Image_File_Id/{item.imageID}\" alt=\"Alternate Text\" height=\"50px\" /> </td>\r\n                    {"<td>" + item.Quantity + "</td>"}    \r\n                </tr> ";
-                html_code += $" <tr  onclick=\"tbclick(this)\" ondblclick=\"tbdbclick(this)\"> <td>{item.Id} </td>\r\n                    <td>{item.ISBN}</td>\r\n                    <td> {db_book.Writer.Where(q => q.Id == item.authorId).FirstOrDefault().writer_name} </td>\r\n                    <td>{item.name}</td>\r\n                          <td>{db_book.Categories.Where(q => q.Id ==item.Categories).FirstOrDefault().Name}</td>\r\n                    {"<td>" + db_book.KonyvPeldany.Where(q => q.book_id == item.ISBN).Count() + "</td>"}    \r\n                </tr> ";
+                html_code += RenderBook(item);
             }
+                 if(html_code.Length < 3) { html_code = "A keresett könyv nincs meg nálunk"; }
             return html_code;
         }
 

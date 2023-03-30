@@ -18,71 +18,73 @@
 </head>
 <body class="container-fluid bg-danger text-white">
     <div>
-         
-            <div >
-                @*This is category  *@
-                <div id="Addiptive">
-                    <h1 class="fixed-bottom bg-black bg-opacity-50 w-100 row">
-                        <button class="col-6 btn btn-success" onclick="enableAdd()">Állomány növekedés</button>
-                        @* <button class="col-4">Állomány modosÍtása</button> *@
-                        <button class="col-6 btn btn-dark" " onclick="enableDell()">Állomány törlése</button>
-                    </h1>
-                    <h1>
-                        Állomány növekedés
-                    </h1>
-                    <div class="bg-muted text-white bg-success bg-opacity-50">
-                        <h3 class="opacity-100">Könyv</h3>
-                        @RenderPage("book_add.cshtml")
-                    </div>
-
-                    @*<form action="CreateWriter" method="post" class="bg-warning bg-opacity-50">
-                        <h3 class="opacity-100">Író</h3>
-                        <label>Szerző</label> <input type="text" name="name" value="" autocomplete="off" /> <br />
-                        <label>Születési név(hatudjuk)</label> <input type="text" name="name2" value="" autocomplete="off" /> <br />
-                        <label>Élt(évszám)</label> <input type="text" name="life" autocomplete="off" value="" placeholder="1000-2000" /> <br />
-                        <label>Egyéb</label> <input type="text" name="about" value="" autocomplete="off" /> <br />
-                        <input type="submit" name="no" value="hozzáadás" />
-                    </form>*@
-
-                    <form action="CreateCategory" method="post" class="bg-info bg-opacity-50">
-                        <h3>Uj Kategoria</h3> <br />
-                        <label>Megnevezés</label> <input type="text" name="name" value="" required /> <br />
-                        <input type="submit" name="no" value="hozzáadás" />
-                    </form>
-                </div>
-            </div>
-            
-            <div id="Dell">
-                @*This is category  *@
+        <header>
+            <h1 class="float-end text-white">Jelenleg: Állomány kezelés</h1>
+        </header>
+        <div>
+            @*This is category  *@
+            <div id="Addiptive">
                 <h1 class="fixed-bottom bg-black bg-opacity-50 w-100 row">
-                    <button class="col-6 btn btn-dark" onclick="enableAdd()">Állomány növekedés</button>
+                    <button class="col-6 btn btn-success" onclick="enableAdd()">Állomány növekedés</button>
                     @* <button class="col-4">Állomány modosÍtása</button> *@
-                    <button class="col-6 btn btn-success" " onclick="enableDell()">Állomány törlése</button>
+                    <button class="col-6 btn btn-dark" " onclick="enableDell()">Állomány törlése</button>
                 </h1>
                 <h1>
-                    Állomány kivétele
+                    Állomány növekedés
                 </h1>
-
                 <div class="bg-muted text-white bg-success bg-opacity-50">
                     <h3 class="opacity-100">Könyv</h3>
-                    @RenderPage("book_delete.cshtml")
+                    @RenderPage("book_add.cshtml")
                 </div>
 
-                @*<form action="delWriter" method="post" class="bg-warning bg-opacity-50">
+                @*<form action="CreateWriter" method="post" class="bg-warning bg-opacity-50">
                     <h3 class="opacity-100">Író</h3>
-                    <label>íroi Név</label> <input type="text" name="name" value="" autocomplete="off" /> <br />
+                    <label>Szerző</label> <input type="text" name="name" value="" autocomplete="off" /> <br />
                     <label>Születési név(hatudjuk)</label> <input type="text" name="name2" value="" autocomplete="off" /> <br />
                     <label>Élt(évszám)</label> <input type="text" name="life" autocomplete="off" value="" placeholder="1000-2000" /> <br />
                     <label>Egyéb</label> <input type="text" name="about" value="" autocomplete="off" /> <br />
                     <input type="submit" name="no" value="hozzáadás" />
                 </form>*@
 
-                @*<form action="delCategory" method="post" class="bg-info bg-opacity-50">
-                    <h3>Kategoria</h3> <br />
+                <form action="CreateCategory" method="post" class="bg-info bg-opacity-50">
+                    <h3>Uj Kategoria</h3> <br />
                     <label>Megnevezés</label> <input type="text" name="name" value="" required /> <br />
                     <input type="submit" name="no" value="hozzáadás" />
-                </form>*@
+                </form>
             </div>
+        </div>
+
+        <div id="Dell">
+            @*This is category  *@
+            <h1 class="fixed-bottom bg-black bg-opacity-50 w-100 row">
+                <button class="col-6 btn btn-dark" onclick="enableAdd()">Állomány növekedés</button>
+                @* <button class="col-4">Állomány modosÍtása</button> *@
+                <button class="col-6 btn btn-success" " onclick="enableDell()">Állomány törlése</button>
+            </h1>
+            <h1>
+                Állomány kivétele
+            </h1>
+
+            <div class="bg-muted text-white bg-success bg-opacity-50">
+                <h3 class="opacity-100">Könyv</h3>
+                @RenderPage("book_delete.cshtml")
+            </div>
+
+            @*<form action="delWriter" method="post" class="bg-warning bg-opacity-50">
+                <h3 class="opacity-100">Író</h3>
+                <label>íroi Név</label> <input type="text" name="name" value="" autocomplete="off" /> <br />
+                <label>Születési név(hatudjuk)</label> <input type="text" name="name2" value="" autocomplete="off" /> <br />
+                <label>Élt(évszám)</label> <input type="text" name="life" autocomplete="off" value="" placeholder="1000-2000" /> <br />
+                <label>Egyéb</label> <input type="text" name="about" value="" autocomplete="off" /> <br />
+                <input type="submit" name="no" value="hozzáadás" />
+            </form>*@
+
+            @*<form action="delCategory" method="post" class="bg-info bg-opacity-50">
+                <h3>Kategoria</h3> <br />
+                <label>Megnevezés</label> <input type="text" name="name" value="" required /> <br />
+                <input type="submit" name="no" value="hozzáadás" />
+            </form>*@
+        </div>
 
 
 
@@ -97,20 +99,20 @@
 
         @*This is writer  *@
 
-    <script>
-        $(window).on('load', function () {
-            $("#Dell").hide();
-            $("#Addiptive").show();
-        })       
-        function enableAdd() {
-            $("#Dell").hide();
-            $("#Addiptive").show();
-        }
-        function enableDell() {
-            $("#Dell").show();
-            $("#Addiptive").hide();
-        }
-    </script>
+        <script>
+            $(window).on('load', function () {
+                $("#Dell").hide();
+                $("#Addiptive").show();
+            })
+            function enableAdd() {
+                $("#Dell").hide();
+                $("#Addiptive").show();
+            }
+            function enableDell() {
+                $("#Dell").show();
+                $("#Addiptive").hide();
+            }
+        </script>
 
 
 

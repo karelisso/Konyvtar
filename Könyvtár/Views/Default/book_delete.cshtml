@@ -24,42 +24,92 @@
         <input id="livesearchtags" name="livesearchtags" placeholder="Search" autocomplete="off" hidden />*@
     @*@RenderPage("book_render.cshtml")*@
     <div class="autocomplete text-dark ">
-        <input type="type" name="name" value="" id="konv" required placeholder="Country" autocomplete="nope"/>
+        <input type="type" name="name" value="" id="konv" required placeholder="Country" autocomplete="nope" />
     </div>
     <div id="result" class="tag-results"> </div>
     <input type="submit" name="btnSubmit" value="Törlés" />
 </form>
+<table class="table table-bordered text-light" id="tablfull">
+
+    <thead style="position: sticky;top: 0">
+
+        <tr class="text-dark bg-warning">
+            <td class=""> <strong>ID</strong>   </td>
+            <td> <strong>ISBN</strong>  </td>
+            <td><strong>Szerző</strong> </td>
+            <td><strong>cím</strong> </td>
+            <td><strong>Kategoria</strong> </td>
+            <td> <strong>Darab</strong> </td>
+        </tr>
+
+    </thead>
+    <tbody id="booktable">
+        @*foreach (var item in AllBook)
+            {
+                <tr class="clickable-table">
+                    <td>item.Id </td>
+                    <td>item.ISBN</td>
+                    <td> AllWriter.Where(q => q.Id == item.authorId).FirstOrDefault().writer_name </td>
+                    <td>item.name</td>
+                    <td> <img src="/Default/Load_Image_File_Id/item.imageID" alt="Alternate Text" height="50px" /> </td>
+                    <td> item.Available_Quantity <input type="number" min="0" name="name" value="item.Available_Quantity" /> </td>
+                </tr>
+            }*@
+    </tbody>
+
+    @* find every active table row, use the id from the table to delete it from the datbase! *@
+</table>
+
 <script>
     document.getElementById('livesearchtags').addEventListener('keyup', function (e) {
         //Run LiveSearch on ever key up
         //LiveSearch()
     });
-
-    function LiveSearch() {
+  
+    function getselectedBook(vall) {
         //Get the input value
-        let value = document.getElementById('livesearchtags').value
+        let value = vall;
 
         $.ajax({
             type: "POST",
             // You can use the absolute url eg www.site.com/MyControllerName/LiveTagSearch or the relative path live below
-            url: "/Default/LiveTagSearch",
+            url: "/Default/RenderBookItem",
             // Attach the value to a parameter called search
-            data: { search: value },
+            data: { isbn: value },
             datatype: "html",
             success: function (data) {
                 // Insert the returned search results html into the result element
-                $('#result').html(data);
+                $('#booktable').html(data);
             }
         });
     }
+    var isbookmatch = false; 
 
+    function checkMatchingBook() {
+        let valu = document.getElementById('konv').value;
+        console.log(valu);
+        if (all_Writer.indexOf(valu) !== -1 && isbookmatch) {
+            console.log("siker")
+            getselectedBook(valu);
+            isbookmatch = false;
+            $("#tablfull").show();
+        }
+        else {
+            isbookmatch = true;
+            $("#tablfull").hide();
+        }
+    }
         var all_Writer = []
-    @foreach (var item in kmp)
+    @foreach (var item in kmp.Where(q => !q.RemovedTime.HasValue))
     {
         string varrrr = $"{item.book_id.Trim()};{item.PeldanyId}";
 
        @:{ all_Writer.push("@varrrr.Trim()") };
     }
+
+
+
+
 
     function autocomplete(inp, arr) {
         console.log("fsdf")
@@ -77,6 +127,9 @@
             a = document.createElement("DIV");
             a.setAttribute("id", this.id + "autocomplete-list");
             a.setAttribute("class", "autocomplete-items");
+
+            checkMatchingBook();
+            //getselectedBook(valu);
             /*append the DIV element as a child of the autocomplete container:*/
             this.parentNode.appendChild(a);
             /*for each item in the array...*/
@@ -94,6 +147,7 @@
                     b.addEventListener("click", function (e) {
                         /*insert the value for the autocomplete text field:*/
                         inp.value = this.getElementsByTagName("input")[0].value;
+                        checkMatchingBook();
                         /*close the list of autocompleted values,
                         (or any other open lists of autocompleted values:*/
                         closeAllLists();
@@ -102,6 +156,10 @@
                 }
             }
         });
+
+
+
+
         /*execute a function presses a key on the keyboard:*/
         inp.addEventListener("keydown", function (e) {
             var x = document.getElementById(this.id + "autocomplete-list");
@@ -123,7 +181,11 @@
                 e.preventDefault();
                 if (currentFocus > -1) {
                     /*and simulate a click on the "active" item:*/
-                    if (x) x[currentFocus].click();
+                    if (x) {
+                       
+                        x[currentFocus].click();
+                        setTimeout("checkMatchingBook", 20);
+                    }
                 }
             }
         });

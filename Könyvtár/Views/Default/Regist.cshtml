@@ -13,6 +13,9 @@
     <title></title>
 </head>
 <body class="container-fluid">
+    <header>
+        <h1 class="float-end text-white">Jelenleg: Regisztrálás</h1>
+    </header>
     <div class=" container">
         <form action="CreateUser" method="post">
             <section class="h-100 h-custom">
@@ -20,35 +23,38 @@
                     <div class="row d-flex justify-content-center align-items-center h-100">
                         <div class="col-lg-8 col-xl-6">
                             <div class=" rounded-3">
+                                <table class="text-white">
+                                    <tr>
+                                        <td> <label>Felhasználónév</label></td>
+                                        <td> <input type="text" name="Uname" required /> </td>
+                                    </tr>
+                                    <tr>
+                                        <td> <label>E-mail cím</label> </td>
+                                        <td> <input type="email" name="mail" required /> </td>
+                                    </tr>
+                                    <tr>
+                                        <td> <label>Tel</label> </td>
+                                        <td> <input type="tel" name="phone" required /> </td>
+                                    </tr>
+                                    <tr>
+                                        <td> <label>jelszó</label> </td>
+                                        <td> <input type="password" name="Upp" required /> </td>
+                                    </tr>
+                                    <tr>
+                                        <td> <label>jelszó megerősítése</label>  </td>
+                                        <td> <input type="password" name="UppR" required /> </td>
+                                    </tr>
+                                    <tr>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
 
-                                <div class="card-body p-4 p-md-5">
-                                    <h3 class="mb-4 pb-2 pb-md-0 mb-md-5 px-md-2 text-white">Új dologozó felvétele!</h3>
-
-                                    <div class="form-outline mb-4 text-white">
-                                        <label>Felhasználónév</label> <input type="text" name="Uname" required />
-                                    </div>
-                                    <div class="form-outline mb-4 text-white" ">
-                                        <label>E-mail cím</label> <input type="email" name="mail" required />
-                                    </div>
-                                    <div class="form-outline mb-4 text-white" ">
-                                        <label>Tel</label> <input type="tel" name="phone" required />
-                                    </div>
-                                    <div class="row">
-
-                                        <div class="col-md-6 mb-4 text-white" ">
-                                            <label>jelszó</label> <input type="password" name="Upp" required />
-                                        </div>
-                                        <div class="col-md-6 mb-4">
-                                            <div class="form-outline text-white" ">
-                                                <label>jelszó megerősítése</label> <input type="password" name="UppR" required />
-                                            </div>
-                                        </div>
-
-                                    </div>
-
+                                </table>
                                     <input type="submit" value="Regisztrálás" class="submit" />
-                                    <p class="text-white">@Html.ActionLink("Mégse", "start", "Default", new { area = "" }, new { @class = "navbar-brand" })</p>
+                                    <p class="text-white">@Html.ActionLink("Mégse", "start", "Default", new { area = "" }, new { @class = "navbar-brand text-xl-center" })</p>
                                 </div>
+
+
                             </div>
                         </div>
                     </div>
@@ -56,7 +62,7 @@
             </section>
         </form>
 
-        
+
     </div>
 
 

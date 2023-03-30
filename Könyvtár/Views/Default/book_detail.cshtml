@@ -38,10 +38,13 @@
     @Scripts.Render("~/bundles/modernizr")
 </head>
 <body>
+    <header>
+        <h1 class="float-end text-white">Jelenleg: Könyv részleti </h1>
+    </header>
     @if (iserror)
     {
         <h1 class="text-danger bg-warning"> Error! No book is selected </h1>
-    }   
+    }
     <div class="container-fluid text-white">
         <div class="col-sm-6 bg-success">
             <img src="/Default/Load_Image_File_Id/@curr.imageID" alt="Alternate Text" width="100%" />

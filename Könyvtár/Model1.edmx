@@ -84,10 +84,14 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="User_ID" Type="int" />
           <Property Name="Rent_ID_Bundle" Type="bigint" />
           <Property Name="Personel_ID_Card" Type="nchar" MaxLength="20" />
+          <Property Name="home" Type="nvarchar(max)" />
+          <Property Name="Momname" Type="nvarchar(max)" />
+          <Property Name="Birthday" Type="date" />
+          <Property Name="Birtpalace" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="Relation_AuthorWriterBook">
           <Key>
@@ -283,10 +287,14 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="User_ID" Type="Int32" />
           <Property Name="Rent_ID_Bundle" Type="Int64" />
           <Property Name="Personel_ID_Card" Type="String" MaxLength="20" FixedLength="true" Unicode="true" />
+          <Property Name="home" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Momname" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Birthday" Type="DateTime" Precision="0" />
+          <Property Name="Birtpalace" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="Relation_AuthorWriterBook">
           <Key>
@@ -453,6 +461,10 @@
           <EntitySetMapping Name="Reader_Card">
             <EntityTypeMapping TypeName="book_vs19Model.Reader_Card">
               <MappingFragment StoreEntitySet="Reader_Card">
+                <ScalarProperty Name="Birtpalace" ColumnName="Birtpalace" />
+                <ScalarProperty Name="Birthday" ColumnName="Birthday" />
+                <ScalarProperty Name="Momname" ColumnName="Momname" />
+                <ScalarProperty Name="home" ColumnName="home" />
                 <ScalarProperty Name="Personel_ID_Card" ColumnName="Personel_ID_Card" />
                 <ScalarProperty Name="Rent_ID_Bundle" ColumnName="Rent_ID_Bundle" />
                 <ScalarProperty Name="User_ID" ColumnName="User_ID" />

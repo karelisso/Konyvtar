@@ -24,24 +24,78 @@
     <title></title>
 </head>
 <body>
+    <header>
+        <h1 class="float-end text-white">
+            Jelenleg: Olvasókártya
+        </h1>
+    </header>
     <div>
 
         <p>Tag felvétele</p>
         @*this is for rent_cards*@
         <form action="CreateReader" method="post" class="text-white bg-dark bg-opacity-50">
             <h3 class="opacity-100">Olvasó</h3>
-            <label>Személyi igazolvány szám</label> <input type="text" name="szid" value="" autocomplete="off" /> <br />
-            <label>Név</label> <input type="text" name="name" value="" autocomplete="off" /> <br />
-            <label>tel</label> <input type="tel" name="phone" value="" autocomplete="off" /> <br />
-            <label>Email cím</label> <input type="email" name="mail" value="" autocomplete="off" /> <br />
-            <div class="col-md-6 mb-4 text-white" ">
-                <label>jelszó</label> <input type="password" name="Upp" required />
-            </div>
-            <div class="col-md-6 mb-4">
-                <div class="form-outline text-white" ">
-                    <label>jelszó megerősítése</label> <input type="password" name="UppR" required />
-                </div>
-            </div>
+            <table class="w-100">
+                <tr>
+                    <td> <label>Név</label>  </td>
+                    <td> <input type="text" name="name" value="" autocomplete="off" />   </td>
+                </tr>
+                <tr>
+                    <td> <label>Annya neve</label>  </td>
+                    <td> <input type="text" name="name2" value="" autocomplete="off" />   </td>
+
+                </tr>
+
+                <tr>
+                    <td class="col-3"> <label>Születés hely</label>    </td>
+                    <td class="col-9"> <input type="type" name="birthpalace" value="" maxlength="10" required autocomplete="off" /> </td>
+                </tr>
+
+                <tr>
+                    <td class="col-3"> <label>Születés dátuma</label>    </td>
+                    <td class="col-9"> <input type="type" name="birthday" value="" maxlength="10" required autocomplete="off" /> </td>
+                </tr>
+
+
+                <tr>
+                    <td class="col-3"><label>Személyi igazolvány szám</label>    </td>
+                    <td class="col-9">  <input class="w-100" type="text" name="szid" value="" autocomplete="off" /> </td>
+                </tr>
+                <tr>
+                    <td>  <label>lakcím</label>  </td>
+                    <td>  <input type="text" name="home" value="" autocomplete="off" />  </td>
+                </tr>
+                <tr>
+                    <td> <label>tel</label>   </td>
+                    <td>   <input type="tel" name="phone" value="" autocomplete="off" /> </td>
+                </tr>
+                <tr>
+                    <td>  <label>Email cím</label>   </td>
+                    <td>  <input type="email" name="mail" value="" autocomplete="none" />  </td>
+                </tr>
+                <tr>
+                    <td>  <label>jelszó</label>  </td>
+                            <td>  <input type="password" name="Upp" required /> </td>
+                        </tr>
+                        <tr>
+                            <td>   <label>jelszó megerősítése</label>  </td>
+                            <td>  <input type="password" name="UppR" required /> </td>
+                        </tr>
+            </table>
+
+            @*<br />
+                 <br />
+                  <br />
+                 <br />
+                <br />
+                 <div class="col-md-6 mb-4 text-white" ">
+                     <label>jelszó</label> <input type="password" name="Upp" required />
+                 </div>
+                 <div class="col-md-6 mb-4">
+                     <div class="form-outline text-white" ">
+                         <label>jelszó megerősítése</label> <input type="password" name="UppR" required />
+                     </div>
+                 </div>*@
             <input type="submit" name="no" value="regisztrál" />
 
         </form>

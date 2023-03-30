@@ -389,7 +389,6 @@
     <Content Include="Views\Default\TagAdd.cshtml" />
     <Content Include="Views\Default\emptypage.cshtml" />
     <Content Include="Views\Default\LogView.cshtml" />
-    <Content Include="Views\Default\Reader.cshtml" />
     <Content Include="Views\Default\book_delete.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

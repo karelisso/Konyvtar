@@ -17,35 +17,49 @@
 </head>
 <body class="bg-warning text-white">
     <div>
-       
+        <header>
+            <h1 class="float-end text-white">Jelenleg: Bejelentkezés</h1>
+        </header>
         <form action="LoginUser" method="post">
             <section class="h-100 h-custom">
                 <div class="container py-5 h-100">
                     <div class="row d-flex justify-content-start align-items-center h-100">
-                        <div class="col-lg-8 col-xl-6">
+                        <div class="col-lg-12 col-xl-12">
                             <div class=" rounded-3">
 
-                                <div class="card-body p-4 p-md-5">
-                                    <h3 class="mb-4 pb-2 pb-md-0 mb-md-5 px-md-2 text-white">Jelentkezz be!</h3>
+                                <table class="bg">
+                                    <tr class="bg-opacity-0">
+                                        <td> <label class="">Felhasználónév</label> </td>
+                                        <td> <input class="" type="text" name="Uname" required />  </td>
+                                    </tr>
+                                    <tr>
+                                        <td><label class="">jelszó</label>  </td>
+                                        <td> <input class="" type="password" name="Upp" required /> </td>
+                                    </tr>
+                                    <tr>
+                                    </tr>
+                                </table>
 
-                                    <div class="form-outline mb-4 text-white">
-                                        <label>Felhasználónév</label> <input type="text" name="Uname" placeholder="fiók név/email" required />
-                                    </div>
-                                    @*<div class="form-outline mb-4 text-white" ">
-            <label>E-mail cím</label> <input type="email" name="mail" required />
-        </div>*@
-                                    <div class="row">
-
-                                        <div class="col-md-6 mb-4 text-white" ">
-                                            <label>jelszó</label> <input type="password" name="Upp" required />
-                                        </div>
-
-                                    </div>
-
-                                    <input type="submit" value="Bejelentkezek" class="submit" />
-                                    <p class="text-white">@Html.ActionLink("Mégse", "start", "Default", new { area = "" }, new { @class = "navbar-brand" })</p>
-
+                                <td>  <input type="submit" class="btn btn-success btn-lg" value="Bejelentkezek" class="submit" />  </td>
+                                <!--<div class="@*card-body p-4 p-md-5*@">
+                            <h3 class="mb-4 pb-2 pb-md-0 mb-md-5 px-md-2 text-white">Jelentkezz be!</h3>-->
+                                @*<div class=" mb-4 text-white row">
+                                    <label class="col-3">Felhasználónév</label> <input class="col-9" type="text" name="Uname" placeholder="fiók név/email" required />
+                                </div>*@
+                                @*<div class=" mb-4 text-white row">
+                                    <label class="col-3">Felhasználónév</label> <input class="col-9" type="text" name="Uname"  required />
                                 </div>
+
+                                <div class="mb-4 text-white row">
+                                    <label class="col-3">jelszó</label> <input class="col-9" type="password" name="Upp" required />
+
+                                </div>*@
+
+                                <!--<input type="submit" value="Bejelentkezek" class="submit" />
+
+                                <p class="text-white"> @Html.ActionLink("Mégse", "start", "Default", new { area = "" }, new { @class = "navbar-brand" }) </p>
+
+                            </div>-->
                             </div>
                         </div>
                     </div>

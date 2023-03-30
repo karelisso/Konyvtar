@@ -53,15 +53,16 @@
 
 @if (Session["username"] != null)
 {
-    <button class="btn btn-dark btn-block btn-lg text-dark" onclick="Dell()"> torles</button>
+    @*<button class="btn btn-dark btn-block btn-lg text-dark" onclick="Dell()"> torles</button>*@
 }
 else
 {
-    <a href="/Default/Secnd"><button class="btn btn-dark btn-block btn-lg" href=""> jelentkezz be a változtatáshoz</button></a>
+    @*<a href="/Default/Secnd"><button class="btn btn-dark btn-block btn-lg" href=""> jelentkezz be a változtatáshoz</button></a>*@
 }
 <script>
     let tablerows = document.querySelectorAll(".clickable-table");
     let bookset = false;
+    
     function tbclick(ellement) {
         ellement.classList.toggle("bg-success");
         ellement.classList.toggle("selected");

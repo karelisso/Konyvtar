@@ -18,5 +18,9 @@ namespace Könyvtár
         public Nullable<int> User_ID { get; set; }
         public Nullable<long> Rent_ID_Bundle { get; set; }
         public string Personel_ID_Card { get; set; }
+        public string home { get; set; }
+        public string Momname { get; set; }
+        public Nullable<System.DateTime> Birthday { get; set; }
+        public string Birtpalace { get; set; }
     }
 }

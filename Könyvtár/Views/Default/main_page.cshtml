@@ -13,6 +13,9 @@
     @Scripts.Render("~/bundles/modernizr")
 </head>
 <body>
+    <header>
+        <h1 class="float-end text-white">Jelenleg: Főoldal</h1>
+    </header>
     <div class="container mt-3 text-white">
         <h3>Könyvek keresése</h3>
         <p>A szépirodalmi művektől a ponyvaregényekig.</p>
@@ -35,8 +38,6 @@
             <button class="btn btn-success" type="submit" id="searchbutton">Keresés</button>
         </div>
     </div>
-
-
     <script>
 
         $(".dropdown-toggle").next(".dropdown-menu").children().on("click", function () {
@@ -84,7 +85,7 @@
             else if (type == "ISBN/ISSN") {
                 window.location.replace("/Default/Index");
             }
-           
+
             //genevent();
         }
     </script>
