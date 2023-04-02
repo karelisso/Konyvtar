@@ -8,8 +8,8 @@
     Reader_Card rc;
     List<Rent> rent = new List<Rent>();
     int puinishment = 0;
-    int sessionuid =int.Parse(  Session["userid"].ToString());
-    rc = bullshit.Reader_Card.Where(q => q.User_ID ==sessionuid).FirstOrDefault();
+    int sessionuid = int.Parse(Session["userid"].ToString());
+    rc = bullshit.Reader_Card.Where(q => q.User_ID == sessionuid).FirstOrDefault();
     if (rc != null)
     {
         rent = bullshit.Rent.Where(q => q.Card_ID.Equals(rc.Id)).ToList();
@@ -75,12 +75,12 @@
                 </tr>
                 <tr>
                     <td>  <label>jelszó</label>  </td>
-                            <td>  <input type="password" name="Upp" required /> </td>
-                        </tr>
-                        <tr>
-                            <td>   <label>jelszó megerősítése</label>  </td>
-                            <td>  <input type="password" name="UppR" required /> </td>
-                        </tr>
+                    <td>  <input type="password" name="Upp" required /> </td>
+                </tr>
+                <tr>
+                    <td>   <label>jelszó megerősítése</label>  </td>
+                    <td>  <input type="password" name="UppR" required /> </td>
+                </tr>
             </table>
 
             @*<br />
@@ -104,16 +104,21 @@
         <form action="CreateRent" method="post" class="text-white bg-info bg-opacity-50">
             <h3 class="opacity-100">Kölcsönzés</h3>
             <label>Név</label>  <select name="id">
-                @foreach (var item in cr)
-                {
-                    <option value="@item.User_ID">  @bullshit.user.Where(q => q.id == item.User_ID).FirstOrDefault().Username</option>
-                }
+    @foreach (var item in cr)
+    {
+        user me = @bullshit.user.FirstOrDefault(q => q.id == item.User_ID);
+        <option value="@item.User_ID">  @me.Username</option>
+        if (me != null)
+        {
+            <option value="@item.User_ID">  @me.Username</option>
+        }
+    }
 
-            </select><br />
+</select><br />
             <label>könyv</label>  <select name="book_id">
-                @foreach (var item in kv)
+                @foreach (var item2 in kv)
                 {
-                    <option value="@item.Id">@item.name @item.Available_Quantity</option>
+                    <option value="@item2.Id">@item2.name @item2.Available_Quantity</option>
                 }
 
             </select><br />
@@ -132,43 +137,39 @@
             {
                 <tr> jelenleg nincs kikölcsönzött könyve </tr>
             }
-            @foreach (var item in rent)
+            @foreach (var item3 in rent)
             {
                 <tr>
                     <td>Könyv azonositó</td>
-                    <td>@item.Book_ID </td>
+                    <td>@item3.Book_ID </td>
                 </tr>
                 <tr>
                     <td>kölcsönzés ideje</td>
-                    <td>@item.Rent_Date </td>
+                    <td>@item3.Rent_Date </td>
                 </tr>
                 <tr>
                     <td>vissza adás határideje</td>
-                    <td>@item.Due_Date </td>
+                    <td>@item3.Due_Date </td>
                 </tr>
                 <tr>
 
                     <td>visszavitel ideje</td>
-                    @if (item.Return_Date.ToString().Length > 2)
+                    @if (item3.Return_Date.ToString().Length > 2)
                     {
-                        <td>@item.Return_Date </td>
+                        <td>@item3.Return_Date </td>
                     }
                     else
                     {
-                        <td>@item.Book_ID </td>
+                        <td>@item3.Book_ID </td>
                     }
                 </tr>
-                <tr>
+                @*<tr>
                     <td>Bünti</td>
-                    <td>@item.Punishment </td>
-                    @{puinishment += int.Parse(item.Punishment.ToString());
-                    }
-                </tr>
+                    <td>@item3.Punishment </td>
+                    @{puinishment += int.Parse(item3.Punishment.ToString());}
+                </tr>*@
             }
-            <tr>
-                <td>Teljes Bünti</td>
-                <td>@puinishment </td>
-            </tr>
+            
 
         </table>
     </div>

@@ -49,7 +49,7 @@
     </div>*@
 
     <div class="container mt-3 text-white">
-        <p>Könyvek keresése a megadott szempont alapján:</p>
+        <h3>Könyvek keresése a megadott szempont alapján:</h3>
         <div class="input-group mb-3">
             <button type="button" class="btn btn-primary dropdown-toggle" id="searchType" data-bs-toggle="dropdown">
                 Szempont
@@ -78,8 +78,13 @@
     @RenderPage("book_render.cshtml")
 
     <script>
+        $("#searchType").on("click", function () {
+            console.log("clickedon me")
+            $(".dropdown-menu").show()
+        })
         $(".dropdown-toggle").next(".dropdown-menu").children().on("click", function () {
             $(this).closest(".dropdown-menu").prev(".dropdown-toggle").text($(this).text());
+            $(".dropdown-menu").hide()
         })
         //const tablerows = document.querySelectorAll(".clickable-table");
         const hide = document.getElementById("showBook");
@@ -185,7 +190,7 @@
                 $.ajax({
                     type: "POST",
                     // You can use the absolute url eg www.site.com/MyControllerName/LiveTagSearch or the relative path live below
-                    url: "/Default/LiveSearchISBN",
+                    url: "/Default/LiveSearchCategries",
                     // Attach the value to a parameter called search
                     data: { search: value },
                     datatype: "html",
@@ -201,7 +206,7 @@
                 $.ajax({
                     type: "POST",
                     // You can use the absolute url eg www.site.com/MyControllerName/LiveTagSearch or the relative path live below
-                    url: "/Default/LiveSearchISBN",
+                    url: "/Default/LiveSearchReaderCard",
                     // Attach the value to a parameter called search
                     data: { search: value },
                     datatype: "html",

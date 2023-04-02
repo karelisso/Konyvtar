@@ -109,7 +109,6 @@ namespace Könyvtár.App_Data
         public ActionResult CreateBook(string name, string isbn, string auth,string img,string demo,string categori, int quantity,string date)
         {
             konyv kv = new konyv();
-
             DateTime addedtime;
             if(img == null)
             {
@@ -119,7 +118,7 @@ namespace Könyvtár.App_Data
             {
                 img = "0";
             }
-            if (DateTime.TryParse(date, out addedtime)) addedtime = DateTime.Now;
+            if (!DateTime.TryParse(date, out addedtime)) addedtime = DateTime.Now;
             //long? pictureimage;
             if(Request.Files.Count > 0)
             {
@@ -508,7 +507,7 @@ namespace Könyvtár.App_Data
                         }
                     }
                 }
-                if (html_code.Length < 3) { html_code = "A keresett könyv nincs meg nálunk"; }
+                if (html_code.Length < 3) { html_code = "Ez a szerző nem szerepel nálunk!"; }
                 return html_code;
             }
             foreach (var item in db_book.Writer)
@@ -656,7 +655,8 @@ namespace Könyvtár.App_Data
             //        }
             //    }
             //}
-            if (html_code.Length < 3) { html_code = "A keresett könyv nincs meg nálunk"; }
+            if (html_code.Length < 3) { html_code = "Ez a mű jelenleg nem szerepel az állományunkban";
+            }
             return html_code;
         }
 
@@ -679,10 +679,51 @@ namespace Könyvtár.App_Data
                     html_code += RenderBook(item);
                 }
             }
-            if (html_code.Length < 3) { html_code = "A keresett könyv nincs meg nálunk"; }
+            if (html_code.Length < 3) { html_code = "Ez a mű jelenleg nem szerepel az állományunkban"; }
             return html_code;
         }
+        public String LiveSearchCategries(string search)
+        {
 
+            search = search.Trim();
+            string html_code = "";
+            if (search.Length < 1)
+            {
+                return AllBook(search);
+            }
+            string compare = "";
+            foreach (var item in db_book.konyv)
+            {
+                if (db_book.Categories.First(q=>q.Id== item.Categories).Name.Contains(search))
+                {
+                    compare = item.Id.ToString();
+                    //html_code += $" <tr  onclick=\"tbclick(this)\" ondblclick=\"tbdbclick(this)\"> <td>{item.Id} </td>\r\n                    <td>{item.ISBN}</td>\r\n                    <td> {db_book.Writer.Where(q => q.Id == item.authorId).FirstOrDefault().writer_name} </td>\r\n                    <td>{item.name}</td>\r\n                    <td> <img src=\"/Default/Load_Image_File_Id/{item.imageID}\" alt=\"Alternate Text\" height=\"50px\" /> </td>\r\n                    {"<td>" + item.Quantity + "</td>"}    \r\n                </tr> ";
+                    html_code += RenderBook(item);
+                }
+            }
+            if (html_code.Length < 3) { html_code = "Ez a kategoria jelenleg nem szerepel az állományunkban"; }
+            return html_code;
+        }
+        public String LiveSearchReaderCard(string search)
+        {
+
+            search = search.Trim();
+            string html_code = "";
+            if (search.Length < 1)
+            {
+                return AllBook(search);
+            }
+            string compare = "";
+            int iduser = -1;
+            if(!int.TryParse(search,out iduser)) return "Ilyen olvaso nem létezik";
+            foreach (var item in db_book.Rent.Where(q=>q.Card_ID==iduser))
+            {
+                    //html_code += $" <tr  onclick=\"tbclick(this)\" ondblclick=\"tbdbclick(this)\"> <td>{item.Id} </td>\r\n                    <td>{item.ISBN}</td>\r\n                    <td> {db_book.Writer.Where(q => q.Id == item.authorId).FirstOrDefault().writer_name} </td>\r\n                    <td>{item.name}</td>\r\n                    <td> <img src=\"/Default/Load_Image_File_Id/{item.imageID}\" alt=\"Alternate Text\" height=\"50px\" /> </td>\r\n                    {"<td>" + item.Quantity + "</td>"}    \r\n                </tr> ";
+                    html_code += RenderBook(db_book.konyv.First(q=>q.ISBN==item.Book_ID));
+            }
+            if (html_code.Length < 3) { html_code = "Ez a olvasó jelenleg nem kölcsönzött ki könyvet"; }
+            return html_code;
+        }
         private string AllBook(string search)
         {
             string html_code = "";

@@ -9,7 +9,7 @@
     }
 }
 
-<form action="CreateBook" method="post" enctype="multipart/form-data" class="text-white" onsubmit="return confirm('Biztos hogy be akarod vinni ezt a könyvet az állományba');">
+<form action="CreateBook" method="post" enctype="multipart/form-data" class="text-white" onsubmit="return confirm('Biztos, hogy rögzíteni akarod?');">
     <label>Szerző</label>
     <div class="autocomplete text-dark ">
         <input type="type" name="auth" value="" id="Szerzo" required placeholder="Country"  autocomplete="nope"/>
@@ -23,8 +23,8 @@
     </select>*@
     <label>Cím</label>  <input type="type" name="name" value="" required autocomplete="off" /> <br />
     <label>ISBNcode</label><input type="type" name="isbn" value="" maxlength="11" required autocomplete="off" /> <br />
-    <label>Beszerzés dátuma</label>  <input type="type" name="date" value="" maxlength="10" required autocomplete="off" /> <br />
-    <label>Darabszám</label>  <input type="number" name="quantity" value="" required autocomplete="off" /> <br />
+    <label>Beszerzés dátuma</label>  <input type="date" name="date" value="" maxlength="10" autocomplete="off" /> <br />
+    <label>Darabszám</label>  <input type="number" name="quantity" value="1" required autocomplete="off" /> <br />
     @*<label>AUTH int only!!!!</label><input type="number" name="auth" value="0" required/> <br />*@
     @*<label>Boritó kép</label><input type="file" accept="image/*" name="img" required /> <br />  all image types
         <label>Összefoglaló</label><input type="text" name="demo" autocomplete="off" /> <br />*@
