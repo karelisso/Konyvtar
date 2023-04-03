@@ -170,7 +170,7 @@ namespace Könyvtár.App_Data
             db_book.konyv.Add(kv);
             db_book.SaveChanges();
             Log("hozzáadott egy könyvet", kv.Id+"");
-            return View("Index");
+            return View("TheMetaViewer");
         }
         public ActionResult CreateUser(string Uname, string mail, string Upp, string UppR, bool? Adm, string phone)
         {
@@ -208,7 +208,7 @@ namespace Könyvtár.App_Data
             //}
             Log("Létrehozott egy Dologozót", account2.user_id + "");
             //Session.Clear();
-            return View("index");
+            return View("Regist");
         }
         public ActionResult CreateReader(string name,string name2, string mail, string Upp, string UppR, string phone, string szid,string home,string birthday,string birthpalace)
         {
@@ -252,7 +252,7 @@ namespace Könyvtár.App_Data
             //   // return View("Regist");
             //}
             Log("Létrehozott egy Tagot", account2.user_id + "");
-            return View("TheMetaViewer");
+            return View("reader_card");
         }
 
         public ActionResult CreateRent(string id,string book_id)
@@ -264,6 +264,7 @@ namespace Könyvtár.App_Data
             rent.Due_Date = DateTime.Now.AddDays(14);
             int wichkonyv = int.Parse(book_id);
             db_book.konyv.Where(q => q.Id == wichkonyv).First().Available_Quantity -= 1;
+            db_book.Rent.Add(rent);
             db_book.SaveChanges();
             Log("Kiadot egy könyvet", id + "");
             return View("TheMetaViewer");

@@ -130,7 +130,7 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Book_ID" Type="nchar" MaxLength="10" Nullable="false" />
           <Property Name="Rent_Date" Type="datetime" Nullable="false" />
           <Property Name="Due_Date" Type="datetime" />
@@ -333,7 +333,7 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Book_ID" Type="String" Nullable="false" MaxLength="10" FixedLength="true" Unicode="true" />
           <Property Name="Rent_Date" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="Due_Date" Type="DateTime" Precision="3" />

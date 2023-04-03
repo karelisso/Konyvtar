@@ -12,7 +12,7 @@
     rc = bullshit.Reader_Card.Where(q => q.User_ID == sessionuid).FirstOrDefault();
     if (rc != null)
     {
-        rent = bullshit.Rent.Where(q => q.Card_ID.Equals(rc.Id)).ToList();
+        rent = bullshit.Rent.Where(q => q.Card_ID == rc.User_ID).ToList();
     }
 }
 
@@ -106,15 +106,15 @@
             <label>Név</label>  <select name="id">
     @foreach (var item in cr)
     {
-        user me = @bullshit.user.FirstOrDefault(q => q.id == item.User_ID);
-        <option value="@item.User_ID">  @me.Username</option>
+        user me = bullshit.user.FirstOrDefault(q => q.id == item.User_ID);
+
         if (me != null)
         {
             <option value="@item.User_ID">  @me.Username</option>
         }
     }
 
-</select><br />
+        </select><br />
             <label>könyv</label>  <select name="book_id">
                 @foreach (var item2 in kv)
                 {
@@ -135,25 +135,23 @@
             </tr>
             @if (rc == null)
             {
-                <tr> jelenleg nincs kikölcsönzött könyve </tr>
+                <tr> jelenleg nincs Olvasokártya </tr>
             }
+            <tr>
+                <td>Könyv azonositó</td>
+                <td>kölcsönzés ideje</td>
+                <td>vissza adás határideje</td>
+                <td>visszavitel ideje</td>
+            </tr>
             @foreach (var item3 in rent)
             {
                 <tr>
-                    <td>Könyv azonositó</td>
                     <td>@item3.Book_ID </td>
-                </tr>
-                <tr>
-                    <td>kölcsönzés ideje</td>
                     <td>@item3.Rent_Date </td>
-                </tr>
-                <tr>
-                    <td>vissza adás határideje</td>
-                    <td>@item3.Due_Date </td>
-                </tr>
-                <tr>
 
-                    <td>visszavitel ideje</td>
+                    <td>@item3.Due_Date </td>
+
+
                     @if (item3.Return_Date.ToString().Length > 2)
                     {
                         <td>@item3.Return_Date </td>
@@ -164,12 +162,12 @@
                     }
                 </tr>
                 @*<tr>
-                    <td>Bünti</td>
-                    <td>@item3.Punishment </td>
-                    @{puinishment += int.Parse(item3.Punishment.ToString());}
-                </tr>*@
+                <td>Bünti</td>
+                <td>@item3.Punishment </td>
+                @{puinishment += int.Parse(item3.Punishment.ToString());}
+            </tr>*@
             }
-            
+
 
         </table>
     </div>
