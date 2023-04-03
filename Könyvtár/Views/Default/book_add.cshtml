@@ -9,18 +9,18 @@
     }
 }
 
-<form action="CreateBook" method="post" enctype="multipart/form-data" class="text-white" onsubmit="return confirm('Biztos, hogy rögzíteni akarod?');">
+<form action="CreateBook" method="post" enctype="multipart/form-data" class="text-white" onsubmit="return confirm( 'Biztos, hogy rögzíteni akarod?' );">
     <label>Szerző</label>
     <div class="autocomplete text-dark ">
-        <input type="type" name="auth" value="" id="Szerzo" required placeholder="Country"  autocomplete="nope"/>
+        <input type="type" name="auth" value="" id="Szerzo" required placeholder="Country" autocomplete="nope" />
     </div>
     <br>
     @*<select name="auth">
-        @foreach (var item in wrt)
-        {
-            <option value="@item.Id">@item.writer_name</option>
-        }
-    </select>*@
+            @foreach (var item in wrt)
+            {
+                <option value="@item.Id">@item.writer_name</option>
+            }
+        </select>*@
     <label>Cím</label>  <input type="type" name="name" value="" required autocomplete="off" /> <br />
     <label>ISBNcode</label><input type="type" name="isbn" value="" maxlength="11" required autocomplete="off" /> <br />
     <label>Beszerzés dátuma</label>  <input type="date" name="date" value="" maxlength="10" autocomplete="off" /> <br />
@@ -31,13 +31,19 @@
     <label>Kategoria</label>
 
     @*todo: change it to work like Szerzo then the popup a message contains every new data (writer,categoreies ) then create a list of categories*@
-    <select name="categori" required>
+    <div class="autocomplete text-dark ">
+        <input type="type" name="categori" value="" id="Categories" required placeholder="Country" autocomplete="nope" />
+    </div>
+    
+    <select name="" required>
         @foreach (var item in crt)
         {
             <option value="@item.Id">@item.Name</option>
         }
 
     </select>
+
+
     <br>
 
     <input id="livesearchtags" name="livesearchtags" placeholder="Search" autocomplete="off" hidden />
@@ -54,13 +60,19 @@
 
        @:{ all_Writer.push("@varrrr.Trim()") };
     }
+    var all_categories =[]
+    @foreach (var item in crt)
+    {
+        string varrrr = item.Name;
 
-    console.log(all_Writer)
+       @:{ all_categories.push("@varrrr.Trim()") };
+    }
+
     document.getElementById('livesearchtags').addEventListener('keyup', function (e) {
         //Run LiveSearch on ever key up
         //LiveSearch()
     });
-
+    var returntext = "fds";
     function LiveSearch() {
         //Get the input value
         let value = document.getElementById('livesearchtags').value
@@ -78,7 +90,11 @@
             }
         });
     }
-
+    function returnString() {
+        var vissza = all_Writer.Includes($("#Szerzo").value);
+        vissza += all_Writer.Includes($("#Categories").value);
+        returntext = vissza + 'Biztos, hogy rögzíteni akarod?';
+    }
     function autocomplete(inp, arr) {
         console.log("fsdf")
     /*the autocomplete function takes two arguments,
@@ -143,6 +159,7 @@ the text field element and an array of possible autocompleted values:*/
                 /*and simulate a click on the "active" item:*/
                 if (x) x[currentFocus].click();
             }
+            returnString();
         }
     });
     function addActive(x) {
@@ -180,4 +197,5 @@ the text field element and an array of possible autocompleted values:*/
 
 
     autocomplete(document.getElementById("Szerzo"), all_Writer);
+    autocomplete(document.getElementById("Categories"), all_categories);
 </script>

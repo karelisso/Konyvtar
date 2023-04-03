@@ -118,6 +118,14 @@ namespace Könyvtár.App_Data
             {
                 img = "0";
             }
+            if(categori.Length > 0)
+            {
+                if( db_book.Categories.Count(q => q.Name.Equals(categori))  <=0) CreateCategory(categori);
+            }
+            if (auth.Length > 0)
+            {
+                if (db_book.Writer.Count(q => q.writer_name.Equals(auth)) <= 0) CreateWriter(auth,"","","");
+            }
             if (!DateTime.TryParse(date, out addedtime)) addedtime = DateTime.Now;
             //long? pictureimage;
             if(Request.Files.Count > 0)
@@ -143,7 +151,7 @@ namespace Könyvtár.App_Data
             {
                 kv.authorId = db_book.Writer.First(q => q.writer_name == auth).Id;
             }
-            kv.Categories = int.Parse(categori);
+            kv.Categories = db_book.Categories.First(q=>q.Name.Equals(categori)).Id;
             kv.ISBN = isbn;
             kv.name = name;
             kv.demo = demo;

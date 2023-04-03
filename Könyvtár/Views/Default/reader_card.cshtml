@@ -3,18 +3,22 @@
     book_vs19Entities1 bullshit = new book_vs19Entities1();
 
     konyv[] kv;
+    KonyvPeldany[] kmp;
+    kmp= bullshit.KonyvPeldany.ToArray();
     kv = bullshit.konyv.ToArray();
     Reader_Card[] cr = bullshit.Reader_Card.ToArray();
     Reader_Card rc;
     List<Rent> rent = new List<Rent>();
     int puinishment = 0;
-    int sessionuid = int.Parse(Session["userid"].ToString());
-    if(Session["currentreadercard"] != null) { sessionuid = int.Parse(Session["currentreadercard"].ToString()); }
-    rc = bullshit.Reader_Card.Where(q => q.User_ID == sessionuid).FirstOrDefault();
-    if (rc != null)
-    {
-        rent = bullshit.Rent.Where(q => q.Card_ID == rc.User_ID).ToList();
-    }
+    //int sessionuid = int.Parse(Session["userid"].ToString());
+    //if(Session["currentreadercard"] != null) { sessionuid = int.Parse(Session["currentreadercard"].ToString()); }
+    //rc = bullshit.Reader_Card.Where(q => q.User_ID == sessionuid).FirstOrDefault();
+    //if (rc != null)
+    //{
+    //    //rent = bullshit.Rent.Where(q => q.Card_ID == rc.User_ID).ToList();
+    //    rent = bullshit.Rent.ToList();
+    //}
+    rent = bullshit.Rent.ToList();
 }
 
 <!DOCTYPE html>
@@ -27,7 +31,7 @@
 <body>
     <header>
         <h1 class="float-end text-white">
-            Jelenleg: Olvasókártya
+            Jelenleg: Kölcsönzés
         </h1>
     </header>
     <div>
@@ -85,93 +89,258 @@
             </table>
 
             @*<br />
-                 <br />
-                  <br />
-                 <br />
-                <br />
-                 <div class="col-md-6 mb-4 text-white" ">
-                     <label>jelszó</label> <input type="password" name="Upp" required />
+             <br />
+              <br />
+             <br />
+            <br />
+             <div class="col-md-6 mb-4 text-white" ">
+                 <label>jelszó</label> <input type="password" name="Upp" required />
+             </div>
+             <div class="col-md-6 mb-4">
+                 <div class="form-outline text-white" ">
+                     <label>jelszó megerősítése</label> <input type="password" name="UppR" required />
                  </div>
-                 <div class="col-md-6 mb-4">
-                     <div class="form-outline text-white" ">
-                         <label>jelszó megerősítése</label> <input type="password" name="UppR" required />
-                     </div>
-                 </div>*@
+             </div>*@
             <input type="submit" name="no" value="regisztrál" />
 
         </form>
 
         @* this is for rents*@
-        <form action="CreateRent" method="post" class="text-white bg-info bg-opacity-50">
-            <h3 class="opacity-100">Kölcsönzés</h3>
-            <label>Név</label>  <select name="id" onchange="myFunction()">
-    @foreach (var item in cr)
-    {
-        user me = bullshit.user.FirstOrDefault(q => q.id == item.User_ID);
 
-        if (me != null)
+
+        @*<form action="CreateRent" method="post" class="text-white bg-info bg-opacity-50">
+                <h3 class="opacity-100">Kölcsönzés</h3>
+                <label>Név</label>  <select name="id" onchange="myFunction()">
+        @foreach (var item in cr)
         {
-            <option value="@item.User_ID">  @me.Username</option>
-        }
-    }
+            user me = bullshit.user.FirstOrDefault(q => q.id == item.User_ID);
 
-        </select><br />
-            <label>könyv</label>  <select name="book_id">
-                @foreach (var item2 in kv)
-                {
-                    <option value="@item2.Id">@item2.name @item2.Available_Quantity</option>
-                }
+            if (me != null)
+            {
+                <option value="@item.User_ID">  @me.Username</option>
+            }
+        }
 
             </select><br />
-            <input type="submit" name="no" value="hozzáadás" />
-        </form>
+                <label>könyv</label>  <select name="book_id">
+                    @foreach (var item2 in kv)
+                    {
+                        <option value="@item2.Id">@item2.name @item2.Available_Quantity</option>
+                    }
 
-        <table class="table table-bordered text-light table-striped">
-            <tr>
+                </select><br />
+                <input type="submit" name="no" value="hozzáadás" />
+            </form>*@
+        <h3 class="opacity-100 text-white ">Kölcsönzés</h3>
+        <!--<form action="CreateRent" method="post" enctype="multipart/form-data" class="text-white" onsubmit="return confirm('Biztos hogy ki akarod kölcsönözni ezt a könyvet az állományból');">-->
+
+            @*<label>Könyv</label>
+            <select name="name">
+                @foreach (var item in km)
+                {
+                    <option value="@item.Id">@item.name</option>
+                }
+
+            </select>
+            <input id="livesearchtags" name="livesearchtags" placeholder="Search" autocomplete="off" hidden />*@
+            @*@RenderPage("book_render.cshtml")*@
+            <!--<div class="autocomplete text-dark ">
+                <input type="type" name="name" value="" id="konv" required placeholder="" autocomplete="nope" />
+            </div>
+            <div id="result" class="tag-results"> </div>
+            <input type="submit" name="btnSubmit" value="kikölcsönzés" />
+        </form>-->
+        <table class="table table-bordered text-light" id="tablfull">
+
+            <thead style="position: sticky;top: 0">
+
+                <tr class="text-dark bg-warning">
+                    <td> <strong>ISBN</strong>  </td>
+                    <td><strong>kölcsönadás ideje</strong> </td>
+                    <td><strong>visszavétel ideje</strong> </td>
+                    <td> <strong>Darab</strong> </td>
+                </tr>
+
+            </thead>
+            <tbody>
+                @foreach (var item3 in rent)
+                {
+                    <tr>
+                        <td>@item3.Book_ID </td>
+                        <td>@item3.Rent_Date </td>
+
+                        <td>@item3.Due_Date </td>
+
+
+                        @if (item3.Return_Date.ToString().Length > 2)
+                        {
+                            <td>@item3.Return_Date </td>
+                        }
+                        else
+                        {
+                            <td>@item3.Book_ID </td>
+                        }
+                    </tr>
+                    @*<tr>
+                <td>Bünti</td>
+                <td>@item3.Punishment </td>
+                @{puinishment += int.Parse(item3.Punishment.ToString());}
+            </tr>*@
+                }
+            </tbody>
+
+            @* find every active table row, use the id from the table to delete it from the datbase! *@
+        </table>
+
+        <!--<table class="table table-bordered text-light">-->
+            @*<tr>
                 <td>Név:</td>
                 <td>@(Session["username"]) </td>
-            </tr>
-            <tr>
+            </tr>*@
+            @*<tr>
                 <td>Kölcsönzések:</td>
-            </tr>
-            @if (rc == null)
+            </tr>*@
+            @*@if (rc == null)
             {
                 <tr> jelenleg nincs Olvasokártya </tr>
-            }
-            <tr>
+            }*@
+            <!--<tr>
                 <td>Könyv azonositó</td>
                 <td>kölcsönzés ideje</td>
                 <td>vissza adás határideje</td>
                 <td>visszavitel ideje</td>
             </tr>
-            @foreach (var item3 in rent)
+
+
+
+        </table>-->
+
+        <script>
+            var all_Writer = []
+            @foreach (var item in kmp.Where(q => !q.RemovedTime.HasValue))
             {
-                <tr>
-                    <td>@item3.Book_ID </td>
-                    <td>@item3.Rent_Date </td>
+                string varrrr = $"{item.book_id.Trim()};{item.PeldanyId}";
 
-                    <td>@item3.Due_Date </td>
+               @:{ all_Writer.push("@varrrr.Trim()") };
+            }
 
+            function autocomplete(inp, arr) {
+                console.log("fsdf")
+                /*the autocomplete function takes two arguments,
+            the text field element and an array of possible autocompleted values:*/
+                var currentFocus;
+                /*execute a function when someone writes in the text field:*/
+                inp.addEventListener("input", function (e) {
+                    var a, b, i, val = this.value;
+                    /*close any already open lists of autocompleted values*/
+                    closeAllLists();
+                    if (!val) { return false; }
+                    currentFocus = -1;
+                    /*create a DIV element that will contain the items (values):*/
+                    a = document.createElement("DIV");
+                    a.setAttribute("id", this.id + "autocomplete-list");
+                    a.setAttribute("class", "autocomplete-items");
 
-                    @if (item3.Return_Date.ToString().Length > 2)
-                    {
-                        <td>@item3.Return_Date </td>
+                   /* checkMatchingBook();*/
+                    //getselectedBook(valu);
+                    /*append the DIV element as a child of the autocomplete container:*/
+                    this.parentNode.appendChild(a);
+                    /*for each item in the array...*/
+                    for (i = 0; i < arr.length; i++) {
+                        /*check if the item starts with the same letters as the text field value:*/
+                        if (arr[i].substr(0, val.length).toUpperCase() == val.toUpperCase()) {
+                            /*create a DIV element for each matching element:*/
+                            b = document.createElement("DIV");
+                            /*make the matching letters bold:*/
+                            b.innerHTML = "<strong>" + arr[i].substr(0, val.length) + "</strong>";
+                            b.innerHTML += arr[i].substr(val.length);
+                            /*insert a input field that will hold the current array item's value:*/
+                            b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
+                            /*execute a function when someone clicks on the item value (DIV element):*/
+                            b.addEventListener("click", function (e) {
+                                /*insert the value for the autocomplete text field:*/
+                                inp.value = this.getElementsByTagName("input")[0].value;
+                               /* checkMatchingBook();*/
+                                /*close the list of autocompleted values,
+                                (or any other open lists of autocompleted values:*/
+                                closeAllLists();
+                            });
+                            a.appendChild(b);
+                        }
                     }
-                    else
-                    {
-                        <td>@item3.Book_ID </td>
+                });
+
+
+
+
+                /*execute a function presses a key on the keyboard:*/
+                inp.addEventListener("keydown", function (e) {
+                    var x = document.getElementById(this.id + "autocomplete-list");
+                    if (x) x = x.getElementsByTagName("div");
+                    if (e.keyCode == 40) {
+                        /*If the arrow DOWN key is pressed,
+                        increase the currentFocus variable:*/
+                        currentFocus++;
+                        /*and and make the current item more visible:*/
+                        addActive(x);
+                    } else if (e.keyCode == 38) { //up
+                        /*If the arrow UP key is pressed,
+                        decrease the currentFocus variable:*/
+                        currentFocus--;
+                        /*and and make the current item more visible:*/
+                        addActive(x);
+                    } else if (e.keyCode == 13) {
+                        /*If the ENTER key is pressed, prevent the form from being submitted,*/
+                        e.preventDefault();
+                        if (currentFocus > -1) {
+                            /*and simulate a click on the "active" item:*/
+                            if (x) {
+
+                                x[currentFocus].click();
+                                setTimeout("checkMatchingBook", 20);
+                            }
+                        }
                     }
-                </tr>
-                @*<tr>
-                <td>Bünti</td>
-                <td>@item3.Punishment </td>
-                @{puinishment += int.Parse(item3.Punishment.ToString());}
-            </tr>*@
+                });
+                function addActive(x) {
+                    /*a function to classify an item as "active":*/
+                    if (!x) return false;
+                    /*start by removing the "active" class on all items:*/
+                    removeActive(x);
+                    if (currentFocus >= x.length) currentFocus = 0;
+                    if (currentFocus < 0) currentFocus = (x.length - 1);
+                    /*add class "autocomplete-active":*/
+                    x[currentFocus].classList.add("autocomplete-active");
+                }
+                function removeActive(x) {
+                    /*a function to remove the "active" class from all autocomplete items:*/
+                    for (var i = 0; i < x.length; i++) {
+                        x[i].classList.remove("autocomplete-active");
+                    }
+                }
+                function closeAllLists(elmnt) {
+                    /*close all autocomplete lists in the document,
+                    except the one passed as an argument:*/
+                    var x = document.getElementsByClassName("autocomplete-items");
+                    for (var i = 0; i < x.length; i++) {
+                        if (elmnt != x[i] && elmnt != inp) {
+                            x[i].parentNode.removeChild(x[i]);
+                        }
+                    }
+                }
+                /*execute a function when someone clicks in the document:*/
+                document.addEventListener("click", function (e) {
+                    closeAllLists(e.target);
+                });
             }
 
 
-        </table>
-        <script>
+
+            autocomplete(document.getElementById("konv"), all_Writer);
+
+
+
+
             function myfunction() {
                 console.log($("id").value);
                 $.ajax({
