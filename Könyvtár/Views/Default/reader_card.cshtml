@@ -9,6 +9,7 @@
     List<Rent> rent = new List<Rent>();
     int puinishment = 0;
     int sessionuid = int.Parse(Session["userid"].ToString());
+    if(Session["currentreadercard"] != null) { sessionuid = int.Parse(Session["currentreadercard"].ToString()); }
     rc = bullshit.Reader_Card.Where(q => q.User_ID == sessionuid).FirstOrDefault();
     if (rc != null)
     {
@@ -103,7 +104,7 @@
         @* this is for rents*@
         <form action="CreateRent" method="post" class="text-white bg-info bg-opacity-50">
             <h3 class="opacity-100">Kölcsönzés</h3>
-            <label>Név</label>  <select name="id">
+            <label>Név</label>  <select name="id" onchange="myFunction()">
     @foreach (var item in cr)
     {
         user me = bullshit.user.FirstOrDefault(q => q.id == item.User_ID);
@@ -125,7 +126,7 @@
             <input type="submit" name="no" value="hozzáadás" />
         </form>
 
-        <table>
+        <table class="table table-bordered text-light table-striped">
             <tr>
                 <td>Név:</td>
                 <td>@(Session["username"]) </td>
@@ -170,6 +171,20 @@
 
 
         </table>
+        <script>
+            function myfunction() {
+                console.log($("id").value);
+                $.ajax({
+                    url: "/Default/SetSession",
+                    type: "POST",
+                    data: { 'currentreadercard': $("id").value },
+                    success: function () {
+                    },
+                    error: function () { alert("error"); }
+                });
+            }
+        </script>
+
     </div>
 </body>
 </html>

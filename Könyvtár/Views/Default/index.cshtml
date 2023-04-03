@@ -4,6 +4,7 @@
 @{
     ActionResult kep;
     Session["cur_book"] = null;
+
     konyv[] kv;
     Reader_Card[] cr;
     book_vs19Entities1 bullshit = new book_vs19Entities1();
@@ -222,9 +223,9 @@
                 $.ajax({
                     type: "POST",
                     // You can use the absolute url eg www.site.com/MyControllerName/LiveTagSearch or the relative path live below
-                    url: "/Default/LiveSearchISBN",
+                    url: "/Default/LiveSearchReaderCard",
                     // Attach the value to a parameter called search
-                    data: '',
+                    data: { search: @Session["userid"].ToString()},
                     datatype: "html",
                     success: function (data) {
                         // Insert the returned search results html into the result element
