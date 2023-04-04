@@ -263,18 +263,21 @@ namespace Könyvtár.App_Data
             return View("reader_card");
         }
 
-        public ActionResult CreateRent(string id,string book_id)
+        public ActionResult CreateRent(string username,string book_id,string date)
         {
             Rent rent = new Rent();
-            rent.Card_ID = int.Parse(id);
+            //rent.Card_ID = int.Parse( db_book.user.First().Username );
             rent.Book_ID = book_id;
-            rent.Rent_Date = DateTime.Now;
+
+            DateTime addedtime;
+            if (!DateTime.TryParse(date, out addedtime)) addedtime = DateTime.Now;
+            rent.Rent_Date = addedtime;
             rent.Due_Date = DateTime.Now.AddDays(14);
             int wichkonyv = int.Parse(book_id);
             db_book.konyv.Where(q => q.Id == wichkonyv).First().Available_Quantity -= 1;
             db_book.Rent.Add(rent);
             db_book.SaveChanges();
-            Log("Kiadot egy könyvet", id + "");
+            Log("Kiadot egy könyvet", book_id + "");
             return View("TheMetaViewer");
         }
 
