@@ -267,6 +267,8 @@ namespace Könyvtár.App_Data
         {
             Rent rent = new Rent();
             //rent.Card_ID = int.Parse( db_book.user.First().Username );
+            string usernaemsplit = username.Split('/')[0];
+            rent.Card_ID= db_book.user.First(q => q.Username.Equals(usernaemsplit)).user_id.Value;
             rent.Book_ID = book_id;
 
             DateTime addedtime;
@@ -407,15 +409,19 @@ namespace Könyvtár.App_Data
         //    Log("Létrehozott egy Tagot", account2.user_id + "");
         //    return View("TheMetaViewer");
         //}
-        public ActionResult delRent(string id)
+        public ActionResult delRent(string bookid,string date)
         {
-            Rent rent = db_book.Rent.Where(q=>q.Id == int.Parse(id)).First();
+            string[] bookidsplit = bookid.Split(';');
+            Rent rent = db_book.Rent.Where(q=>q.Book_ID == bookid).First();
             rent.Return_Date = DateTime.Now;
+            DateTime addedDate;
+            if (!DateTime.TryParse(date, out addedDate)) addedDate = DateTime.Now;
+            rent.Return_Date = addedDate;
             int wichkonyv = int.Parse(rent.Book_ID);
             db_book.konyv.Where(q => q.Id == wichkonyv ).First().Available_Quantity += 1;
             db_book.SaveChanges();
-            Log("visszahozott egy könyvet", id + "");
-            return View("TheMetaViewer");
+            Log("visszahozott egy könyvet", bookid + "");
+            return View("reader_card");
         }
 
 

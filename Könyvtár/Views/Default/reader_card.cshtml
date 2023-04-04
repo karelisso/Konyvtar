@@ -1,7 +1,7 @@
 ﻿@{
     //Layout = null;
     book_vs19Entities1 bullshit = new book_vs19Entities1();
-
+    UsersEntities dogpile = new UsersEntities();
     konyv[] kv;
     KonyvPeldany[] kmp;
     user[] ur = bullshit.user.ToArray();
@@ -20,6 +20,7 @@
     //    rent = bullshit.Rent.ToList();
     //}
     rent = bullshit.Rent.ToList();
+    int? current = cr[0].User_ID;
 }
 
 <!DOCTYPE html>
@@ -36,75 +37,83 @@
         </h1>
     </header>
     <div>
-
-        <p>Tag felvétele</p>
-        @*this is for rent_cards*@
-        <form action="CreateReader" method="post" class="text-white bg-dark bg-opacity-50">
-            <h3 class="opacity-100">Olvasó felvétele</h3>
-            <table class="w-100">
-                <tr>
-                    <td> <label>Név</label>  </td>
-                    <td> <input type="text" name="name" value="" autocomplete="off" />   </td>
-                </tr>
-                <tr>
-                    <td> <label>Annya neve</label>  </td>
-                    <td> <input type="text" name="name2" value="" autocomplete="off" />   </td>
-
-                </tr>
-
-                <tr>
-                    <td class="col-3"> <label>Születés hely</label>    </td>
-                    <td class="col-9"> <input type="type" name="birthpalace" value="" maxlength="10" required autocomplete="off" /> </td>
-                </tr>
-
-                <tr>
-                    <td class="col-3"> <label>Születés dátuma</label>    </td>
-                    <td class="col-9"> <input type="type" name="birthday" value="" maxlength="10" required autocomplete="off" /> </td>
-                </tr>
+        <h1 class="fixed-bottom bg-black bg-opacity-50 w-100 row">
+            <button class="col-6 btn btn-success" onclick="enableAdd()">kölcsönzés</button>
+            @* <button class="col-4">Állomány modosÍtása</button> *@
+            <button class="col-6 btn btn-dark" " onclick="enableDell()">új olvasó felvétele</button>
+        </h1>
+        <div id="Dell">
+            <form action="CreateReader" method="post" class="text-white bg-dark bg-opacity-50">
+                <h3 class="opacity-100">Olvasó felvétele</h3>
 
 
-                <tr>
-                    <td class="col-3"><label>Személyi igazolvány szám</label>    </td>
-                    <td class="col-9">  <input class="w-100" type="text" name="szid" value="" autocomplete="off" /> </td>
-                </tr>
-                <tr>
-                    <td>  <label>lakcím</label>  </td>
-                    <td>  <input type="text" name="home" value="" autocomplete="off" />  </td>
-                </tr>
-                <tr>
-                    <td> <label>tel</label>   </td>
-                    <td>   <input type="tel" name="phone" value="" autocomplete="off" /> </td>
-                </tr>
-                <tr>
-                    <td>  <label>Email cím</label>   </td>
-                    <td>  <input type="email" name="mail" value="" autocomplete="none" />  </td>
-                </tr>
-                <tr>
-                    <td>  <label>jelszó</label>  </td>
-                    <td>  <input type="password" name="Upp" required /> </td>
-                </tr>
-                <tr>
-                    <td>   <label>jelszó megerősítése</label>  </td>
-                    <td>  <input type="password" name="UppR" required /> </td>
-                </tr>
-            </table>
+                <table class="w-100">
+                    <tr>
+                        <td> <label>Név</label>  </td>
+                        <td> <input type="text" name="name" value="" autocomplete="off" />   </td>
+                    </tr>
+                    <tr>
+                        <td> <label>Annya neve</label>  </td>
+                        <td> <input type="text" name="name2" value="" autocomplete="off" />   </td>
 
-            @*<br />
-             <br />
-              <br />
-             <br />
-            <br />
-             <div class="col-md-6 mb-4 text-white" ">
-                 <label>jelszó</label> <input type="password" name="Upp" required />
-             </div>
-             <div class="col-md-6 mb-4">
-                 <div class="form-outline text-white" ">
-                     <label>jelszó megerősítése</label> <input type="password" name="UppR" required />
+                    </tr>
+
+                    <tr>
+                        <td class="col-3"> <label>Születés hely</label>    </td>
+                        <td class="col-9"> <input type="type" name="birthpalace" value="" maxlength="10" required autocomplete="off" /> </td>
+                    </tr>
+
+                    <tr>
+                        <td class="col-3"> <label>Születés dátuma</label>    </td>
+                        <td class="col-9"> <input type="type" name="birthday" value="" maxlength="10" required autocomplete="off" /> </td>
+                    </tr>
+
+
+                    <tr>
+                        <td class="col-3"><label>Személyi igazolvány szám</label>    </td>
+                        <td class="col-9">  <input class="w-100" type="text" name="szid" value="" autocomplete="off" /> </td>
+                    </tr>
+                    <tr>
+                        <td>  <label>lakcím</label>  </td>
+                        <td>  <input type="text" name="home" value="" autocomplete="off" />  </td>
+                    </tr>
+                    <tr>
+                        <td> <label>tel</label>   </td>
+                        <td>   <input type="tel" name="phone" value="" autocomplete="off" /> </td>
+                    </tr>
+                    <tr>
+                        <td>  <label>Email cím</label>   </td>
+                        <td>  <input type="email" name="mail" value="" autocomplete="off" />  </td>
+                    </tr>
+                    <tr>
+                        <td>  <label>jelszó</label>  </td>
+                        <td>  <input type="password" name="Upp" required autocomplete="off" /> </td>
+                    </tr>
+                    <tr>
+                        <td>   <label>jelszó megerősítése</label>  </td>
+                        <td>  <input type="password" name="UppR" required /> </td>
+                    </tr>
+                </table>
+
+                @*<br />
+                 <br />
+                  <br />
+                 <br />
+                <br />
+                 <div class="col-md-6 mb-4 text-white" ">
+                     <label>jelszó</label> <input type="password" name="Upp" required />
                  </div>
-             </div>*@
-            <input type="submit" name="no" value="regisztrál" />
+                 <div class="col-md-6 mb-4">
+                     <div class="form-outline text-white" ">
+                         <label>jelszó megerősítése</label> <input type="password" name="UppR" required />
+                     </div>
+                 </div>*@
+                <input type="submit" name="no" value="regisztrál" />
 
-        </form>
+            </form>
+        </div>
+        @*this is for rent_cards*@
+
 
         @* this is for rents*@
 
@@ -132,9 +141,9 @@
                 </select><br />
                 <input type="submit" name="no" value="hozzáadás" />
             </form>*@
-        <h3 class="opacity-100 text-white ">Kölcsönzés</h3>
-        <!--<form action="CreateRent" method="post" enctype="multipart/form-data" class="text-white" onsubmit="return confirm('Biztos hogy ki akarod kölcsönözni ezt a könyvet az állományból');">-->
-
+        <div id="Addiptive">
+            <h3 class="opacity-100 text-white ">Kölcsönzés</h3>
+            <!--<form action="CreateRent" method="post" enctype="multipart/form-data" class="text-white" onsubmit="return confirm('Biztos hogy ki akarod kölcsönözni ezt a könyvet az állományból');">-->
             @*<label>Könyv</label>
             <select name="name">
                 @foreach (var item in km)
@@ -151,82 +160,109 @@
             <div id="result" class="tag-results"> </div>
             <input type="submit" name="btnSubmit" value="kikölcsönzés" />
         </form>-->
-        <table class="table table-bordered text-light" id="tablfull">
+        <table class="w-100 text-white">
+            
+            <tr>
+                <td> <label>Név</label>  </td>
+                <td>  @bullshit.user.First(q => q.user_id == current).Username  </td>
+            </tr>
+            <tr>
+                <td class="col-3"><label>Személyi igazolvány szám</label>    </td>
+                <td class="col-9">  <input class="w-100" type="text" id="szid" value="" autocomplete="off" /> </td>
+            </tr>
+            <tr>
+                <td>  <label>lakcím</label>  </td>
+                <td>  @cr[0].Birtpalace  </td>
+            </tr>
+            <tr>
+                <td> <label>tel</label>   </td>
+                <td>  @dogpile.User_sus.First(q => q.Id == current).phone  </td>
+            </tr>
+            <tr>
+                <td>  <label>Email cím</label>   </td>
+                <td>  @dogpile.User_sus.First(q => q.Id == current).email </td>
+            </tr>
+        </table>
+            <table class="table table-bordered text-light" id="tablfull">
 
-            <thead style="position: sticky;top: 0">
+                <thead style="position: sticky;top: 0">
 
-                <tr class="text-dark bg-warning">
-                    <td> <strong>ISBN</strong>  </td>
-                    <td><strong>kikölcsöző / anyja neve</strong> </td>
-                    <td><strong>kölcsönadás ideje</strong> </td>
-                    <td><strong>visszavétel ideje</strong> </td>
-                    <td><strong>visszavétel hatálya</strong> </td>
-                    <td><strong>adatok rögzitése</strong> </td>
-                    @*<td> <strong>Darab</strong> </td>*@
-                </tr>
+                    <tr class="text-dark bg-warning">
+                        <td> <strong>ISBN</strong>  </td>
+                        <td><strong>könyv címe</strong> </td>
+                        <td><strong>kölcsönadás ideje</strong> </td>
+                        <td><strong>visszavétel ideje</strong> </td>
+                        <td><strong>visszavétel hatálya</strong> </td>
+                        <td><strong>adatok rögzitése</strong> </td>
+                        @*<td> <strong>Darab</strong> </td>*@
+                    </tr>
 
-            </thead>
-            <tbody>
-                <form action="CreateRent" method="post">
+                </thead>
+                <tbody>
+                    <form action="CreateRent" method="post">
                     <tr>
                         <td><input type="text" required id="konv" name="username"></td>
                         <td><input type="text" required id="ollvasok" name="book_id"></td>
                         <td><input type="date" required name="date"></td>
-                        <td><input type="date">         </td>
-                        <td><input type="date" readonly> </td>
+                        <td>@*<input type="date" readonly>*@         </td>
+                        <td>@*<input type="date" readonly>*@         </td>
                         <td><input type="submit" value="Rögzités"> </td>
                     </tr>
 
-                </form>
-                @foreach (var item3 in rent)
-                {
+                    </form>
+                    @foreach (var item3 in rent.Where(q => !q.Return_Date.HasValue))
+                    {
 
-                    //int? currentReaderId = bullshit.Reader_Card.FirstOrDefault(q => q.Id == item3.Card_ID).User_ID;                    
-                    <form action="/" method="post">
+                        //int? currentReaderId = bullshit.Reader_Card.FirstOrDefault(q => q.Id == item3.Card_ID).User_ID;
+                        <form action="/" method="post">
                         <tr>
-                            <td> @item3.Book_ID <input type="text" readonly value="@item3.Book_ID" hidden> </td>
-                            <td>@bullshit.user.First(q => q.user_id == item3.Card_ID).Username /<br> @bullshit.Reader_Card.First(q => q.User_ID == item3.Card_ID).Momname </td>
+                            <td> @item3.Book_ID <input type="text" readonly value="@item3.Book_ID" name="bookid" hidden> </td>
+                            @*<td>@bullshit.user.First(q => q.user_id == item3.Card_ID).Username /<br> @bullshit.Reader_Card.First(q => q.User_ID == item3.Card_ID).Momname </td>*@
+                            @*<td>@bullshit.konyv.First(q=>q.Id==item3.Book_ID)</td>*@
+                            <td></td>
                             <td>@item3.Rent_Date </td>
-                            <td><input type="date" required></td>
+                            <td><input type="date" required name="date"> </td>
                             <td>@item3.Due_Date </td>
                             <td><input type="submit" value="Rögzités"> </td>
                         </tr>
-                    </form>
-                    @*<tr>
-                <td>Bünti</td>
-                <td>@item3.Punishment </td>
-                @{puinishment += int.Parse(item3.Punishment.ToString());}
-            </tr>*@
+                        </form>
+                        @*<tr>
+                            <td>Bünti</td>
+                            <td>@item3.Punishment </td>
+                            @{puinishment += int.Parse(item3.Punishment.ToString());}
+                        </tr>*@
                     }
                 </tbody>
 
-            @* find every active table row, use the id from the table to delete it from the datbase! *@
-        </table>
+                @* find every active table row, use the id from the table to delete it from the datbase! *@
+            </table>
+        </div>
+
 
         <!--<table class="table table-bordered text-light">-->
-            @*<tr>
-                <td>Név:</td>
-                <td>@(Session["username"]) </td>
-            </tr>*@
-            @*<tr>
-                <td>Kölcsönzések:</td>
-            </tr>*@
-            @*@if (rc == null)
-            {
-                <tr> jelenleg nincs Olvasokártya </tr>
-            }*@
-            <!--<tr>
-                <td>Könyv azonositó</td>
-                <td>kölcsönzés ideje</td>
-                <td>vissza adás határideje</td>
-                <td>visszavitel ideje</td>
-            </tr>
+        @*<tr>
+            <td>Név:</td>
+            <td>@(Session["username"]) </td>
+        </tr>*@
+        @*<tr>
+            <td>Kölcsönzések:</td>
+        </tr>*@
+        @*@if (rc == null)
+        {
+            <tr> jelenleg nincs Olvasokártya </tr>
+        }*@
+        <!--<tr>
+            <td>Könyv azonositó</td>
+            <td>kölcsönzés ideje</td>
+            <td>vissza adás határideje</td>
+            <td>visszavitel ideje</td>
+        </tr>
 
 
 
-        </table>-->
+    </table>-->
 
-    <script>
+        <script>
             var all_Writer = []
             @foreach (var item in kmp.Where(q => !q.RemovedTime.HasValue))
             {
@@ -238,7 +274,7 @@
              var all_Reader = []
             @foreach (var item in cr)
             {
-                string varrrr = $"{ur.First(q=>q.user_id==item.User_ID).Username .Trim()}/{item.Momname.Trim()}";
+                string varrrr = $"{ur.First(q=>q.user_id==item.User_ID).Username.Trim()}/{item.Momname.Trim()}";
 
                @:{ all_Reader.push("@varrrr.Trim()") };
             }
@@ -360,6 +396,18 @@
 
             autocomplete(document.getElementById("ollvasok"), all_Reader);
 
+        $(window).on('load', function () {
+            $("#Dell").hide();
+            $("#Addiptive").show();
+        })
+        function enableAdd() {
+            $("#Dell").hide();
+            $("#Addiptive").show();
+        }
+        function enableDell() {
+            $("#Dell").show();
+            $("#Addiptive").hide();
+        }
 
             function myfunction() {
                 console.log($("id").value);
@@ -372,7 +420,7 @@
                     error: function () { alert("error"); }
                 });
             }
-    </script>
+        </script>
 
     </div>
 </body>
