@@ -4,6 +4,7 @@
 
     konyv[] kv;
     KonyvPeldany[] kmp;
+    user[] ur = bullshit.user.ToArray();
     kmp= bullshit.KonyvPeldany.ToArray();
     kv = bullshit.konyv.ToArray();
     Reader_Card[] cr = bullshit.Reader_Card.ToArray();
@@ -39,7 +40,7 @@
         <p>Tag felvétele</p>
         @*this is for rent_cards*@
         <form action="CreateReader" method="post" class="text-white bg-dark bg-opacity-50">
-            <h3 class="opacity-100">Olvasó</h3>
+            <h3 class="opacity-100">Olvasó felvétele</h3>
             <table class="w-100">
                 <tr>
                     <td> <label>Név</label>  </td>
@@ -156,38 +157,45 @@
 
                 <tr class="text-dark bg-warning">
                     <td> <strong>ISBN</strong>  </td>
+                    <td><strong>kikölcsöző / anyja neve</strong> </td>
                     <td><strong>kölcsönadás ideje</strong> </td>
                     <td><strong>visszavétel ideje</strong> </td>
-                    <td> <strong>Darab</strong> </td>
+                    <td><strong>visszavétel hatálya</strong> </td>
+                    @*<td> <strong>Darab</strong> </td>*@
                 </tr>
 
             </thead>
             <tbody>
+                <form action="CreateRent" method="post">
+                <tr>
+                    <td><input type="text" required id="konv"></td>
+                    <td><input type="text" required id="ollvasok"></td>
+                    <td><input type="date" required></td>
+                    <td><input type="date">         </td>
+                    <td><input type="date" readonly> </td>
+                </tr>
+
+                </form>
                 @foreach (var item3 in rent)
                 {
+
+                    //int? currentReaderId = bullshit.Reader_Card.FirstOrDefault(q => q.Id == item3.Card_ID).User_ID;                    
+                    <form action="/" method="post">
                     <tr>
-                        <td>@item3.Book_ID </td>
+                        <td> @item3.Book_ID <input type="text" readonly value="@item3.Book_ID" hidden> </td>
+                        <td>@bullshit.user.First(q => q.user_id == item3.Card_ID).Username / @bullshit.Reader_Card.First(q => q.User_ID == item3.Card_ID).Momname </td>
                         <td>@item3.Rent_Date </td>
-
+                        <td><input type="date" required></td>
                         <td>@item3.Due_Date </td>
-
-
-                        @if (item3.Return_Date.ToString().Length > 2)
-                        {
-                            <td>@item3.Return_Date </td>
-                        }
-                        else
-                        {
-                            <td>@item3.Book_ID </td>
-                        }
                     </tr>
+                    </form>
                     @*<tr>
                 <td>Bünti</td>
                 <td>@item3.Punishment </td>
                 @{puinishment += int.Parse(item3.Punishment.ToString());}
             </tr>*@
-                }
-            </tbody>
+                    }
+                </tbody>
 
             @* find every active table row, use the id from the table to delete it from the datbase! *@
         </table>
@@ -215,13 +223,21 @@
 
         </table>-->
 
-        <script>
+    <script>
             var all_Writer = []
             @foreach (var item in kmp.Where(q => !q.RemovedTime.HasValue))
             {
                 string varrrr = $"{item.book_id.Trim()};{item.PeldanyId}";
 
                @:{ all_Writer.push("@varrrr.Trim()") };
+            }
+
+             var all_Reader = []
+            @foreach (var item in cr)
+            {
+                string varrrr = $"{ur.First(q=>q.user_id==item.User_ID).Username .Trim()}/{item.Momname.Trim()}";
+
+               @:{ all_Reader.push("@varrrr.Trim()") };
             }
 
             function autocomplete(inp, arr) {
@@ -240,6 +256,7 @@
                     a = document.createElement("DIV");
                     a.setAttribute("id", this.id + "autocomplete-list");
                     a.setAttribute("class", "autocomplete-items");
+                    a.classList.add("text-dark")
 
                    /* checkMatchingBook();*/
                     //getselectedBook(valu);
@@ -338,7 +355,7 @@
 
             autocomplete(document.getElementById("konv"), all_Writer);
 
-
+            autocomplete(document.getElementById("ollvasok"), all_Reader);
 
 
             function myfunction() {
@@ -352,7 +369,7 @@
                     error: function () { alert("error"); }
                 });
             }
-        </script>
+    </script>
 
     </div>
 </body>
