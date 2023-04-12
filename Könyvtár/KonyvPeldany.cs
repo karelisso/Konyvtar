@@ -14,7 +14,7 @@ namespace Könyvtár
     
     public partial class KonyvPeldany
     {
-        public int Id { get; set; }
+        public int IdKonvyPeldany { get; set; }
         public string book_id { get; set; }
         public System.DateTime AddedTime { get; set; }
         public Nullable<System.DateTime> RemovedTime { get; set; }

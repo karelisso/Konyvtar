@@ -18,6 +18,15 @@ namespace Könyvtár
                 url: "{controller}/{action}/{id}",
                 defaults: new {controller = "Default",  action = "start", id = UrlParameter.Optional }
             );
+
+
+
+            routes.MapRoute(
+                name: "CatchAll",
+                url: "{*url}",
+                defaults: new { controller = "Default", action = "start" }
+            );
+
         }
     }
 }

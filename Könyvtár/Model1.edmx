@@ -7,17 +7,17 @@
     <Schema Namespace="book_vs19Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Author">
           <Key>
-            <PropertyRef Name="Id" />
+            <PropertyRef Name="IdAuthor" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="IdAuthor" Type="int" Nullable="false" />
           <Property Name="name" Type="nchar" MaxLength="60" />
           <Property Name="Date" Type="nchar" MaxLength="30" />
         </EntityType>
         <EntityType Name="Categories">
           <Key>
-            <PropertyRef Name="Id" />
+            <PropertyRef Name="IdCategorie" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="IdCategorie" Type="int" Nullable="false" />
           <Property Name="Name" Type="nchar" MaxLength="255" Nullable="false" />
           <Property Name="description" Type="nvarchar(max)" />
         </EntityType>
@@ -39,9 +39,9 @@
         </EntityType>
         <EntityType Name="konyv">
           <Key>
-            <PropertyRef Name="Id" />
+            <PropertyRef Name="IdKonyv" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="IdKonyv" Type="int" Nullable="false" />
           <Property Name="name" Type="nvarchar(max)" />
           <Property Name="writerID" Type="int" />
           <Property Name="authorId" Type="int" />
@@ -54,19 +54,28 @@
         </EntityType>
         <EntityType Name="KonyvPeldany">
           <Key>
-            <PropertyRef Name="Id" />
+            <PropertyRef Name="IdKonvyPeldany" />
           </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IdKonvyPeldany" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="book_id" Type="nchar" MaxLength="13" Nullable="false" />
           <Property Name="AddedTime" Type="date" Nullable="false" />
           <Property Name="RemovedTime" Type="date" />
           <Property Name="PeldanyId" Type="int" Nullable="false" />
         </EntityType>
+        <EntityType Name="KonyvTorolt">
+          <Key>
+            <PropertyRef Name="IdKonyvTorolt" />
+          </Key>
+          <Property Name="IdKonyvTorolt" Type="int" Nullable="false" />
+          <Property Name="WhenAdded" Type="date" />
+          <Property Name="WhenDeleted" Type="date" />
+          <Property Name="what" Type="nvarchar" MaxLength="13" />
+        </EntityType>
         <EntityType Name="Log">
           <Key>
-            <PropertyRef Name="Id" />
+            <PropertyRef Name="IdLog" />
           </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IdLog" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="who" Type="int" Nullable="false" />
           <Property Name="when" Type="datetime" Nullable="false" />
           <Property Name="what_ID" Type="int" />
@@ -75,16 +84,16 @@
         </EntityType>
         <EntityType Name="LogDetail">
           <Key>
-            <PropertyRef Name="Id" />
+            <PropertyRef Name="IdLogDetail" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="IdLogDetail" Type="int" Nullable="false" />
           <Property Name="text" Type="nvarchar(max)" Nullable="false" />
         </EntityType>
         <EntityType Name="Reader_Card">
           <Key>
-            <PropertyRef Name="Id" />
+            <PropertyRef Name="IdReaderCard" />
           </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IdReaderCard" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="User_ID" Type="int" />
           <Property Name="Rent_ID_Bundle" Type="bigint" />
           <Property Name="Personel_ID_Card" Type="nchar" MaxLength="20" />
@@ -128,12 +137,12 @@
         </EntityType>
         <EntityType Name="Rent">
           <Key>
-            <PropertyRef Name="Id" />
+            <PropertyRef Name="IdRent" />
           </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Book_ID" Type="nchar" MaxLength="10" Nullable="false" />
+          <Property Name="IdRent" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Book_ID" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="Rent_Date" Type="datetime" Nullable="false" />
-          <Property Name="Due_Date" Type="datetime" />
+          <Property Name="Due_Date" Type="datetime" Nullable="false" />
           <Property Name="Return_Date" Type="datetime" />
           <Property Name="Punishment" Type="money" />
           <Property Name="Card_ID" Type="int" Nullable="false" />
@@ -147,9 +156,9 @@
         </EntityType>
         <EntityType Name="user">
           <Key>
-            <PropertyRef Name="id" />
+            <PropertyRef Name="iduser" />
           </Key>
-          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="iduser" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Username" Type="varchar" MaxLength="255" />
           <Property Name="role" Type="nchar" MaxLength="10" />
           <Property Name="admin" Type="int" />
@@ -158,9 +167,9 @@
         </EntityType>
         <EntityType Name="Writer">
           <Key>
-            <PropertyRef Name="Id" />
+            <PropertyRef Name="IdWriter" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="IdWriter" Type="int" Nullable="false" />
           <Property Name="writer_name" Type="nvarchar(max)" Nullable="false" />
           <Property Name="real_name" Type="nvarchar(max)" Nullable="false" />
           <Property Name="writer_Date" Type="varchar(max)" />
@@ -173,6 +182,7 @@
           <EntitySet Name="InformationBundle" EntityType="Self.InformationBundle" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="konyv" EntityType="Self.konyv" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="KonyvPeldany" EntityType="Self.KonyvPeldany" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="KonyvTorolt" EntityType="Self.KonyvTorolt" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Log" EntityType="Self.Log" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="LogDetail" EntityType="Self.LogDetail" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Reader_Card" EntityType="Self.Reader_Card" Schema="dbo" store:Type="Tables" />
@@ -196,6 +206,7 @@
           <EntitySet Name="InformationBundle" EntityType="book_vs19Model.InformationBundle" />
           <EntitySet Name="konyv" EntityType="book_vs19Model.konyv" />
           <EntitySet Name="KonyvPeldany" EntityType="book_vs19Model.KonyvPeldany" />
+          <EntitySet Name="KonyvTorolt" EntityType="book_vs19Model.KonyvTorolt" />
           <EntitySet Name="Log" EntityType="book_vs19Model.Log" />
           <EntitySet Name="LogDetail" EntityType="book_vs19Model.LogDetail" />
           <EntitySet Name="Reader_Card" EntityType="book_vs19Model.Reader_Card" />
@@ -210,17 +221,17 @@
         </EntityContainer>
         <EntityType Name="Author">
           <Key>
-            <PropertyRef Name="Id" />
+            <PropertyRef Name="IdAuthor" />
           </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="IdAuthor" Type="Int32" Nullable="false" />
           <Property Name="name" Type="String" MaxLength="60" FixedLength="true" Unicode="true" />
           <Property Name="Date" Type="String" MaxLength="30" FixedLength="true" Unicode="true" />
         </EntityType>
         <EntityType Name="Categories">
           <Key>
-            <PropertyRef Name="Id" />
+            <PropertyRef Name="IdCategorie" />
           </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="IdCategorie" Type="Int32" Nullable="false" />
           <Property Name="Name" Type="String" Nullable="false" MaxLength="255" FixedLength="true" Unicode="true" />
           <Property Name="description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
@@ -242,9 +253,9 @@
         </EntityType>
         <EntityType Name="konyv">
           <Key>
-            <PropertyRef Name="Id" />
+            <PropertyRef Name="IdKonyv" />
           </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="IdKonyv" Type="Int32" Nullable="false" />
           <Property Name="name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="writerID" Type="Int32" />
           <Property Name="authorId" Type="Int32" />
@@ -257,19 +268,28 @@
         </EntityType>
         <EntityType Name="KonyvPeldany">
           <Key>
-            <PropertyRef Name="Id" />
+            <PropertyRef Name="IdKonvyPeldany" />
           </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IdKonvyPeldany" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="book_id" Type="String" Nullable="false" MaxLength="13" FixedLength="true" Unicode="true" />
           <Property Name="AddedTime" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="RemovedTime" Type="DateTime" Precision="0" />
           <Property Name="PeldanyId" Type="Int32" Nullable="false" />
         </EntityType>
+        <EntityType Name="KonyvTorolt">
+          <Key>
+            <PropertyRef Name="IdKonyvTorolt" />
+          </Key>
+          <Property Name="IdKonyvTorolt" Type="Int32" Nullable="false" />
+          <Property Name="WhenAdded" Type="DateTime" Precision="0" />
+          <Property Name="WhenDeleted" Type="DateTime" Precision="0" />
+          <Property Name="what" Type="String" MaxLength="13" FixedLength="false" Unicode="true" />
+        </EntityType>
         <EntityType Name="Log">
           <Key>
-            <PropertyRef Name="Id" />
+            <PropertyRef Name="IdLog" />
           </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IdLog" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="who" Type="Int32" Nullable="false" />
           <Property Name="when" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="what_ID" Type="Int32" />
@@ -278,16 +298,16 @@
         </EntityType>
         <EntityType Name="LogDetail">
           <Key>
-            <PropertyRef Name="Id" />
+            <PropertyRef Name="IdLogDetail" />
           </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="IdLogDetail" Type="Int32" Nullable="false" />
           <Property Name="text" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="Reader_Card">
           <Key>
-            <PropertyRef Name="Id" />
+            <PropertyRef Name="IdReaderCard" />
           </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IdReaderCard" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="User_ID" Type="Int32" />
           <Property Name="Rent_ID_Bundle" Type="Int64" />
           <Property Name="Personel_ID_Card" Type="String" MaxLength="20" FixedLength="true" Unicode="true" />
@@ -331,12 +351,12 @@
         </EntityType>
         <EntityType Name="Rent">
           <Key>
-            <PropertyRef Name="Id" />
+            <PropertyRef Name="IdRent" />
           </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Book_ID" Type="String" Nullable="false" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="IdRent" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Book_ID" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Rent_Date" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="Due_Date" Type="DateTime" Precision="3" />
+          <Property Name="Due_Date" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="Return_Date" Type="DateTime" Precision="3" />
           <Property Name="Punishment" Type="Decimal" Precision="19" Scale="4" />
           <Property Name="Card_ID" Type="Int32" Nullable="false" />
@@ -350,9 +370,9 @@
         </EntityType>
         <EntityType Name="user">
           <Key>
-            <PropertyRef Name="id" />
+            <PropertyRef Name="iduser" />
           </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="iduser" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Username" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="role" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
           <Property Name="admin" Type="Int32" />
@@ -361,9 +381,9 @@
         </EntityType>
         <EntityType Name="Writer">
           <Key>
-            <PropertyRef Name="Id" />
+            <PropertyRef Name="IdWriter" />
           </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="IdWriter" Type="Int32" Nullable="false" />
           <Property Name="writer_name" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="real_name" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="writer_Date" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
@@ -380,7 +400,7 @@
               <MappingFragment StoreEntitySet="Author">
                 <ScalarProperty Name="Date" ColumnName="Date" />
                 <ScalarProperty Name="name" ColumnName="name" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="IdAuthor" ColumnName="IdAuthor" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -389,7 +409,7 @@
               <MappingFragment StoreEntitySet="Categories">
                 <ScalarProperty Name="description" ColumnName="description" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="IdCategorie" ColumnName="IdCategorie" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -423,7 +443,7 @@
                 <ScalarProperty Name="authorId" ColumnName="authorId" />
                 <ScalarProperty Name="writerID" ColumnName="writerID" />
                 <ScalarProperty Name="name" ColumnName="name" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="IdKonyv" ColumnName="IdKonyv" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -434,7 +454,17 @@
                 <ScalarProperty Name="RemovedTime" ColumnName="RemovedTime" />
                 <ScalarProperty Name="AddedTime" ColumnName="AddedTime" />
                 <ScalarProperty Name="book_id" ColumnName="book_id" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="IdKonvyPeldany" ColumnName="IdKonvyPeldany" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="KonyvTorolt">
+            <EntityTypeMapping TypeName="book_vs19Model.KonyvTorolt">
+              <MappingFragment StoreEntitySet="KonyvTorolt">
+                <ScalarProperty Name="what" ColumnName="what" />
+                <ScalarProperty Name="WhenDeleted" ColumnName="WhenDeleted" />
+                <ScalarProperty Name="WhenAdded" ColumnName="WhenAdded" />
+                <ScalarProperty Name="IdKonyvTorolt" ColumnName="IdKonyvTorolt" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -446,7 +476,7 @@
                 <ScalarProperty Name="what_ID" ColumnName="what_ID" />
                 <ScalarProperty Name="when" ColumnName="when" />
                 <ScalarProperty Name="who" ColumnName="who" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="IdLog" ColumnName="IdLog" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -454,7 +484,7 @@
             <EntityTypeMapping TypeName="book_vs19Model.LogDetail">
               <MappingFragment StoreEntitySet="LogDetail">
                 <ScalarProperty Name="text" ColumnName="text" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="IdLogDetail" ColumnName="IdLogDetail" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -468,7 +498,7 @@
                 <ScalarProperty Name="Personel_ID_Card" ColumnName="Personel_ID_Card" />
                 <ScalarProperty Name="Rent_ID_Bundle" ColumnName="Rent_ID_Bundle" />
                 <ScalarProperty Name="User_ID" ColumnName="User_ID" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="IdReaderCard" ColumnName="IdReaderCard" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -518,7 +548,7 @@
                 <ScalarProperty Name="Due_Date" ColumnName="Due_Date" />
                 <ScalarProperty Name="Rent_Date" ColumnName="Rent_Date" />
                 <ScalarProperty Name="Book_ID" ColumnName="Book_ID" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="IdRent" ColumnName="IdRent" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -538,7 +568,7 @@
                 <ScalarProperty Name="admin" ColumnName="admin" />
                 <ScalarProperty Name="role" ColumnName="role" />
                 <ScalarProperty Name="Username" ColumnName="Username" />
-                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="iduser" ColumnName="iduser" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -549,7 +579,7 @@
                 <ScalarProperty Name="writer_Date" ColumnName="writer_Date" />
                 <ScalarProperty Name="real_name" ColumnName="real_name" />
                 <ScalarProperty Name="writer_name" ColumnName="writer_name" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="IdWriter" ColumnName="IdWriter" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

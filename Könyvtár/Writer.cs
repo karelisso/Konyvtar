@@ -14,7 +14,7 @@ namespace Könyvtár
     
     public partial class Writer
     {
-        public int Id { get; set; }
+        public int IdWriter { get; set; }
         public string writer_name { get; set; }
         public string real_name { get; set; }
         public string writer_Date { get; set; }

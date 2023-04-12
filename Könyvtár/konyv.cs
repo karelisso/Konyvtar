@@ -14,7 +14,7 @@ namespace Könyvtár
     
     public partial class konyv
     {
-        public int Id { get; set; }
+        public int IdKonyv { get; set; }
         public string name { get; set; }
         public Nullable<int> writerID { get; set; }
         public Nullable<int> authorId { get; set; }

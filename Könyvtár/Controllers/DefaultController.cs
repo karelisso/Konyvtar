@@ -76,23 +76,23 @@ namespace Könyvtár.App_Data
                 name2 = "";
             }
            
-            wm.Id = db_book.Writer.Max(q=>q.Id) +1;
+            wm.IdWriter = db_book.Writer.Max(q=>q.IdWriter) +1;
             wm.writer_name = name;
             wm.real_name = name2;
             wm.aboutpath = "";
             db_book.Writer.Add(wm);
             db_book.SaveChanges();
-            Log("hozzáadott egy Írót", wm.Id+"");
+            Log("hozzáadott egy Írót", wm.IdWriter+"");
             return View("TheMetaViewer");
         }
         public ActionResult CreateCategory(string name)
         {
             Categories cp = new Categories();
-            cp.Id = db_book.Categories.Max(q => q.Id) + 1;
+            cp.IdCategorie = db_book.Categories.Max(q => q.IdCategorie) + 1;
             cp.Name = name;
             db_book.Categories.Add(cp);
             db_book.SaveChanges();
-            Log("hozzáadott egy kategoriát", cp.Id+"");
+            Log("hozzáadott egy kategoriát", cp.IdCategorie+"");
             return View("TheMetaViewer");
         }
         //public ActionResult CreateAuthor(string name ,string life)
@@ -149,20 +149,20 @@ namespace Könyvtár.App_Data
             kv.authorId = 0;
             if (auth.Length > 0)
             {
-                kv.authorId = db_book.Writer.First(q => q.writer_name == auth).Id;
+                kv.authorId = db_book.Writer.First(q => q.writer_name == auth).IdWriter;
             }
-            kv.Categories = db_book.Categories.First(q=>q.Name.Equals(categori)).Id;
+            kv.Categories = db_book.Categories.First(q=>q.Name.Equals(categori)).IdCategorie;
             kv.ISBN = isbn;
             kv.name = name;
             kv.demo = demo;
             try
             {
-                kv.Id = db_book.konyv.Max(q => q.Id) + 1;
+                kv.IdKonyv = db_book.konyv.Max(q => q.IdKonyv) + 1;
             }
             catch (Exception)
             {
 
-                kv.Id = 0;
+                kv.IdKonyv = 0;
             }
             KonyvPeldany[] kvp = new KonyvPeldany[quantity];
             int startindex = db_book.KonyvPeldany.Where(q=>q.book_id == kv.ISBN).Count();
@@ -177,7 +177,7 @@ namespace Könyvtár.App_Data
             db_book.KonyvPeldany.AddRange(kvp);
             db_book.konyv.Add(kv);
             db_book.SaveChanges();
-            Log("hozzáadott egy könyvet", kv.Id+"");
+            Log("hozzáadott egy könyvet", kv.IdKonyv+"");
             return View("TheMetaViewer");
         }
         public ActionResult CreateUser(string Uname, string mail, string Upp, string UppR, bool? Adm, string phone)
@@ -263,20 +263,20 @@ namespace Könyvtár.App_Data
             return View("reader_card");
         }
 
-        public ActionResult CreateRent(string username,string book_id,string date)
+        public ActionResult CreateRent(int? szid,string book_id,string date)
         {
             Rent rent = new Rent();
-            //rent.Card_ID = int.Parse( db_book.user.First().Username );
-            string usernaemsplit = username.Split('/')[0];
-            rent.Card_ID= db_book.user.First(q => q.Username.Equals(usernaemsplit)).user_id.Value;
+            rent.Card_ID = db_book.Reader_Card.First(q=>q.User_ID ==szid).IdReaderCard;// int.Parse( db_book.user.First(q=>q.user_id.Equals(szid)). );
+            //string usernaemsplit = username.Split('/')[0];
+            //rent.Card_ID = db_book.Reader_Card.First(q => q.Personel_ID_Card.Equals(szid)).Id;//db_book.user.First(q => q.Username.Equals(usernaemsplit)).user_id.Value;
             rent.Book_ID = book_id;
 
             DateTime addedtime;
             if (!DateTime.TryParse(date, out addedtime)) addedtime = DateTime.Now;
-            rent.Rent_Date = addedtime;
-            rent.Due_Date = DateTime.Now.AddDays(14);
-            int wichkonyv = int.Parse(book_id);
-            db_book.konyv.Where(q => q.Id == wichkonyv).First().Available_Quantity -= 1;
+            rent.Rent_Date = addedtime.Date;
+            rent.Due_Date = addedtime.AddDays(14).Date;
+            //int wichkonyv = int.Parse(book_id);
+            //db_book.konyv.Where(q => q.Id == wichkonyv).First().Available_Quantity -= 1;
             db_book.Rent.Add(rent);
             db_book.SaveChanges();
             Log("Kiadot egy könyvet", book_id + "");
@@ -286,10 +286,10 @@ namespace Könyvtár.App_Data
         public ActionResult DelWriter(string name)
         {
             int data = int.Parse(name);
-            Writer wm = db_book.Writer.Where(q => q.Id == data).First();
+            Writer wm = db_book.Writer.Where(q => q.IdWriter == data).First();
             db_book.Writer.Remove(wm);
             db_book.SaveChanges();
-            Log("Törölt egy Írót", wm.Id + "");
+            Log("Törölt egy Írót", wm.IdWriter + "");
             return View("TheMetaViewer");
         }
         public ActionResult DelCategory(string name)
@@ -297,7 +297,7 @@ namespace Könyvtár.App_Data
             Categories cp = db_book.Categories.Where(c => c.Name == name).First();
             db_book.Categories.Remove(cp);
             db_book.SaveChanges();
-            Log("Törölt egy kategoriát", cp.Id + "");
+            Log("Törölt egy kategoriát", cp.IdCategorie + "");
             return View("TheMetaViewer");
         }
         //public ActionResult CreateAuthor(string name ,string life)
@@ -418,7 +418,7 @@ namespace Könyvtár.App_Data
             if (!DateTime.TryParse(date, out addedDate)) addedDate = DateTime.Now;
             rent.Return_Date = addedDate;
             int wichkonyv = int.Parse(rent.Book_ID);
-            db_book.konyv.Where(q => q.Id == wichkonyv ).First().Available_Quantity += 1;
+            db_book.konyv.Where(q => q.IdKonyv == wichkonyv ).First().Available_Quantity += 1;
             db_book.SaveChanges();
             Log("visszahozott egy könyvet", bookid + "");
             return View("reader_card");
@@ -479,13 +479,13 @@ namespace Könyvtár.App_Data
 
         public string RenderBook(konyv item)
         {
-            return $" <tr  onclick=\"tbclick(this)\" ondblclick=\"tbdbclick(this)\"> <td>{item.Id} </td>\r\n                    <td>{item.ISBN}</td>\r\n                    <td> {db_book.Writer.Where(q => q.Id == item.authorId).FirstOrDefault().writer_name} </td>\r\n                    <td>{item.name}</td>\r\n                          <td>{db_book.Categories.Where(q => q.Id == item.Categories).FirstOrDefault().Name}</td>\r\n                    {"<td>" + db_book.KonyvPeldany.Where(q => q.book_id == item.ISBN).Count(q => !q.RemovedTime.HasValue) + "</td>"}    \r\n                </tr> ";
+            return $" <tr  onclick=\"tbclick(this)\" ondblclick=\"tbdbclick(this)\"> <td>{item.IdKonyv} </td>\r\n                    <td>{item.ISBN}</td>\r\n                    <td> {db_book.Writer.Where(q => q.IdWriter == item.authorId).FirstOrDefault().writer_name} </td>\r\n                    <td>{item.name}</td>\r\n                          <td>{db_book.Categories.Where(q => q.IdCategorie == item.Categories).FirstOrDefault().Name}</td>\r\n                    {"<td>" + db_book.KonyvPeldany.Where(q => q.book_id == item.ISBN).Count(q => !q.RemovedTime.HasValue) + "</td>"}    \r\n                </tr> ";
         }
         public string RenderBookItem(string isbn)
         {
             string issbn = isbn.Split(';')[0];
             konyv item = db_book.konyv.First(q=>q.ISBN == issbn);
-            return $" <tr  onclick=\"tbclick(this)\" ondblclick=\"tbdbclick(this)\"> <td>{item.Id} </td>\r\n                    <td>{item.ISBN}</td>\r\n                    <td> {db_book.Writer.Where(q => q.Id == item.authorId).FirstOrDefault().writer_name} </td>\r\n                    <td>{item.name}</td>\r\n                          <td>{db_book.Categories.Where(q => q.Id == item.Categories).FirstOrDefault().Name}</td>\r\n                    {"<td>" + db_book.KonyvPeldany.Where(q => q.book_id == item.ISBN).Count(q => !q.RemovedTime.HasValue) + "</td>"}    \r\n                </tr> ";
+            return $" <tr  onclick=\"tbclick(this)\" ondblclick=\"tbdbclick(this)\"> <td>{item.IdKonyv} </td>\r\n                    <td>{item.ISBN}</td>\r\n                    <td> {db_book.Writer.Where(q => q.IdWriter == item.authorId).FirstOrDefault().writer_name} </td>\r\n                    <td>{item.name}</td>\r\n                          <td>{db_book.Categories.Where(q => q.IdCategorie == item.Categories).FirstOrDefault().Name}</td>\r\n                    {"<td>" + db_book.KonyvPeldany.Where(q => q.book_id == item.ISBN).Count(q => !q.RemovedTime.HasValue) + "</td>"}    \r\n                </tr> ";
 
         }
         public String LiveSearchWriter(string search)
@@ -498,12 +498,6 @@ namespace Könyvtár.App_Data
             }
             string html_code = "";
             int occurances = 0;
-
-
-
-
-            if (true)
-            {
                 Dictionary<string, int> irok = new Dictionary<string, int>();
 
                 foreach (var wr in db_book.Writer)
@@ -517,8 +511,8 @@ namespace Könyvtár.App_Data
                         //}
                         if (wr.real_name.ToLower().Contains(search.ToLower()) || wr.writer_name.ToLower().Contains(search.ToLower()))
                         {
-                            string compare = item.Id.ToString();
-                            if (item.authorId.Equals(wr.Id))
+                            string compare = item.IdKonyv.ToString();
+                            if (item.authorId.Equals(wr.IdWriter))
                                 //html_code += $" <tr  onclick=\"tbclick(this)\" ondblclick=\"tbdbclick(this)\"> <td>{item.Id} </td>\r\n                    <td>{item.ISBN}</td>\r\n                    <td> {db_book.Writer.Where(q => q.Id == item.authorId).FirstOrDefault().writer_name} </td>\r\n                    <td>{item.name}</td>\r\n                    <td> <img src=\"/Default/Load_Image_File_Id/{item.imageID}\" alt=\"Alternate Text\" height=\"50px\" /> </td>\r\n                    {"<td>" + item.Quantity + "</td>"}    \r\n                </tr> ";
                                 html_code += RenderBook(item);
 
@@ -527,90 +521,6 @@ namespace Könyvtár.App_Data
                 }
                 if (html_code.Length < 3) { html_code = "Ez a szerző nem szerepel nálunk!"; }
                 return html_code;
-            }
-            foreach (var item in db_book.Writer)
-            {
-                
-                if (item.Id.Equals(search.ToLower()))
-                {
-                    occurances++;
-                    //html_code += $"<div>{item.writer_name} </div> <br>";
-
-                }
-                else if (item.real_name.ToLower().Contains(search.ToLower()))
-                {
-                    occurances++;
-                    //html_code += $"<div>{item.real_name} </div> <br>";
-                }
-            }
-
-
-            if (occurances>0)
-            {
-                Dictionary<string, int> writers = new Dictionary<string, int>();
-                foreach (var item in db_book.Writer)
-                {
-                    writers.Add(item.writer_name.ToLower(), LevenshteinDistance(search.Trim().ToLower(), item.writer_name.ToLower().Trim()));
-                    if (!writers.ContainsKey(item.writer_name.ToLower()))
-                    {
-                        writers.Add(item.writer_name.ToLower(), LevenshteinDistance(search.Trim().ToLower(), item.real_name.ToLower().Trim()));
-                    }
-                    else if(LevenshteinDistance(search.Trim().ToLower(), item.real_name.ToLower().Trim()) < writers[item.writer_name.ToLower()])
-                    {
-                        writers.Add(item.writer_name.ToLower(), LevenshteinDistance(search.Trim().ToLower(), item.real_name.ToLower().Trim()));
-                    }
-                    if (LevenshteinDistance(search.Trim().ToLower(), item.writer_name.ToLower().Trim()) < 3 + search.Length / 4 + item.writer_name.Length)
-                    {
-                        occurances++;
-                        //html_code += $"<div>{item.writer_name} </div> <br>";
-                        foreach (var item2 in db_book.konyv)
-                        {
-                            if (item2.authorId.Equals(item.Id))
-                            {
-                                occurances++;
-                                html_code += $" <tr class=\"clickable-table\"> <td>{item2.Id} </td>\r\n                    <td>{item2.ISBN}</td>\r\n                    <td> {db_book.Writer.Where(q => q.Id == item2.authorId).FirstOrDefault().writer_name} </td>\r\n                    <td>{item2.name}</td>\r\n                    <td> <img src=\"/Default/Load_Image_File_Id/{item2.imageID}\" alt=\"Alternate Text\" height=\"50px\" /> </td>\r\n                    { ""}    \r\n                </tr> ";
-
-                            }
-                        }
-                    }
-                    else if (LevenshteinDistance(search.ToLower(), item.real_name.ToLower().Trim()) < 3 + search.Length / 4 + item.real_name.Length)
-                    {
-                        occurances++;
-                        //html_code += $"<div>{item.writer_name} </div> <br>";
-                        foreach (var item2 in db_book.konyv)
-                        {
-                            if (item2.authorId.Equals(item.Id))
-                            {
-                                occurances++;
-                                html_code += $" <tr class=\"clickable-table\"> <td>{item2.Id} </td>\r\n                    <td>{item2.ISBN}</td>\r\n                    <td> {db_book.Writer.Where(q => q.Id == item2.authorId).FirstOrDefault().writer_name} </td>\r\n                    <td>{item2.name}</td>\r\n                    <td> <img src=\"/Default/Load_Image_File_Id/{item2.imageID}\" alt=\"Alternate Text\" height=\"50px\" /> </td>\r\n                    { ""}    \r\n                </tr> ";
-                            }
-                        }
-                    }
-                }
-                writers= writers.OrderBy(q => q.Value).ToDictionary(w => w.Key, w => w.Value);
-                int counter = 0;
-                foreach (var item in writers)
-                {
-                    counter++;
-                    Writer wm = db_book.Writer.Where(q => q.writer_name == item.Key).FirstOrDefault();
-                    //html_code += $"<div>{wm.writer_name} </div> <br>";
-
-                    foreach (var item2 in db_book.konyv)
-                    {
-                        if (item2.authorId.Equals(wm.Id) || item2.writerID.Equals(wm.Id))
-                        {
-                            occurances++;
-                            //html_code += $" <tr class=\"clickable-table\"> <td>{item2.Id} </td>\r\n                    <td>{item2.ISBN}</td>\r\n                    <td> {db_book.Writer.Where(q => q.Id == item2.authorId).FirstOrDefault().writer_name} </td>\r\n                    <td>{item2.name}</td>\r\n                    <td> <img src=\"/Default/Load_Image_File_Id/{item2.imageID}\" alt=\"Alternate Text\" height=\"50px\" /> </td>\r\n                    <td> @item2.Available_Quantity @*<input type=\"number\" min=\"0\" name=\"name\" value=\"@item2.Available_Quantity\" />*@  </td>    \r\n                </tr> ";
-                        }
-                    }
-
-                    //if (counter > 1)
-                    //{
-                    //    break;
-                    //}
-                }
-            }
-            return html_code;
         }
 
         public String LiveSearchName(string search)
@@ -630,7 +540,7 @@ namespace Könyvtár.App_Data
                 if (item.name.ToLower().Contains(search.ToLower()))
                 {
                     occurances++;
-                    compare = item.Id.ToString();
+                    compare = item.IdKonyv.ToString();
                     //html_code += $" <tr  onclick=\"tbclick(this)\" ondblclick=\"tbdbclick(this)\"> <td>{ item.Id } </td>\r\n                    <td>{item.ISBN}</td>\r\n                    <td> {db_book.Writer.Where(q => q.Id == item.authorId).FirstOrDefault().writer_name} </td>\r\n                    <td>{item.name}</td>\r\n                    <td> <img src=\"/Default/Load_Image_File_Id/{item.imageID}\" alt=\"Alternate Text\" height=\"50px\" /> </td>\r\n                    { "<td>" + item.Quantity + "</td>" }    \r\n                </tr> ";
                     html_code += RenderBook(item);
                 }
@@ -692,7 +602,7 @@ namespace Könyvtár.App_Data
             {
                 if (item.ISBN.Contains(search))
                 {
-                    compare = item.Id.ToString();
+                    compare = item.IdKonyv.ToString();
                     //html_code += $" <tr  onclick=\"tbclick(this)\" ondblclick=\"tbdbclick(this)\"> <td>{item.Id} </td>\r\n                    <td>{item.ISBN}</td>\r\n                    <td> {db_book.Writer.Where(q => q.Id == item.authorId).FirstOrDefault().writer_name} </td>\r\n                    <td>{item.name}</td>\r\n                    <td> <img src=\"/Default/Load_Image_File_Id/{item.imageID}\" alt=\"Alternate Text\" height=\"50px\" /> </td>\r\n                    {"<td>" + item.Quantity + "</td>"}    \r\n                </tr> ";
                     html_code += RenderBook(item);
                 }
@@ -712,9 +622,9 @@ namespace Könyvtár.App_Data
             string compare = "";
             foreach (var item in db_book.konyv)
             {
-                if (db_book.Categories.First(q=>q.Id== item.Categories).Name.Contains(search))
+                if (db_book.Categories.First(q=>q.IdCategorie== item.Categories).Name.Contains(search))
                 {
-                    compare = item.Id.ToString();
+                    compare = item.IdKonyv.ToString();
                     //html_code += $" <tr  onclick=\"tbclick(this)\" ondblclick=\"tbdbclick(this)\"> <td>{item.Id} </td>\r\n                    <td>{item.ISBN}</td>\r\n                    <td> {db_book.Writer.Where(q => q.Id == item.authorId).FirstOrDefault().writer_name} </td>\r\n                    <td>{item.name}</td>\r\n                    <td> <img src=\"/Default/Load_Image_File_Id/{item.imageID}\" alt=\"Alternate Text\" height=\"50px\" /> </td>\r\n                    {"<td>" + item.Quantity + "</td>"}    \r\n                </tr> ";
                     html_code += RenderBook(item);
                 }
@@ -742,6 +652,13 @@ namespace Könyvtár.App_Data
             if (html_code.Length < 3) { html_code = "Ez a olvasó jelenleg nem kölcsönzött ki könyvet"; }
             return html_code;
         }
+        public ActionResult RenderReaderDetails(string szid)
+        {
+            Reader_Card rc = db_book.Reader_Card.FirstOrDefault(q => q.Personel_ID_Card == szid);
+            if (rc == null) Session["readerCard"] = "";
+            else Session["readerCard"] = $"{rc.Personel_ID_Card}";
+            return ReaderCard();
+        }
         private string AllBook(string search)
         {
             string html_code = "";
@@ -750,7 +667,6 @@ namespace Könyvtár.App_Data
                  foreach (var item in db_book.konyv)
                 {
                 compare = item.ISBN.ToString();
-                //html_code += $" <tr  onclick=\"tbclick(this)\" ondblclick=\"tbdbclick(this)\"> <td>{item.Id} </td>\r\n                    <td>{item.ISBN}</td>\r\n                    <td> {db_book.Writer.Where(q => q.Id == item.authorId).FirstOrDefault().writer_name} </td>\r\n                    <td>{item.name}</td>\r\n                    <td> <img src=\"/Default/Load_Image_File_Id/{item.imageID}\" alt=\"Alternate Text\" height=\"50px\" /> </td>\r\n                    {"<td>" + item.Quantity + "</td>"}    \r\n                </tr> ";
                 html_code += RenderBook(item);
             }
                  if(html_code.Length < 3) { html_code = "A keresett könyv nincs meg nálunk"; }
@@ -885,7 +801,7 @@ namespace Könyvtár.App_Data
         }
         public string[] KonyvSTR(konyv inp)
         {
-            String[] vm = new string[4] { inp.Id.ToString(), inp.ISBN, inp.name, "author" + db_book.Author.Where(q=>q.Id == inp.authorId).First().name   };
+            String[] vm = new string[4] { inp.IdKonyv.ToString(), inp.ISBN, inp.name, "author" + db_book.Author.Where(q=>q.IdAuthor == inp.authorId).First().name   };
             return vm;
         }
         public ActionResult LogView()

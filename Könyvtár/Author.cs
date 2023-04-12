@@ -14,7 +14,7 @@ namespace Könyvtár
     
     public partial class Author
     {
-        public int Id { get; set; }
+        public int IdAuthor { get; set; }
         public string name { get; set; }
         public string Date { get; set; }
     }

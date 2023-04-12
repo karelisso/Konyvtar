@@ -20,7 +20,24 @@
     //    rent = bullshit.Rent.ToList();
     //}
     rent = bullshit.Rent.ToList();
-    int? current = cr[0].User_ID;
+    // Session["readerCard"] != null ? bullshit.Reader_Card.First(q => q.Personel_ID_Card.Equals(Session["readerCard"].ToString())).User_ID : "1132141";
+    int? current;
+    try
+    {
+
+        string curuser = Session["currentreadercard"].ToString();
+
+        current =  bullshit.Reader_Card.First(q => q.Personel_ID_Card.Equals(curuser)).User_ID;
+        //current = bullshit.Reader_Card.First().User_ID;
+
+    }
+    catch (Exception)
+    {
+        current = bullshit.Reader_Card.First().User_ID;
+
+    }
+    string bookk = "0";
+    //int? current = bullshit.Reader_Card.First(q=>q.Personel_ID_Card.Equals("1132141")).User_ID;
 }
 
 <!DOCTYPE html>
@@ -161,27 +178,39 @@
             <input type="submit" name="btnSubmit" value="kikölcsönzés" />
         </form>-->
         <table class="w-100 text-white">
-            
+
             <tr>
-                <td> <label>Név</label>  </td>
-                <td>  @bullshit.user.First(q => q.user_id == current).Username  </td>
-            </tr>
-            <tr>
+
                 <td class="col-3"><label>Személyi igazolvány szám</label>    </td>
-                <td class="col-9">  <input class="w-100" type="text" id="szid" value="" autocomplete="off" /> </td>
+                <td class="col-9">
+                    <input class="w-100" type="text" id="szid" autocomplete="off" />
+                    <form action="RenderReaderDetails">
+
+                        <input type="submit" value="keresés" />
+                    </form>
+                </td>
             </tr>
-            <tr>
-                <td>  <label>lakcím</label>  </td>
-                <td>  @cr[0].Birtpalace  </td>
-            </tr>
-            <tr>
-                <td> <label>tel</label>   </td>
-                <td>  @dogpile.User_sus.First(q => q.Id == current).phone  </td>
-            </tr>
-            <tr>
-                <td>  <label>Email cím</label>   </td>
-                <td>  @dogpile.User_sus.First(q => q.Id == current).email </td>
-            </tr>
+            @if (@bullshit.user.Count(q => q.user_id == current) > 0)
+            {
+                <tr>
+                    <td> <label>Név</label>  </td>
+                    <td>  @bullshit.user.First(q => q.user_id == current).Username  </td>
+                </tr>
+
+                <tr>
+                    <td>  <label>lakcím</label>  </td>
+                    <td>  @bullshit.Reader_Card.First(q => q.User_ID == current).Birtpalace  </td>
+                </tr>
+                <tr>
+                    <td> <label>tel</label>   </td>
+                    <td>  @dogpile.User_sus.First(q => q.Id == current).phone  </td>
+                </tr>
+                <tr>
+                    <td>  <label>Email cím</label>   </td>
+                    <td>  @dogpile.User_sus.First(q => q.Id == current).email </td>
+                </tr>
+            }
+
         </table>
             <table class="table table-bordered text-light" id="tablfull">
 
@@ -190,6 +219,7 @@
                     <tr class="text-dark bg-warning">
                         <td> <strong>ISBN</strong>  </td>
                         <td><strong>könyv címe</strong> </td>
+                        <td> <strong>Kiadva</strong>  </td>
                         <td><strong>kölcsönadás ideje</strong> </td>
                         <td><strong>visszavétel ideje</strong> </td>
                         <td><strong>visszavétel hatálya</strong> </td>
@@ -201,8 +231,11 @@
                 <tbody>
                     <form action="CreateRent" method="post">
                     <tr>
-                        <td><input type="text" required id="konv" name="username"></td>
-                        <td><input type="text" required id="ollvasok" name="book_id"></td>
+                        <input value="@current" name="szid" hidden class="hiddenszid">
+
+                        @*<td><input type="text" required id="konv" name="username"></td>*@
+                        <td><input type="text" required id="konv" name="book_id"></td>
+                        <td></td>
                         <td><input type="date" required name="date"></td>
                         <td>@*<input type="date" readonly>*@         </td>
                         <td>@*<input type="date" readonly>*@         </td>
@@ -219,8 +252,11 @@
                             <td> @item3.Book_ID <input type="text" readonly value="@item3.Book_ID" name="bookid" hidden> </td>
                             @*<td>@bullshit.user.First(q => q.user_id == item3.Card_ID).Username /<br> @bullshit.Reader_Card.First(q => q.User_ID == item3.Card_ID).Momname </td>*@
                             @*<td>@bullshit.konyv.First(q=>q.Id==item3.Book_ID)</td>*@
-                            <td></td>
-                            <td>@item3.Rent_Date </td>
+                            <input value="@current" name="szid" hidden>
+                            @{ bookk = item3.Book_ID.Split(';')[0]; }
+                            <td>@bullshit.konyv.FirstOrDefault(q => q.ISBN == bookk).name  </td>
+                            <td>@bullshit.Reader_Card.First(q=>q.IdReaderCard.Equals(item3.Card_ID)).Personel_ID_Card</td>
+                            <td>@item3.Return_Date </td>
                             <td><input type="date" required name="date"> </td>
                             <td>@item3.Due_Date </td>
                             <td><input type="submit" value="Rögzités"> </td>
@@ -391,15 +427,30 @@
             }
 
 
-
+            $("#szid").on("input", () => {
+                var szidval = document.getElementById("szid").value;
+                console.log("something happened!!")
+               
+                console.log();
+                if (szidval.length >= 10) {
+                    var stuff = document.getElementsByName(".hiddenszid");
+                    for (var i = 0; i < stuff.length; i++) {
+                        //stuff[i].value = szidval;
+                    }
+                    myfunction(szidval);
+                }
+                //
+            });
             autocomplete(document.getElementById("konv"), all_Writer);
 
             autocomplete(document.getElementById("ollvasok"), all_Reader);
 
-        $(window).on('load', function () {
-            $("#Dell").hide();
-            $("#Addiptive").show();
-        })
+            $(window).on('load', function () {
+                setInterval(function () {
+                    $("#Dell").hide();
+                    $("#Addiptive").show();
+                }, 200);
+            });
         function enableAdd() {
             $("#Dell").hide();
             $("#Addiptive").show();
@@ -409,12 +460,12 @@
             $("#Addiptive").hide();
         }
 
-            function myfunction() {
-                console.log($("id").value);
+            function myfunction(val) {
+                console.log($("#szid").value);
                 $.ajax({
                     url: "/Default/SetSession",
                     type: "POST",
-                    data: { 'currentreadercard': $("id").value },
+                    data: { 'name': "currentreadercard", 'value': val },
                     success: function () {
                     },
                     error: function () { alert("error"); }

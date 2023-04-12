@@ -14,7 +14,7 @@ namespace Könyvtár
     
     public partial class LogDetail
     {
-        public int Id { get; set; }
+        public int IdLogDetail { get; set; }
         public string text { get; set; }
     }
 }

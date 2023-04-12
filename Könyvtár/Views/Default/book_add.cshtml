@@ -9,43 +9,32 @@
     }
 }
 
-<form action="CreateBook" method="post" enctype="multipart/form-data" class="text-white" onsubmit="return confirm( 'Biztos, hogy rögzíteni akarod?' );">
-    <label>Szerző</label>
-    <div class="autocomplete text-dark ">
-        <input type="type" name="auth" value="" id="Szerzo" required placeholder="Country" autocomplete="nope" />
-    </div>
+<form action="CreateBook" method="post" enctype="multipart/form-data" class="text-white mx-3 py-3" onsubmit="return confirm( 'Biztos, hogy rögzíteni akarod?' );">
+    
+    <label class="col-6 h4"> Szerző </label>
     <br>
+    <div class="autocomplete text-dark col-6">
+        <input type="type" name="auth" value="" id="Szerzo" required placeholder="Széchenyi István" autocomplete="nope" />
+    </div>
     @*<select name="auth">
             @foreach (var item in wrt)
             {
                 <option value="@item.Id">@item.writer_name</option>
             }
         </select>*@
-    <label>Cím</label>  <input type="type" name="name" value="" required autocomplete="off" /> <br />
-    <label>ISBNcode</label><input type="type" name="isbn" value="" maxlength="13" required autocomplete="off" /> <br />
-    <label>Beszerzés dátuma</label>  <input type="date" name="date" value="" maxlength="10" autocomplete="off" /> <br />
-    <label>Darabszám</label>  <input type="number" name="quantity" value="1" required autocomplete="off" /> <br />
+    <label class="col-6 h4">Cím</label> <br>  <input class="col-6" type="type" name="name" value="" required autocomplete="off" /> <br />
+    <label class="col-6 h4">ISBNcode</label> <br>   <input class="col-6" type="type" name="isbn" value="" maxlength="13" required autocomplete="off" /> <br />
+    <label class="col-6 h4">Beszerzés dátuma</label> <br>  <input class="col-6" type="date" name="date" value="" maxlength="10" autocomplete="off" /> <br />
+    <label class="col-6 h4">Darabszám</label> <br>  <input class="col-6" type="number" name="quantity" value="1" required autocomplete="off" /> <br />
     @*<label>AUTH int only!!!!</label><input type="number" name="auth" value="0" required/> <br />*@
     @*<label>Boritó kép</label><input type="file" accept="image/*" name="img" required /> <br />  all image types
         <label>Összefoglaló</label><input type="text" name="demo" autocomplete="off" /> <br />*@
-    <label>Kategoria</label>
+    <label class="col-6 h2">Kategoria</label>
 
     @*todo: change it to work like Szerzo then the popup a message contains every new data (writer,categoreies ) then create a list of categories*@
-    <div class="autocomplete text-dark ">
+    <div class="autocomplete text-dark col-6">
         <input type="type" name="categori" value="" id="Categories" required placeholder="Country" autocomplete="nope" />
     </div>
-    
-    <select name="" required>
-        @foreach (var item in crt)
-        {
-            <option value="@item.Id">@item.Name</option>
-        }
-
-    </select>
-
-
-    <br>
-
     <input id="livesearchtags" name="livesearchtags" placeholder="Search" autocomplete="off" hidden />
     <div id="result" class="tag-results">
 

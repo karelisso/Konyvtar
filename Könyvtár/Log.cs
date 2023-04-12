@@ -14,7 +14,7 @@ namespace Könyvtár
     
     public partial class Log
     {
-        public int Id { get; set; }
+        public int IdLog { get; set; }
         public int who { get; set; }
         public System.DateTime when { get; set; }
         public Nullable<int> what_ID { get; set; }

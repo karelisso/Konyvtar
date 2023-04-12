@@ -14,10 +14,10 @@ namespace Könyvtár
     
     public partial class Rent
     {
-        public int Id { get; set; }
+        public int IdRent { get; set; }
         public string Book_ID { get; set; }
         public System.DateTime Rent_Date { get; set; }
-        public Nullable<System.DateTime> Due_Date { get; set; }
+        public System.DateTime Due_Date { get; set; }
         public Nullable<System.DateTime> Return_Date { get; set; }
         public Nullable<decimal> Punishment { get; set; }
         public int Card_ID { get; set; }
