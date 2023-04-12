@@ -12,6 +12,8 @@ using Antlr.Runtime.Tree;
 using System.Drawing;
 using Microsoft.Ajax.Utilities;
 using System.Data.Entity.ModelConfiguration.Configuration;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace Könyvtár.App_Data
 {
@@ -41,7 +43,11 @@ namespace Könyvtár.App_Data
 
         public ActionResult start()
         {
-            if (Session["username"] != null) Log("kijelentkezett");
+            if (Session["username"] != null) {
+                Log("kijelentkezett");
+                Session.Clear();
+            } 
+            
             return View("emptypage");
         }
         public ActionResult MetaPage()
@@ -181,8 +187,8 @@ namespace Könyvtár.App_Data
         }
         public ActionResult CreateUser(string Uname, string mail, string Upp, string UppR, bool? Adm, string phone)
         {
-            //if (Upp != UppR)
-            //    return View("Regist");
+            if (Upp != UppR)
+                return start();
 
             User_sus account1 = new User_sus();
             user account2 = new user();
@@ -190,13 +196,13 @@ namespace Könyvtár.App_Data
             //account.id = bullshit.user.Count() + 1;
             account1.Username = Uname;
             account2.Username = Uname;
-            account1.Userpassword = Upp;
+            account1.Userpassword = ComputeStringToSha256Hash(Upp);
             account1.email = mail;
             account1.phone = phone;
             if (Adm == null)
                 Adm = false;
             account2.admin = (bool)Adm ? 2 : 1;
-            account2.special_password = Upp;
+            account2.special_password = ComputeStringToSha256Hash(Upp);
             //try
             //{
             db_user.User_sus.Add(account1);
@@ -728,7 +734,7 @@ namespace Könyvtár.App_Data
                     {
                         if (item.Username.ToLower() == Uname.ToLower() || item.email.ToLower() == Uname.ToLower())
                         {
-                            if (item.Userpassword == Upp)
+                            if (item.Userpassword == ComputeStringToSha256Hash(Upp))
                             {
                             Session["username"] = Uname;
                             Session["usermail"] = item.email;
@@ -744,7 +750,7 @@ namespace Könyvtár.App_Data
                     }
                    
                 }
-            return View("error");
+            return start();
         }
         public ActionResult RegisterUserPage()
         {
@@ -805,5 +811,26 @@ namespace Könyvtár.App_Data
         {
             return View("LogView");
         }
+
+        static string ComputeStringToSha256Hash(string plainText)
+        {
+            string salt = "13579";
+            plainText += salt;
+            // Create a SHA256 hash from string   
+            using (SHA256 sha256Hash = SHA256.Create())
+            {
+                // Computing Hash - returns here byte array
+                byte[] bytes = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes(plainText));
+
+                // now convert byte array to a string   
+                StringBuilder stringbuilder = new StringBuilder();
+                for (int i = 0; i < bytes.Length; i++)
+                {
+                    stringbuilder.Append(bytes[i].ToString("x2"));
+                }
+                return stringbuilder.ToString();
+            }
+        }
+
     }
 }

@@ -24,10 +24,10 @@
 
                 @if (Session["username"] == null)
                 {
-                    <li class="nav-item">
+                    @*<li class="nav-item">
                         @Html.ActionLink("Regisztráció", "RegisterUserPage", "Default", new { area = "" }, new { @class = "navbar-brand" })
 
-                    </li>
+                    </li>*@
                     <li class="nav-item">
                         @Html.ActionLink("Bejelentkezés", "Secnd", "Default", new { area = "" }, new { @class = "navbar-brand" })
 
@@ -116,17 +116,6 @@
 
                     <li class="nav-item">
                         @Html.ActionLink("Könyvkeresés", "Index", "Default", new { area = "" }, new { @class = "navbar-brand navbar-right" })
-
-                        @*<select>
-                    <option> @Html.ActionLink("Könyv keesése", "Index", "Default", new { area = "" }, new { @class = "navbar-brand navbar-right" }) </option>
-                    <option>  @Html.ActionLink("tag felvétel", "TagPage", "Default", new { area = "" }, new { @class = "navbar-brand navbar-right" }) </option>
-                    <option> </option>
-                </select>*@
-
-                        @*<li class="nav-item">
-                    @Html.ActionLink("Olvasókártya", "ReaderCard", "Default", new { area = "" }, new { @class = "navbar-brand navbar-right" })
-
-                </li>*@
                     </li>
                     <li class="nav-item">
                         @Html.ActionLink("Súgó", "Index", "Default", new { area = "" }, new { @class = "navbar-brand navbar-right" })

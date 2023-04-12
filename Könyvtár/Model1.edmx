@@ -162,7 +162,7 @@
           <Property Name="Username" Type="varchar" MaxLength="255" />
           <Property Name="role" Type="nchar" MaxLength="10" />
           <Property Name="admin" Type="int" />
-          <Property Name="special_password" Type="nchar" MaxLength="10" />
+          <Property Name="special_password" Type="nvarchar(max)" />
           <Property Name="user_id" Type="int" />
         </EntityType>
         <EntityType Name="Writer">
@@ -376,7 +376,7 @@
           <Property Name="Username" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="role" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
           <Property Name="admin" Type="Int32" />
-          <Property Name="special_password" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="special_password" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="user_id" Type="Int32" />
         </EntityType>
         <EntityType Name="Writer">

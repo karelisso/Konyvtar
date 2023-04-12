@@ -11,7 +11,7 @@
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Username" Type="nvarchar(max)" />
-          <Property Name="Userpassword" Type="varchar" MaxLength="32" />
+          <Property Name="Userpassword" Type="varchar(max)" />
           <Property Name="email" Type="nvarchar(max)" />
           <Property Name="phone" Type="nchar" MaxLength="16" />
         </EntityType>
@@ -31,7 +31,7 @@
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Username" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Userpassword" Type="String" MaxLength="32" FixedLength="false" Unicode="false" />
+          <Property Name="Userpassword" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="email" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="phone" Type="String" MaxLength="16" FixedLength="true" Unicode="true" />
         </EntityType>
