@@ -42,7 +42,6 @@ namespace Könyvtár.App_Data
         public ActionResult start()
         {
             if (Session["username"] != null) Log("kijelentkezett");
-            Session.Clear();
             return View("emptypage");
         }
         public ActionResult MetaPage()
@@ -55,9 +54,9 @@ namespace Könyvtár.App_Data
         }
         public void SetSession(string name, string value)
         {
-            Session[name] = null;
+            Session[name.Trim()] = null;
 
-            Session[name] = value;
+            Session[name.Trim()] = value.Trim();
         }
         public string GetSession(string name)
         {
@@ -265,6 +264,7 @@ namespace Könyvtár.App_Data
 
         public ActionResult CreateRent(int? szid,string book_id,string date)
         {
+            Debug.Write(Session["userid"]);
             Rent rent = new Rent();
             rent.Card_ID = db_book.Reader_Card.First(q=>q.User_ID ==szid).IdReaderCard;// int.Parse( db_book.user.First(q=>q.user_id.Equals(szid)). );
             //string usernaemsplit = username.Split('/')[0];
@@ -412,7 +412,7 @@ namespace Könyvtár.App_Data
         public ActionResult delRent(string bookid,string date)
         {
             string[] bookidsplit = bookid.Split(';');
-            Rent rent = db_book.Rent.Where(q=>q.Book_ID == bookid).First();
+            Rent rent = db_book.Rent.First(q => q.Book_ID.Equals(bookid));
             rent.Return_Date = DateTime.Now;
             DateTime addedDate;
             if (!DateTime.TryParse(date, out addedDate)) addedDate = DateTime.Now;
@@ -746,7 +746,6 @@ namespace Könyvtár.App_Data
                     }
                    
                 }
-            Session.Clear();
             return View("error");
         }
         public ActionResult RegisterUserPage()
