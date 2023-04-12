@@ -252,7 +252,7 @@ namespace Könyvtár.App_Data
             db_book.user.Add(account2);
             db_book.Reader_Card.Add(rc);
             db_book.SaveChanges();
-             
+              
             //Session["username"] = Uname;
             //}
             //catch (Exception)
