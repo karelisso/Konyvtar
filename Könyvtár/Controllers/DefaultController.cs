@@ -33,7 +33,7 @@ namespace Könyvtár.App_Data
         {
             return View("main_page");
         }
-        
+         
         public ActionResult ReaderCard()
         {
             return View("reader_card");
@@ -423,8 +423,6 @@ namespace Könyvtár.App_Data
             Log("visszahozott egy könyvet", bookid + "");
             return View("reader_card");
         }
-
-
         public String Load_Image_Base()
         {
 
