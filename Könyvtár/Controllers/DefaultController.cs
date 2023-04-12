@@ -280,7 +280,7 @@ namespace Könyvtár.App_Data
             db_book.Rent.Add(rent);
             db_book.SaveChanges();
             Log("Kiadot egy könyvet", book_id + "");
-            return View("TheMetaViewer");
+            return ReaderCard();
         }
 
         public ActionResult DelWriter(string name)
