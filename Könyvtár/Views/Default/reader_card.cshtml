@@ -307,7 +307,7 @@
              var all_Reader = []
             @foreach (var item in cr)
             {
-                string varrrr = $"{ur.First(q=>q.user_id==item.User_ID).Username.Trim()}/{item.Momname.Trim()}";
+                string varrrr = $"{ur.FirstOrDefault(q=>q.user_id==item.User_ID).Username.Trim()}/{item.Momname.Trim()}";
 
                @:{ all_Reader.push("@varrrr.Trim()") };
             }
