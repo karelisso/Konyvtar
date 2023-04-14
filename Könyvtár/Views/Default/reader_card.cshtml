@@ -443,12 +443,10 @@
 
             autocomplete(document.getElementById("ollvasok"), all_Reader);
 
-            $(window).on('load', function () {
-                setInterval(function () {
-                    $("#Dell").hide();
-                    $("#Addiptive").show();
-                }, 200);
-            });
+        $(window).on('load', function () {
+            $("#Dell").hide();
+            $("#Addiptive").show();
+        })
         function enableAdd() {
             $("#Dell").hide();
             $("#Addiptive").show();
