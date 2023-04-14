@@ -39,7 +39,7 @@ namespace Könyvtár
                       "~/Content/bootstrap.css",
                       "~/Content/site.css"));
             bundles.Add(new StyleBundle("~/szal/css").Include(
-                      "~/Szalamandra könyvtár/css/styles.css"));
+                      "~/szal/css/styles.css"));
         }
     }
 }

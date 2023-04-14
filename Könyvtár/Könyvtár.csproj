@@ -189,7 +189,6 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\bootstrap.rtl.css" />
     <Content Include="Content\bootstrap.rtl.min.css" />
-    <Content Include="helper\Képernyőfelvétel %2850%29.png" />
     <Content Include="Content\Site.css" />
     <Content Include="Global.asax" />
     <Content Include="Model1.Context.tt">
@@ -261,12 +260,12 @@
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Scripts\sammy-0.7.5.js" />
     <Content Include="Scripts\sammy-0.7.5.min.js" />
-    <Content Include="Szalamandra könyvtár\css\styles.css" />
-    <Content Include="Szalamandra könyvtár\img\bgwallpaper.jpg" />
-    <Content Include="Szalamandra könyvtár\img\book.png" />
-    <Content Include="Szalamandra könyvtár\img\bs-logo.svg" />
-    <Content Include="Szalamandra könyvtár\img\icon.png" />
-    <Content Include="Szalamandra könyvtár\index.html" />
+    <Content Include="szal\css\styles.css" />
+    <Content Include="szal\img\bgwallpaper.jpg" />
+    <Content Include="szal\img\book.png" />
+    <Content Include="szal\img\bs-logo.svg" />
+    <Content Include="szal\img\icon.png" />
+    <Content Include="szal\index.html" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -284,7 +283,6 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="helper\Stringify.cs" />
     <Compile Include="Images.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -381,7 +379,7 @@
     <Content Include="Views\Default\book_add.cshtml" />
     <Content Include="Views\Default\book_detail.cshtml" />
     <Content Include="Views\Default\TheMetaViewer.cshtml" />
-    <Content Include="Szalamandra könyvtár\img\Thumbs.db" />
+    <Content Include="szal\img\Thumbs.db" />
     <Content Include="Views\Default\reader_card.cshtml" />
     <Content Include="Views\Default\main_page.cshtml" />
     <Content Include="Views\Default\TagAdd.cshtml" />
