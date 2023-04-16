@@ -441,20 +441,9 @@
             });
             autocomplete(document.getElementById("konv"), all_Writer);
 
-            autocomplete(document.getElementById("ollvasok"), all_Reader);
+        autocomplete(document.getElementById("szid"), all_Reader);
 
-        $(window).on('load', function () {
-            $("#Dell").hide();
-            $("#Addiptive").show();
-        })
-        function enableAdd() {
-            $("#Dell").hide();
-            $("#Addiptive").show();
-        }
-        function enableDell() {
-            $("#Dell").show();
-            $("#Addiptive").hide();
-        }
+
 
             function myfunction(val) {
                 console.log($("#szid").value);
@@ -466,7 +455,21 @@
                     },
                     error: function () { alert("error"); }
                 });
-            }
+        }
+
+        $(document).ready(function () {
+            $("#Dell").hide();
+            $("#Addiptive").show();
+            console.log("loadedd");
+        })
+        function enableAdd() {
+            $("#Dell").hide();
+            $("#Addiptive").show();
+        }
+        function enableDell() {
+            $("#Dell").show();
+            $("#Addiptive").hide();
+        }
     </script>
 
         </div>
