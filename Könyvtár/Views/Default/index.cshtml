@@ -40,7 +40,12 @@
     @*<img src="/Default/Load_Image" alt="Alternate Text" />*@
     <!-- White h1 heading -->
     <header>
-        <h1 class="float-end text-white"> Jelenleg: Könyvkeresés
+        <h1 class="float-end text-white">
+            Jelenleg: Könyvkeresés  
+            @Session["username"]
+            @Session["usermail"]
+            @Session["userid"]
+            @Session["level"]
         </h1>
     </header>
 

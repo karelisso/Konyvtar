@@ -165,6 +165,16 @@
           <Property Name="special_password" Type="nvarchar(max)" />
           <Property Name="user_id" Type="int" />
         </EntityType>
+        <EntityType Name="User_sus">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Username" Type="nvarchar(max)" />
+          <Property Name="Userpassword" Type="varchar(max)" />
+          <Property Name="email" Type="nvarchar(max)" />
+          <Property Name="phone" Type="nchar" MaxLength="16" />
+        </EntityType>
         <EntityType Name="Writer">
           <Key>
             <PropertyRef Name="IdWriter" />
@@ -193,6 +203,7 @@
           <EntitySet Name="Rent" EntityType="Self.Rent" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="staff_role" EntityType="Self.staff_role" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="user" EntityType="Self.user" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="User_sus" EntityType="Self.User_sus" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Writer" EntityType="Self.Writer" Schema="dbo" store:Type="Tables" />
         </EntityContainer>
       </Schema></edmx:StorageModels>
@@ -217,6 +228,7 @@
           <EntitySet Name="Rent" EntityType="book_vs19Model.Rent" />
           <EntitySet Name="staff_role" EntityType="book_vs19Model.staff_role" />
           <EntitySet Name="user" EntityType="book_vs19Model.user" />
+          <EntitySet Name="User_sus" EntityType="book_vs19Model.User_sus" />
           <EntitySet Name="Writer" EntityType="book_vs19Model.Writer" />
         </EntityContainer>
         <EntityType Name="Author">
@@ -378,6 +390,16 @@
           <Property Name="admin" Type="Int32" />
           <Property Name="special_password" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="user_id" Type="Int32" />
+        </EntityType>
+        <EntityType Name="User_sus">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Username" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Userpassword" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="email" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="phone" Type="String" MaxLength="16" FixedLength="true" Unicode="true" />
         </EntityType>
         <EntityType Name="Writer">
           <Key>
@@ -569,6 +591,17 @@
                 <ScalarProperty Name="role" ColumnName="role" />
                 <ScalarProperty Name="Username" ColumnName="Username" />
                 <ScalarProperty Name="iduser" ColumnName="iduser" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="User_sus">
+            <EntityTypeMapping TypeName="book_vs19Model.User_sus">
+              <MappingFragment StoreEntitySet="User_sus">
+                <ScalarProperty Name="phone" ColumnName="phone" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="Userpassword" ColumnName="Userpassword" />
+                <ScalarProperty Name="Username" ColumnName="Username" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

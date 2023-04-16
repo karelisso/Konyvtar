@@ -19,12 +19,12 @@ namespace Könyvtár.App_Data
 {
     public class DefaultController : Controller
     {
-        public static UsersEntities db_user = new UsersEntities();
+        //public static UsersEntities db_user = new UsersEntities(); db_user.User_sus
         public book_vs19Entities1 db_book = new book_vs19Entities1();
+        public string tiltottsessions = "username usermail userid level";
         // GET: Default
         public ActionResult Index()
         {
-            Random rng = new Random();
             return View("index");
         }
         public ActionResult TagPage()
@@ -35,7 +35,10 @@ namespace Könyvtár.App_Data
         {
             return View("main_page");
         }
-         
+        public ActionResult Helper()
+        {
+            return View("Help");
+        } 
         public ActionResult ReaderCard()
         {
             return View("reader_card");
@@ -60,9 +63,12 @@ namespace Könyvtár.App_Data
         }
         public void SetSession(string name, string value)
         {
-            Session[name.Trim()] = null;
+            if(!tiltottsessions.Contains(name.ToLower()))
+            {
+                Session[name.Trim()] = null;
 
-            Session[name.Trim()] = value.Trim();
+                Session[name.Trim()] = value.Trim();
+            }
         }
         public string GetSession(string name)
         {
@@ -205,10 +211,10 @@ namespace Könyvtár.App_Data
             account2.special_password = ComputeStringToSha256Hash(Upp);
             //try
             //{
-            db_user.User_sus.Add(account1);
-            db_user.SaveChanges();
+            db_book.User_sus.Add(account1);
+            //db_user.SaveChanges();
 
-            account2.user_id = db_user.User_sus.Where(q => q.Username == account1.Username && q.email == account1.email).FirstOrDefault().Id;
+            account2.user_id = db_book.User_sus.Where(q => q.Username == account1.Username && q.email == account1.email).FirstOrDefault().Id;
             db_book.user.Add(account2);
 
             db_book.SaveChanges();
@@ -240,10 +246,10 @@ namespace Könyvtár.App_Data
             account1.phone = phone;
             account2.admin = 0;
             account2.special_password = Upp;
-            db_user.User_sus.Add(account1);
-            db_user.SaveChanges();
+            db_book.User_sus.Add(account1);
+            //db_user.SaveChanges();
 
-            account2.user_id = db_user.User_sus.Where(q => q.Username == account1.Username && q.email == account1.email).FirstOrDefault().Id;
+            account2.user_id = db_book.User_sus.Where(q => q.Username == account1.Username && q.email == account1.email).FirstOrDefault().Id;
             rc.Personel_ID_Card = szid;
             rc.home = home;
             DateTime addedtime;
@@ -270,9 +276,18 @@ namespace Könyvtár.App_Data
 
         public ActionResult CreateRent(int? szid,string book_id,string date)
         {
+            if(Session["currentreadercard"] ==null) return ReaderCard();
+            string curuser = Session["currentreadercard"].ToString();
+
+            if (db_book.Reader_Card.Count(q => q.Personel_ID_Card.Equals(curuser)) < 0)
+            {
+                return ReaderCard();
+            }
+
+            //int? current = db_book.Reader_Card.FirstOrDefault(q => q.Personel_ID_Card.Equals(curuser)).User_ID;
             Debug.Write(Session["userid"]);
             Rent rent = new Rent();
-            rent.Card_ID = db_book.Reader_Card.First(q=>q.User_ID ==szid).IdReaderCard;// int.Parse( db_book.user.First(q=>q.user_id.Equals(szid)). );
+            rent.Card_ID = db_book.Reader_Card.First(q => q.Personel_ID_Card.Equals(curuser)).IdReaderCard;// int.Parse( db_book.user.First(q=>q.user_id.Equals(szid)). );
             //string usernaemsplit = username.Split('/')[0];
             //rent.Card_ID = db_book.Reader_Card.First(q => q.Personel_ID_Card.Equals(szid)).Id;//db_book.user.First(q => q.Username.Equals(usernaemsplit)).user_id.Value;
             rent.Book_ID = book_id;
@@ -423,7 +438,7 @@ namespace Könyvtár.App_Data
             DateTime addedDate;
             if (!DateTime.TryParse(date, out addedDate)) addedDate = DateTime.Now;
             rent.Return_Date = addedDate;
-            int wichkonyv = int.Parse(rent.Book_ID);
+            int wichkonyv = int.Parse(rent.Book_ID.Split(';')[0]);
             db_book.konyv.Where(q => q.IdKonyv == wichkonyv ).First().Available_Quantity += 1;
             db_book.SaveChanges();
             Log("visszahozott egy könyvet", bookid + "");
@@ -656,13 +671,13 @@ namespace Könyvtár.App_Data
             if (html_code.Length < 3) { html_code = "Ez a olvasó jelenleg nem kölcsönzött ki könyvet"; }
             return html_code;
         }
-        public ActionResult RenderReaderDetails(string szid)
-        {
-            Reader_Card rc = db_book.Reader_Card.FirstOrDefault(q => q.Personel_ID_Card == szid);
-            if (rc == null) Session["readerCard"] = "";
-            else Session["readerCard"] = $"{rc.Personel_ID_Card}";
-            return ReaderCard();
-        }
+        //public ActionResult RenderReaderDetails(string szid)
+        //{
+        //    Reader_Card rc = db_book.Reader_Card.FirstOrDefault(q => q.Personel_ID_Card == szid);
+        //    if (rc == null) Session["readerCard"] = "";
+        //    else Session["readerCard"] = $"{rc.Personel_ID_Card}";
+        //    return ReaderCard();
+        //}
         private string AllBook(string search)
         {
             string html_code = "";
@@ -676,7 +691,20 @@ namespace Könyvtár.App_Data
                  if(html_code.Length < 3) { html_code = "A keresett könyv nincs meg nálunk"; }
             return html_code;
         }
+        public string GetReaderCard()
+        {
+            string curuser = Session["currentreadercard"].ToString();
 
+            if(db_book.Reader_Card.Count(q => q.Personel_ID_Card.Equals(curuser)) > 0)
+            {
+                int? current = db_book.Reader_Card.FirstOrDefault(q => q.Personel_ID_Card.Equals(curuser)).User_ID;
+                return $" <tr> <td> <label>Név</label>  </td> <td>  {db_book.user.First(q => q.user_id == current).Username}</td>\r\n                        </tr>\r\n\r\n                        <tr>\r\n                            <td>  <label>lakcím</label>  </td>\r\n                            <td>  {db_book.Reader_Card.First(q => q.User_ID == current).Birtpalace}  </td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td> <label>tel</label>   </td>\r\n                            <td>  {db_book.User_sus.First(q => q.Id == current).phone}  </td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>  <label>Email cím</label>   </td>\r\n                            <td>  {db_book.User_sus.First(q => q.Id == current).email} </td>\r\n                        </tr>";
+            }
+            else
+            {
+               return $"<tr> <td>Nincs ilyen olvasó fölvéve</td> </tr>";
+            }
+        }
         static int LevenshteinDistance(string a, string b)
         {
             int[,] distance = new int[a.Length + 1, b.Length + 1];
@@ -728,28 +756,29 @@ namespace Könyvtár.App_Data
             //if (RegYet != null)
             //    return RegisterUser();
                 //Session["username"] = Uname;
-                foreach (var item in db_user.User_sus)
+                foreach (var item in db_book.User_sus)
                 {
-                    try
-                    {
-                        if (item.Username.ToLower() == Uname.ToLower() || item.email.ToLower() == Uname.ToLower())
+                try
+                {
+                    if (item.Username.ToLower() == Uname.ToLower() || item.email.ToLower() == Uname.ToLower())
                         {
                             if (item.Userpassword == ComputeStringToSha256Hash(Upp))
                             {
                             Session["username"] = Uname;
                             Session["usermail"] = item.email;
                             Session["userid"] = item.Id;
-                            Session["level"] = db_book.user.Where(q => q.user_id == item.Id).FirstOrDefault().admin;
+                            Session["level"] = db_book.user.Where(q => q.user_id == item.Id-1).First().admin;
+                            Debug.WriteLine("fcsxd");
                             Log(item.Id, "Bejelentkezett");
-                            return View("Index");                            
+                            return Index();                            
                             }
                         }
-                    }
+            }
                     catch (Exception e)
-                    {
-                    }
-                   
-                }
+            {
+            }
+
+        }
             return start();
         }
         public ActionResult RegisterUserPage()
@@ -770,7 +799,7 @@ namespace Könyvtár.App_Data
             data.when = DateTime.Now;
             data.whom = "--";
             db_book.Log.Add(data);
-            db_book.SaveChanges();
+            db_book.SaveChangesAsync();
         }
         public void Log(int id, string what)
         {
@@ -780,7 +809,7 @@ namespace Könyvtár.App_Data
             data.when = DateTime.Now;
             data.whom = "--";
             db_book.Log.Add(data);
-            db_book.SaveChanges();
+            db_book.SaveChangesAsync();
         }
         public void Log(int id,string what,string whom)
         {
@@ -790,7 +819,7 @@ namespace Könyvtár.App_Data
             data.when = DateTime.Now;
             data.whom = whom;
             db_book.Log.Add(data);
-            db_book.SaveChanges();
+            db_book.SaveChangesAsync();
         }
         public void Log(string what, string whom)
         {
@@ -800,7 +829,7 @@ namespace Könyvtár.App_Data
             data.when = DateTime.Now;
             data.whom = whom;
             db_book.Log.Add(data);
-            db_book.SaveChanges();
+            db_book.SaveChangesAsync();
         }
         public string[] KonyvSTR(konyv inp)
         {

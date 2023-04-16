@@ -123,7 +123,7 @@ else
                     url: "/Default/SetSession",
                     type: "POST",
                     data: { 'name': "cur_book", 'value': ellement.children[0].innerText },
-                    success: function () { window.location.href = "/Default/BookPage"; },
+                    success: function () { /*window.location.href = "/Default/BookPage";*/ },
                     error: function () { alert("error"); }
                 });
                 bookset = true;

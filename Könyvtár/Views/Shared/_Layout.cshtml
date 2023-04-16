@@ -25,9 +25,9 @@
                 @if (Session["username"] == null)
                 {
                     @*<li class="nav-item">
-                        @Html.ActionLink("Regisztráció", "RegisterUserPage", "Default", new { area = "" }, new { @class = "navbar-brand" })
+                @Html.ActionLink("Regisztráció", "RegisterUserPage", "Default", new { area = "" }, new { @class = "navbar-brand" })
 
-                    </li>*@
+            </li>*@
                     <li class="nav-item">
                         @Html.ActionLink("Bejelentkezés", "Secnd", "Default", new { area = "" }, new { @class = "navbar-brand" })
 
@@ -53,6 +53,9 @@
                 }
                 else
                 {
+                    <li class="nav-item">
+                        @Html.ActionLink("Könyvkeresés", "Index", "Default", new { area = "" }, new { @class = "navbar-brand navbar-right" })
+                    </li>
                     if (int.Parse(Session["level"].ToString()) > 1)
                     {
                         <li class="nav-item">
@@ -114,11 +117,9 @@
                 </li>*@
                     }
 
+
                     <li class="nav-item">
-                        @Html.ActionLink("Könyvkeresés", "Index", "Default", new { area = "" }, new { @class = "navbar-brand navbar-right" })
-                    </li>
-                    <li class="nav-item">
-                        @Html.ActionLink("Súgó", "Index", "Default", new { area = "" }, new { @class = "navbar-brand navbar-right" })
+                        @Html.ActionLink("Súgó", "Helper", "Default", new { area = "" }, new { @class = "navbar-brand navbar-right" })
 
                     </li>
 

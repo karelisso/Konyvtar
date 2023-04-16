@@ -1,7 +1,7 @@
 ﻿@{
     //Layout = null;
     book_vs19Entities1 bullshit = new book_vs19Entities1();
-    UsersEntities dogpile = new UsersEntities();
+    //UsersEntities dogpile = new UsersEntities();
     konyv[] kv;
     KonyvPeldany[] kmp;
     user[] ur = bullshit.user.ToArray();
@@ -22,17 +22,17 @@
     rent = bullshit.Rent.ToList();
     // Session["readerCard"] != null ? bullshit.Reader_Card.First(q => q.Personel_ID_Card.Equals(Session["readerCard"].ToString())).User_ID : "1132141";
     int? current;
-        if(Session["currentreadercard"] != null && Session["currentreadercard"].ToString().Length > 0)
-        {
-            string curuser = Session["currentreadercard"].ToString();
+        if (Session["currentreadercard"] != null && Session["currentreadercard"].ToString().Length > 0)
+    {
+        string curuser = Session["currentreadercard"].ToString();
 
-            current = bullshit.Reader_Card.First(q => q.Personel_ID_Card.Equals(curuser)).User_ID;
-            //current = bullshit.Reader_Card.First().User_ID;
-        }
-        else
-        {
-            current = bullshit.Reader_Card.First().User_ID;
-        }
+        current = bullshit.Reader_Card.First(q => q.Personel_ID_Card.Equals(curuser)).User_ID;
+        //current = bullshit.Reader_Card.First().User_ID;
+    }
+    else
+    {
+        current = -1;// bullshit.Reader_Card.First().User_ID;
+    }
     string bookk = "0";
     //int? current = bullshit.Reader_Card.First(q=>q.Personel_ID_Card.Equals("1132141")).User_ID;
 }
@@ -176,37 +176,48 @@
         </form>-->
             <table class="w-100 text-white">
 
-                <tr>
+                <thead>
+                    <tr>
 
-                    <td class="col-3"><label>Személyi igazolvány szám</label>    </td>
-                    <td class="col-9">
-                        <input class="w-100" type="text" id="szid" autocomplete="off" />
-                        <form action="RenderReaderDetails">
+                        <td class="col-3"><label>Személyi igazolvány szám</label>    </td>
+                        <td class="col-9">
+                            <input class="w-100" type="text" id="szid" autocomplete="off" />
 
-                            <input type="submit" value="keresés" />
-                        </form>
-                    </td>
-                </tr>
-                @if (@bullshit.user.Count(q => q.user_id == current) > 0)
-                {
-                    <tr>
-                        <td> <label>Név</label>  </td>
-                        <td>  @bullshit.user.First(q => q.user_id == current).Username  </td>
+                            @*<form action="RenderReaderDetails">
+                    <input type="submit" value="keresés" />
+                    </form>*@
+                        </td>
                     </tr>
+                </thead>
+                <tbody id="userdata">
+                    @if (@bullshit.user.Count(q => q.user_id == current) > 0 &&current >= 0)
+                    {
+                        <tr>
+                            <td> <label>Név</label>  </td>
+                            <td>  @bullshit.user.First(q => q.user_id == current).Username  </td>
+                        </tr>
 
-                    <tr>
-                        <td>  <label>lakcím</label>  </td>
-                        <td>  @bullshit.Reader_Card.First(q => q.User_ID == current).Birtpalace  </td>
-                    </tr>
-                    <tr>
-                        <td> <label>tel</label>   </td>
-                        <td>  @dogpile.User_sus.First(q => q.Id == current).phone  </td>
-                    </tr>
-                    <tr>
-                        <td>  <label>Email cím</label>   </td>
-                        <td>  @dogpile.User_sus.First(q => q.Id == current).email </td>
-                    </tr>
-                }
+                        <tr>
+                            <td>  <label>lakcím</label>  </td>
+                            <td>  @bullshit.Reader_Card.First(q => q.User_ID == current).Birtpalace  </td>
+                        </tr>
+                        <tr>
+                            <td> <label>tel</label>   </td>
+                            <td>  @bullshit.User_sus.First(q => q.Id == current).phone  </td>
+                        </tr>
+                        <tr>
+                            <td>  <label>Email cím</label>   </td>
+                            <td>  @bullshit.User_sus.First(q => q.Id == current).email </td>
+                        </tr>
+                    }
+                    else
+                    {
+                        <tr> 
+                            <td>Nincs ilyen olvasó fölvéve</td> 
+                        </tr>
+                    }
+                </tbody>
+
 
             </table>
             <table class="table table-bordered text-light" id="tablfull">
@@ -228,7 +239,7 @@
                 <tbody>
                     <form action="CreateRent" method="post">
                     <tr>
-                        <input value="@current" name="szid" hidden class="hiddenszid">
+                        <input value="@current" name="szid" hidden class="hiddenszid" id="borrowinguser">
 
                         @*<td><input type="text" required id="konv" name="username"></td>*@
                         <td><input type="text" required id="konv" name="book_id"></td>
@@ -307,7 +318,7 @@
              var all_Reader = []
             @foreach (var item in cr)
             {
-                string varrrr = $"{ur.FirstOrDefault(q=>q.user_id==item.User_ID).Username.Trim()}/{item.Momname.Trim()}";
+                string varrrr = $"{item.Personel_ID_Card}";
 
                @:{ all_Reader.push("@varrrr.Trim()") };
             }
@@ -328,12 +339,24 @@
                 a = document.createElement("DIV");
                 a.setAttribute("id", this.id + "autocomplete-list");
                 a.setAttribute("class", "autocomplete-items");
-                a.classList.add("text-dark")
+                
+                a.classList.add("text-dark");
 
+                // Get the input field
+                var inputField = $("#"+inp.id);
+
+                // Get the vertical position of the input field relative to the bottom of the screen
+                var windowHeight = $(window).height();
+                var inputPosition = inputField.offset().top + inputField.outerHeight();
+                var positionPercentage = ((windowHeight - inputPosition) / windowHeight) * 100;
+                console.log(positionPercentage);
+                
+                a.style.cssText = "top: " + 60 + "% ; width:auto;";
                 /* checkMatchingBook();*/
                 //getselectedBook(valu);
                 /*append the DIV element as a child of the autocomplete container:*/
                 this.parentNode.appendChild(a);
+                //document.appendChild(a);
                 /*for each item in the array...*/
                 for (i = 0; i < arr.length; i++) {
                     /*check if the item starts with the same letters as the text field value:*/
@@ -344,12 +367,15 @@
                         b.innerHTML = "<strong>" + arr[i].substr(0, val.length) + "</strong>";
                         b.innerHTML += arr[i].substr(val.length);
                         /*insert a input field that will hold the current array item's value:*/
-                        b.innerHTML += "<input type='hidden' value='" + arr[i].split("/")[0] + "'>";
+                        b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
                         /*execute a function when someone clicks on the item value (DIV element):*/
                         b.addEventListener("click", function (e) {
                             /*insert the value for the autocomplete text field:*/
-                            inp.value = this.getElementsByTagName("input")[0].value;
-                            $("#konyvname").innerHtml = arr[i].split("/")[1];
+                            inp.value = this.getElementsByTagName("input")[0].value.split("/")[0];
+                            $("#konyvname").text(() => {
+                                return this.getElementsByTagName("input")[0].value.split("/")[1];
+                            }) 
+                            szidstart();
                             /* checkMatchingBook();*/
                             /*close the list of autocompleted values,
                             (or any other open lists of autocompleted values:*/
@@ -387,7 +413,7 @@
                         if (x) {
 
                             x[currentFocus].click();
-                            setTimeout("checkMatchingBook", 20);
+                           // setTimeout("checkMatchingBook", 20);
                         }
                     }
                 }
@@ -426,19 +452,26 @@
 
 
             $("#szid").on("input", () => {
-                var szidval = document.getElementById("szid").value;
-                console.log("something happened!!")
-
-                console.log();
-                if (szidval.length >= 3) {
-                    var stuff = document.getElementsByName(".hiddenszid");
-                    for (var i = 0; i < stuff.length; i++) {
-                       // stuff[i].value = szidval;
-                    }
-                    myfunction(szidval);
-                }
+                szidstart();
                 //
             });
+
+        $("#szid").change( () => {
+            szidstart();
+        });
+        function szidstart() {
+            var szidval = document.getElementById("szid").value;
+            console.log("something happened!!")
+
+            console.log("df");
+            if (szidval.length >= 3) {
+                var stuff = document.getElementsByName(".hiddenszid");
+                for (var i = 0; i < stuff.length; i++) {
+                    // stuff[i].value = szidval;
+                }
+                myfunction(szidval);
+            }
+        }
             autocomplete(document.getElementById("konv"), all_Writer);
 
         autocomplete(document.getElementById("szid"), all_Reader);
@@ -452,6 +485,19 @@
                     type: "POST",
                     data: { 'name': "currentreadercard", 'value': val },
                     success: function () {
+                        document.getElementById("borrowinguser").value = val;
+
+                        $.ajax({
+                            url: "/Default/GetReaderCard",
+                            type: "GET",
+                            data: "",
+                            success: function (data) {
+
+                                document.getElementById("userdata").innerHTML = data;
+                            },
+                            error: function () { alert("error"); }
+                        });
+                        document.getElementById("userdata").innerHTML = "";
                     },
                     error: function () { alert("error"); }
                 });

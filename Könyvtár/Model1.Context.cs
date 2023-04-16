@@ -42,6 +42,7 @@ namespace Könyvtár
         public virtual DbSet<Rent> Rent { get; set; }
         public virtual DbSet<staff_role> staff_role { get; set; }
         public virtual DbSet<user> user { get; set; }
+        public virtual DbSet<User_sus> User_sus { get; set; }
         public virtual DbSet<Writer> Writer { get; set; }
     }
 }
