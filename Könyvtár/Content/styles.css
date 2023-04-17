@@ -7,7 +7,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 body {
-    background-image: linear-gradient(to bottom, rgb(102, 156, 154, 0.7),rgb(105, 62, 0, 0.8)),url("../img/bgwallpaper.jpg");
+    background-image: linear-gradient(to bottom, rgb(102, 156, 154, 0.7),rgb(105, 62, 0, 0.8)),url("../szal/img/bgwallpaper.jpg");
     background-size: 100%;
     background-position: center;
     background-attachment: fixed;

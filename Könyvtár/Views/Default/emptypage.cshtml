@@ -1,5 +1,12 @@
 ﻿@{
-  book_vs19Entities1 bullshit = new book_vs19Entities1();
+    book_vs19Entities1 bullshit = new book_vs19Entities1();
+    string exception = "";
+    if (Session["excp"] != null)
+    {
+        exception = Session["excp"].ToString();
+    }
+
+
 }
 <!DOCTYPE html>
 
@@ -11,7 +18,6 @@
 <body>
     <div>
         <h1 class="text-white">Üdvözöllek a Szalamandra könyvtárban.</h1>
-        @bullshit.user.First().Username
     </div>
 </body>
 </html>

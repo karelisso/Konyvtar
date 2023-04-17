@@ -262,7 +262,7 @@
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Scripts\sammy-0.7.5.js" />
     <Content Include="Scripts\sammy-0.7.5.min.js" />
-    <Content Include="szal\css\styles.css" />
+    <Content Include="Content\styles.css" />
     <Content Include="szal\img\bgwallpaper.jpg" />
     <Content Include="szal\img\book.png" />
     <Content Include="szal\img\bs-logo.svg" />
@@ -401,6 +401,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Data\" />
+    <Folder Include="szal\css\" />
     <Folder Include="Views\Home\" />
   </ItemGroup>
   <ItemGroup>

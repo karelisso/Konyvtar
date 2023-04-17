@@ -507,13 +507,13 @@ namespace Könyvtár.App_Data
             return $" <tr  onclick=\"tbclick(this)\" ondblclick=\"tbdbclick(this)\"> <td>{item.IdKonyv} </td>\r\n                    <td>{item.ISBN}</td>\r\n                    <td> {db_book.Writer.Where(q => q.IdWriter == item.authorId).FirstOrDefault().writer_name} </td>\r\n                    <td>{item.name}</td>\r\n                          <td>{db_book.Categories.Where(q => q.IdCategorie == item.Categories).FirstOrDefault().Name}</td>\r\n                    {"<td>" + db_book.KonyvPeldany.Where(q => q.book_id == item.ISBN).Count(q => !q.RemovedTime.HasValue) + "</td>"}    \r\n                </tr> ";
 
         }
-        public String LiveSearchWriter(string search)
+        public string LiveSearchWriter(string search = "")
         {
 
             search = search.Trim();
             if (search.Length < 1)
             {
-                return AllBook(search);
+                return AllBook();
             }
             string html_code = "";
             int occurances = 0;
@@ -542,13 +542,13 @@ namespace Könyvtár.App_Data
                 return html_code;
         }
 
-        public String LiveSearchName(string search)
+        public string LiveSearchName(string search = "")
         {
 
             search = search.Trim();
             if (search.Length < 1)
             {
-                return AllBook(search);
+                return AllBook();
             }
             string html_code = "";
             int occurances = 0;
@@ -607,14 +607,14 @@ namespace Könyvtár.App_Data
             return html_code;
         }
 
-        public String LiveSearchISBN(string search)
+        public string LiveSearchISBN(string search = "")
         {
 
             search = search.Trim();
             string html_code = "";
             if (search.Length < 1)
             {
-                return AllBook(search);
+                return AllBook();
             }
             string compare = "";
             foreach (var item in db_book.konyv)
@@ -629,14 +629,14 @@ namespace Könyvtár.App_Data
             if (html_code.Length < 3) { html_code = "Ez a mű jelenleg nem szerepel az állományunkban"; }
             return html_code;
         }
-        public String LiveSearchCategries(string search)
+        public string LiveSearchCategries(string search = "")
         {
 
             search = search.Trim();
             string html_code = "";
             if (search.Length < 1)
             {
-                return AllBook(search);
+                return AllBook();
             }
             string compare = "";
             foreach (var item in db_book.konyv)
@@ -651,14 +651,14 @@ namespace Könyvtár.App_Data
             if (html_code.Length < 3) { html_code = "Ez a kategoria jelenleg nem szerepel az állományunkban"; }
             return html_code;
         }
-        public String LiveSearchReaderCard(string search)
+        public string LiveSearchReaderCard(string search = "")
         {
 
             search = search.Trim();
             string html_code = "";
             if (search.Length < 1)
             {
-                return AllBook(search);
+                return AllBook();
             }
             string compare = "";
             int iduser = -1;
@@ -678,14 +678,12 @@ namespace Könyvtár.App_Data
         //    else Session["readerCard"] = $"{rc.Personel_ID_Card}";
         //    return ReaderCard();
         //}
-        private string AllBook(string search)
+        public string AllBook()
         {
             string html_code = "";
-            string compare = "";
             //todo create pagenation 25
                  foreach (var item in db_book.konyv)
                 {
-                compare = item.ISBN.ToString();
                 html_code += RenderBook(item);
             }
                  if(html_code.Length < 3) { html_code = "A keresett könyv nincs meg nálunk"; }
@@ -755,20 +753,20 @@ namespace Könyvtár.App_Data
         {
             //if (RegYet != null)
             //    return RegisterUser();
-                //Session["username"] = Uname;
-                foreach (var item in db_book.User_sus)
+            //Session["username"] = Uname;
+            foreach (var item in db_book.User_sus)
                 {
                 try
                 {
                     if (item.Username.ToLower() == Uname.ToLower() || item.email.ToLower() == Uname.ToLower())
                         {
-                            if (item.Userpassword == ComputeStringToSha256Hash(Upp))
+                    
+                        if (item.Userpassword == ComputeStringToSha256Hash(Upp))
                             {
                             Session["username"] = Uname;
                             Session["usermail"] = item.email;
                             Session["userid"] = item.Id;
-                            Session["level"] = db_book.user.Where(q => q.user_id == item.Id-1).First().admin;
-                            Debug.WriteLine("fcsxd");
+                            Session["level"] = 2;
                             Log(item.Id, "Bejelentkezett");
                             return Index();                            
                             }
@@ -779,6 +777,8 @@ namespace Könyvtár.App_Data
             }
 
         }
+
+           
             return start();
         }
         public ActionResult RegisterUserPage()
