@@ -36,7 +36,7 @@ namespace Könyvtár
                 "~/Scripts/bootstrap.min.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
-                      "~/Content/bootstrap.min.css",
+                      //"~/Content/bootstrap.min.css",
                          "~/Content/styles.css",
                       "~/Content/site.css") ) ;
         }
