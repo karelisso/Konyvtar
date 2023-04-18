@@ -22,7 +22,7 @@ namespace Könyvtár
             );
 
             routes.MapRoute(
-             name: "catchall",
+             name: "",
              url: "{*url}",
              defaults: new { controller = "Default", action = "startpage" }
             );

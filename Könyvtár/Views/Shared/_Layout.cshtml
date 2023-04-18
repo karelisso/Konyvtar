@@ -14,46 +14,46 @@
 <body>
 
     <nav class="navbar navbar-expand-sm bg-dark navbar-dark text-white fixed-top">
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <a href="#"><img src="~/szal/img/icon.png" alt="logo" width="60"></a>
-        <div @*class="container-fluid"*@>
-            <ul class="navbar-nav navbar-collapse collapse" id="navbarSupportedContent">
+        <div class="container-">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navosbar" onclick="toogelnav()">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <a href="#"><img src="~/szal/img/icon.png" alt="logo" width="60"></a>
+            <ul class="navbar-nav navbar-collapse collapse" id="navosbar">
 
                 @if (Session["username"] == null)
                 {
                     @*<li class="nav-item">
-                @Html.ActionLink("Regisztráció", "RegisterUserPage", "Default", new { area = "" }, new { @class = "navbar-brand" })
+                            @Html.ActionLink("Regisztráció", "RegisterUserPage", "Default", new { area = "" }, new { @class = "navbar-brand" })
 
-            </li>*@
+                        </li>*@
                     <li class="nav-item">
-                        @Html.ActionLink("Bejelentkezés", "LogInPage", "Default", new { area = "" }, new { @class = "navbar-brand" })
+                        @Html.ActionLink("Bejelentkezés", "Secnd", "Default", new { area = "" }, new { @class = "navbar-brand" })
 
                     </li>
                     @*<li class="nav-item m-2">
-                Állomány kezelés
+                            Állomány kezelés
 
-            </li>
-            <li class="nav-item m-2">
-                Szolgáltatás
-            </li>*@
+                        </li>
+                        <li class="nav-item m-2">
+                            Szolgáltatás
+                        </li>*@
                     @*<li class="nav-item">
-                @Html.ActionLink("Súgó", "Index", "Default", new { area = "" }, new { @class = "navbar-brand navbar-right" })
+                            @Html.ActionLink("Súgó", "Index", "Default", new { area = "" }, new { @class = "navbar-brand navbar-right" })
 
-            </li>*@
+                        </li>*@
                     @*<li class="nav-item m-2">
-                Kijelentkezés
-            </li>
-            <li class="nav-item" m2>
-                ReaderCard
-            </li>*@
+                            Kijelentkezés
+                        </li>
+                        <li class="nav-item" m2>
+                            ReaderCard
+                        </li>*@
 
                 }
                 else
                 {
                     <li class="nav-item">
-                        @Html.ActionLink("Könyvkeresés", "IndexPage", "Default", new { area = "" }, new { @class = "navbar-brand navbar-right" })
+                        @Html.ActionLink("Könyvkeresés", "Index", "Default", new { area = "" }, new { @class = "navbar-brand navbar-right" })
                     </li>
                     if (int.Parse(Session["level"].ToString()) > 1)
                     {
@@ -65,13 +65,13 @@
                     else
                     {
                         @*<li class="nav-item">
-                    Olvasókártya
-                </li>*@
+                                Olvasókártya
+                            </li>*@
                     }
                     @*<li class="nav-item">
-                @Html.ActionLink("Bejelentkezés", "Secnd", "Default", new { area = "" }, new { @class = "navbar-brand" })
+                            @Html.ActionLink("Bejelentkezés", "Secnd", "Default", new { area = "" }, new { @class = "navbar-brand" })
 
-            </li>*@
+                        </li>*@
                     if (int.Parse(Session["level"].ToString()) >= 1)
                     {
 
@@ -80,45 +80,45 @@
 
                         </li>
                         <li class="nav-item">
-                            @Html.ActionLink("Kölcsönzés", "ReaderCardPage", "Default", new { area = "" }, new { @class = "navbar-brand navbar-right" })
+                            @Html.ActionLink("Kölcsönzés", "ReaderCard", "Default", new { area = "" }, new { @class = "navbar-brand navbar-right" })
 
                         </li>
                         @*<li class="dropdown">
-                    <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
-                        Dropdown Example
-                        <span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu">
-                        <li><a href="#">HTML</a></li>
-                        <li><a href="#">CSS</a></li>
-                        <li><a href="#">JavaScript</a></li>
-                    </ul>
-                </li>
-                <li class="nav-item">
-                    <div class="dropdown">
-                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Állomány kezelése
-                        </button>
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            @Html.ActionLink("Állomány növekedés", "MetaPage", "Default", new { area = "" }, new { @class = "dropdown-item" })
-                            @Html.ActionLink("Állomány törlése", "MetaPage", "Default", new { area = "" }, new { @class = "dropdown-item" })
-                        </div>
-                    </div>
-                </li>*@
+                                <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
+                                    Dropdown Example
+                                    <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li><a href="#">HTML</a></li>
+                                    <li><a href="#">CSS</a></li>
+                                    <li><a href="#">JavaScript</a></li>
+                                </ul>
+                            </li>
+                            <li class="nav-item">
+                                <div class="dropdown">
+                                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        Állomány kezelése
+                                    </button>
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                        @Html.ActionLink("Állomány növekedés", "MetaPage", "Default", new { area = "" }, new { @class = "dropdown-item" })
+                                        @Html.ActionLink("Állomány törlése", "MetaPage", "Default", new { area = "" }, new { @class = "dropdown-item" })
+                                    </div>
+                                </div>
+                            </li>*@
                     }
                     else
                     {
                         @*<li class="nav-item m-2">
-                    Álomány kezelés
-                </li>
-                <li class="nav-item m-2">
-                    Olvasókártya
-                </li>*@
+                                Álomány kezelés
+                            </li>
+                            <li class="nav-item m-2">
+                                Olvasókártya
+                            </li>*@
                     }
 
 
                     <li class="nav-item">
-                        @Html.ActionLink("Súgó", "HelperPage", "Default", new { area = "" }, new { @class = "navbar-brand navbar-right" })
+                        @Html.ActionLink("Súgó", "Helper", "Default", new { area = "" }, new { @class = "navbar-brand navbar-right" })
 
                     </li>
 
@@ -126,14 +126,14 @@
                     {
 
                         <li class="nav-item">
-                            @Html.ActionLink("Log megnézése", "LogViewPage", "Default", new { area = "" }, new { @class = "navbar-brand" })
+                            @Html.ActionLink("Log megnézése", "LogView", "Default", new { area = "" }, new { @class = "navbar-brand" })
 
                         </li>
 
                     }
 
                     <li class="nav-item">
-                        @Html.ActionLink("Kijelentkezés", "startPage", "Default", new { area = "" }, new { @class = "navbar-brand" })
+                        @Html.ActionLink("Kijelentkezés", "start", "Default", new { area = "" }, new { @class = "navbar-brand" })
                     </li>
 
 
@@ -142,10 +142,11 @@
 
 
             </ul>
-            @*</li>
-                </ul>*@
         </div>
+
     </nav>
+
+
     <div class="container body-content">
         @RenderBody()
         <hr />
@@ -154,7 +155,14 @@
         </footer>
     </div>
 
+    <script>
+        function toogelnav() {
 
+            console.log("fgdsdf")
+            setInterval(2000);
+            $("#navosbar").css("height", "33px");
+        }
+    </script>
 
     @RenderSection("scripts", required: false)
 </body>

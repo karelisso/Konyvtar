@@ -33,12 +33,12 @@ namespace Könyvtár
                 "~/Scripts/modernizr-*"));
 
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
-                "~/Scripts/bootstrap.js"));
+                "~/Scripts/bootstrap.min.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
-                      "~/Content/bootstrap.css",
+                      "~/Content/bootstrap.min.css",
                          "~/Content/styles.css",
-                      "~/Content/site.css"));
+                      "~/Content/site.css") ) ;
         }
     }
 }
