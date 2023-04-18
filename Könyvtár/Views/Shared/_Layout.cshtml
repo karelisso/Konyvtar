@@ -28,7 +28,7 @@
 
             </li>*@
                     <li class="nav-item">
-                        @Html.ActionLink("Bejelentkezés", "Secnd", "Default", new { area = "" }, new { @class = "navbar-brand" })
+                        @Html.ActionLink("Bejelentkezés", "LogInPage", "Default", new { area = "" }, new { @class = "navbar-brand" })
 
                     </li>
                     @*<li class="nav-item m-2">
@@ -53,7 +53,7 @@
                 else
                 {
                     <li class="nav-item">
-                        @Html.ActionLink("Könyvkeresés", "Index", "Default", new { area = "" }, new { @class = "navbar-brand navbar-right" })
+                        @Html.ActionLink("Könyvkeresés", "IndexPage", "Default", new { area = "" }, new { @class = "navbar-brand navbar-right" })
                     </li>
                     if (int.Parse(Session["level"].ToString()) > 1)
                     {
@@ -80,7 +80,7 @@
 
                         </li>
                         <li class="nav-item">
-                            @Html.ActionLink("Kölcsönzés", "ReaderCard", "Default", new { area = "" }, new { @class = "navbar-brand navbar-right" })
+                            @Html.ActionLink("Kölcsönzés", "ReaderCardPage", "Default", new { area = "" }, new { @class = "navbar-brand navbar-right" })
 
                         </li>
                         @*<li class="dropdown">
@@ -118,7 +118,7 @@
 
 
                     <li class="nav-item">
-                        @Html.ActionLink("Súgó", "Helper", "Default", new { area = "" }, new { @class = "navbar-brand navbar-right" })
+                        @Html.ActionLink("Súgó", "HelperPage", "Default", new { area = "" }, new { @class = "navbar-brand navbar-right" })
 
                     </li>
 
@@ -126,14 +126,14 @@
                     {
 
                         <li class="nav-item">
-                            @Html.ActionLink("Log megnézése", "LogView", "Default", new { area = "" }, new { @class = "navbar-brand" })
+                            @Html.ActionLink("Log megnézése", "LogViewPage", "Default", new { area = "" }, new { @class = "navbar-brand" })
 
                         </li>
 
                     }
 
                     <li class="nav-item">
-                        @Html.ActionLink("Kijelentkezés", "start", "Default", new { area = "" }, new { @class = "navbar-brand" })
+                        @Html.ActionLink("Kijelentkezés", "startPage", "Default", new { area = "" }, new { @class = "navbar-brand" })
                     </li>
 
 

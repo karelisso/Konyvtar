@@ -23,28 +23,46 @@ namespace Könyvtár.App_Data
         public book_vs19Entities1 db_book = new book_vs19Entities1();
         public string tiltottsessions = "username usermail userid level";
         // GET: Default
-        public ActionResult Index()
+        public ActionResult IndexPage()
         {
-            return View("index");
+            if (Session["username"] != null)
+            {
+                return View("index");
+            }
+
+            return View("emptypage");
+           
         }
         public ActionResult TagPage()
         {
-            return View("TagAdd");
+            if (Session["username"] != null)
+            {
+                return View("TagAdd");
+            }
+            return startPage();
         }
-        public ActionResult Main()
+        public ActionResult MainPage()
         {
-            return View("main_page");
+            if (Session["username"] != null)
+            {
+                return View("main_page");
+            }
+            return startPage();
         }
-        public ActionResult Helper()
+        public ActionResult HelperPage()
         {
-            return View("Help");
+            if (Session["username"] != null)
+                return View("Help");
+            return startPage();
         } 
-        public ActionResult ReaderCard()
+        public ActionResult ReaderCardPage()
         {
-            return View("reader_card");
+            if (Session["username"] != null)
+                return View("reader_card");
+            return startPage();
         }
 
-        public ActionResult start()
+        public ActionResult startPage()
         {
             if (Session["username"] != null) {
                 Log("kijelentkezett");
@@ -55,12 +73,33 @@ namespace Könyvtár.App_Data
         }
         public ActionResult MetaPage()
         {
-            return View("TheMetaViewer");
+              if (Session["username"] != null)
+                return View("TheMetaViewer");
+            return startPage();
         }
         public ActionResult BookPage()
         {
-            return View("book_detail");
+            if (Session["username"] != null)
+                return View("book_detail");
+            return startPage();
         }
+        public ActionResult LogPage()
+        {
+            if (Session["username"] != null)
+                return View("LogView");
+            return startPage();
+        }
+        public ActionResult LogInPage()
+        {
+                return View("LogIn");
+        }
+        public ActionResult RegisterUserPage()
+        {
+            if (Session["username"] != null)
+                return View("Regist");
+            return startPage();
+        }
+
         public void SetSession(string name, string value)
         {
             if(!tiltottsessions.Contains(name.ToLower()))
@@ -94,7 +133,7 @@ namespace Könyvtár.App_Data
             db_book.Writer.Add(wm);
             db_book.SaveChanges();
             Log("hozzáadott egy Írót", wm.IdWriter+"");
-            return View("TheMetaViewer");
+            return MetaPage();
         }
         public ActionResult CreateCategory(string name)
         {
@@ -104,19 +143,8 @@ namespace Könyvtár.App_Data
             db_book.Categories.Add(cp);
             db_book.SaveChanges();
             Log("hozzáadott egy kategoriát", cp.IdCategorie+"");
-            return View("TheMetaViewer");
+            return MetaPage();
         }
-        //public ActionResult CreateAuthor(string name ,string life)
-        //{
-        //    Author ath = new Author();
-        //    ath.Id = db_book.Author.Max(q => q.Id) + 1;
-        //    ath.name = name;
-        //    ath.Date = life;
-        //    db_book.Author.Add(ath);
-        //    db_book.SaveChanges();
-        //    Log("hozzáadott egy kiadót", ath.Id+"");
-        //    return View("TheMetaViewer");
-        //}
         public ActionResult CreateBook(string name, string isbn, string auth,string img,string demo,string categori, int quantity,string date)
         {
             konyv kv = new konyv();
@@ -189,12 +217,12 @@ namespace Könyvtár.App_Data
             db_book.konyv.Add(kv);
             db_book.SaveChanges();
             Log("hozzáadott egy könyvet", kv.IdKonyv+"");
-            return View("TheMetaViewer");
+            return MetaPage();
         }
         public ActionResult CreateUser(string Uname, string mail, string Upp, string UppR, bool? Adm, string phone)
         {
             if (Upp != UppR)
-                return start();
+                return startPage();
 
             User_sus account1 = new User_sus();
             user account2 = new user();
@@ -227,12 +255,12 @@ namespace Könyvtár.App_Data
             //}
             Log("Létrehozott egy Dologozót", account2.user_id + "");
             //Session.Clear();
-            return View("Regist");
+            return RegisterUserPage();
         }
         public ActionResult CreateReader(string name,string name2, string mail, string Upp, string UppR, string phone, string szid,string home,string birthday,string birthpalace)
         {
             if (Upp != UppR)
-                return View("Regist");
+                return ReaderCardPage();
 
             User_sus account1 = new User_sus();
             user account2 = new user();
@@ -258,30 +286,22 @@ namespace Könyvtár.App_Data
             rc.Birtpalace = birthpalace;
             //todo change every id to int!!!
             rc.User_ID = account2.user_id;
-            //?why is this even in here?
-            ////rc.Rent_ID_Bundle 
             db_book.user.Add(account2);
             db_book.Reader_Card.Add(rc);
             db_book.SaveChanges();
               
-            //Session["username"] = Uname;
-            //}
-            //catch (Exception)
-            //{
-            //   // return View("Regist");
-            //}
             Log("Létrehozott egy Tagot", account2.user_id + "");
-            return View("reader_card");
+            return ReaderCardPage();
         }
 
         public ActionResult CreateRent(int? szid,string book_id,string date)
         {
-            if(Session["currentreadercard"] ==null) return ReaderCard();
+            if(Session["currentreadercard"] ==null) return ReaderCardPage();
             string curuser = Session["currentreadercard"].ToString();
 
             if (db_book.Reader_Card.Count(q => q.Personel_ID_Card.Equals(curuser)) < 0)
             {
-                return ReaderCard();
+                return ReaderCardPage();
             }
 
             //int? current = db_book.Reader_Card.FirstOrDefault(q => q.Personel_ID_Card.Equals(curuser)).User_ID;
@@ -301,7 +321,7 @@ namespace Könyvtár.App_Data
             db_book.Rent.Add(rent);
             db_book.SaveChanges();
             Log("Kiadot egy könyvet", book_id + "");
-            return ReaderCard();
+            return ReaderCardPage();
         }
 
         public ActionResult DelWriter(string name)
@@ -311,7 +331,7 @@ namespace Könyvtár.App_Data
             db_book.Writer.Remove(wm);
             db_book.SaveChanges();
             Log("Törölt egy Írót", wm.IdWriter + "");
-            return View("TheMetaViewer");
+            return MetaPage();
         }
         public ActionResult DelCategory(string name)
         {
@@ -319,19 +339,9 @@ namespace Könyvtár.App_Data
             db_book.Categories.Remove(cp);
             db_book.SaveChanges();
             Log("Törölt egy kategoriát", cp.IdCategorie + "");
-            return View("TheMetaViewer");
+            return MetaPage();
         }
-        //public ActionResult CreateAuthor(string name ,string life)
-        //{
-        //    Author ath = new Author();
-        //    ath.Id = db_book.Author.Max(q => q.Id) + 1;
-        //    ath.name = name;
-        //    ath.Date = life;
-        //    db_book.Author.Add(ath);
-        //    db_book.SaveChanges();
-        //    Log("hozzáadott egy kiadót", ath.Id+"");
-        //    return View("TheMetaViewer");
-        //}
+
         public ActionResult Delbooks(string name)
         {
                 string namesplit = name.Split(';')[0];
@@ -351,85 +361,9 @@ namespace Könyvtár.App_Data
                 //}
                 db_book.SaveChanges();
 
-            return View("index");
+            return IndexPage();
         }
-        //public ActionResult DelUser(string Uname, string mail, string Upp, string UppR, bool? Adm, string phone)
-        //{
-        //    //if (Upp != UppR)
-        //    //    return View("Regist");
-
-        //    User_sus account1 = new User_sus();
-        //    user account2 = new user();
-        //    //this should be fine until i find out to use auto increment.
-        //    //account.id = bullshit.user.Count() + 1;
-        //    account1.Username = Uname;
-        //    account2.Username = Uname;
-        //    account1.Userpassword = Upp;
-        //    account1.email = mail;
-        //    account1.phone = phone;
-        //    if (Adm == null)
-        //        Adm = false;
-        //    account2.admin = (bool)Adm ? 2 : 1;
-        //    account2.special_password = Upp;
-        //    //try
-        //    //{
-        //    db_user.User_sus.Add(account1);
-        //    db_user.SaveChanges();
-
-        //    account2.user_id = db_user.User_sus.Where(q => q.Username == account1.Username && q.email == account1.email).FirstOrDefault().Id;
-        //    db_book.user.Add(account2);
-
-        //    db_book.SaveChanges();
-
-        //    //Session["username"] = Uname;
-        //    //}
-        //    //catch (Exception)
-        //    //{
-        //    //   // return View("Regist");
-        //    //}
-        //    Log("Létrehozott egy Dologozót", account2.user_id + "");
-        //    //Session.Clear();
-        //    return View("index");
-        //}
-        //public ActionResult DelReader(string name, string mail, string Upp, string UppR, string phone, string szid)
-        //{
-        //    if (Upp != UppR)
-        //        return View("Regist");
-
-        //    User_sus account1 = new User_sus();
-        //    user account2 = new user();
-        //    Reader_Card rc = new Reader_Card();
-        //    //this should be fine until i find out to use auto increment.
-        //    //account.id = bullshit.user.Count() + 1;
-        //    account1.Username = name;
-        //    account2.Username = name;
-        //    account1.Userpassword = Upp;
-        //    account1.email = mail;
-        //    account1.phone = phone;
-        //    account2.admin = 0;
-        //    account2.special_password = Upp;
-        //    db_user.User_sus.Add(account1);
-        //    db_user.SaveChanges();
-
-        //    account2.user_id = db_user.User_sus.Where(q => q.Username == account1.Username && q.email == account1.email).FirstOrDefault().Id;
-        //    rc.Personel_ID_Card = szid;
-        //    //todo change every id to int!!!
-        //    rc.User_ID = account2.user_id;
-        //    //?why is this even in here?
-        //    ////rc.Rent_ID_Bundle 
-        //    db_book.user.Add(account2);
-        //    db_book.Reader_Card.Add(rc);
-        //    db_book.SaveChanges();
-
-        //    //Session["username"] = Uname;
-        //    //}
-        //    //catch (Exception)
-        //    //{
-        //    //   // return View("Regist");
-        //    //}
-        //    Log("Létrehozott egy Tagot", account2.user_id + "");
-        //    return View("TheMetaViewer");
-        //}
+      
         public ActionResult delRent(string bookid,string date)
         {
             string[] bookidsplit = bookid.Split(';');
@@ -442,7 +376,7 @@ namespace Könyvtár.App_Data
             db_book.konyv.Where(q => q.IdKonyv == wichkonyv ).First().Available_Quantity += 1;
             db_book.SaveChanges();
             Log("visszahozott egy könyvet", bookid + "");
-            return View("reader_card");
+            return ReaderCardPage();
         }
         public String Load_Image_Base()
         {
@@ -768,7 +702,7 @@ namespace Könyvtár.App_Data
                             Session["userid"] = item.Id;
                             Session["level"] = 2;
                             Log(item.Id, "Bejelentkezett");
-                            return Index();                            
+                            return IndexPage();                            
                             }
                         }
             }
@@ -779,18 +713,10 @@ namespace Könyvtár.App_Data
         }
 
            
-            return start();
+            return startPage();
         }
-        public ActionResult RegisterUserPage()
-        {
-            return View("Regist");
-        }
-        public ActionResult Secnd()
-        {
-            if(Session["username"] != null) Log("kijelentkezett");
-            Session.Clear();
-            return View("LogIn");
-        }
+
+
         public void Log(string what)
         {
             Log data = new Log();
@@ -836,10 +762,7 @@ namespace Könyvtár.App_Data
             String[] vm = new string[4] { inp.IdKonyv.ToString(), inp.ISBN, inp.name, "author" + db_book.Author.Where(q=>q.IdAuthor == inp.authorId).First().name   };
             return vm;
         }
-        public ActionResult LogView()
-        {
-            return View("LogView");
-        }
+
 
         static string ComputeStringToSha256Hash(string plainText)
         {
