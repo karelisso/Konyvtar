@@ -49,26 +49,26 @@
     </div>*@
 
 <div class="container mt-3 text-white">
-    <h3>Könyvek keresése a megadott szempont alapján:</h3>
-    <div class="input-group mb-3 dropdown">
+    <h3>Könyvek keresése a megadott szempontok alapján:</h3>
+    <div class="input-group mb-3 dropdown form-group">
         <button type="button" class="btn btn-primary dropdown-toggle" id="searchType" data-bs-toggle="dropdown">
-            Szempont
+            Szempontok
         </button>
         <ul class="dropdown-menu">
             <li><a class="dropdown-item" href="#">Szerző</a></li>
             <li><a class="dropdown-item" href="#">Cím</a></li>
             <li><a class="dropdown-item" href="#">ISBN/ISSN</a></li>
-            <li><a class="dropdown-item" href="#">kategoria</a></li>
+            <li><a class="dropdown-item" href="#">Kategória</a></li>
             @if (int.Parse(Session["level"].ToString()) > 0)
             {
                 <li><a class="dropdown-item" href="#">Olvasók</a></li>
             }
             else
             {
-                <li><a class="dropdown-item" href="#">nálad</a></li>
+                <li><a class="dropdown-item" href="#">Nálad</a></li>
             }
         </ul>
-        <input type="text" class="form-control" placeholder="Könyvek és időszaki kiadványok keresése" id="livesearchtags">
+        <input type="text" class="form-control" placeholder="Könyvek, időszaki kiadványok keresése" id="livesearchtags">
         <button class="btn btn-success" type="submit" id="searchbutton">Keresés</button>
     </div>
   
@@ -188,7 +188,7 @@
                     },
                 });
             }
-            else if (type == "kategoria") {
+            else if (type == "Kategória") {
                 $.ajax({
                     type: "POST",
                     // You can use the absolute url eg www.site.com/MyControllerName/LiveTagSearch or the relative path live below
@@ -220,7 +220,7 @@
                     },
                 });
             }
-            else if (type == "nálad") {
+            else if (type == "Nálad") {
                 $.ajax({
                     type: "POST",
                     // You can use the absolute url eg www.site.com/MyControllerName/LiveTagSearch or the relative path live below

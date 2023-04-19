@@ -381,9 +381,9 @@
     <Content Include="Views\Default\book_render.cshtml" />
     <Content Include="Views\Default\book_add.cshtml" />
     <Content Include="Views\Default\book_detail.cshtml" />
-    <Content Include="Views\Default\TheMetaViewer.cshtml" />
+    <Content Include="Views\Default\TheMetaViewerRemove.cshtml" />
     <Content Include="szal\img\Thumbs.db" />
-    <Content Include="Views\Default\reader_card.cshtml" />
+    <Content Include="Views\Default\reader_card_create.cshtml" />
     <Content Include="Views\Default\main_page.cshtml" />
     <Content Include="Views\Default\TagAdd.cshtml" />
     <Content Include="Views\Default\emptypage.cshtml" />
@@ -393,6 +393,8 @@
     <Content Include="Scripts\jquery-3.4.1.slim.min.map" />
     <Content Include="Scripts\knockout.validation.min.js.map" />
     <Content Include="Views\Default\Help.cshtml" />
+    <Content Include="Views\Default\TheMetaViewerAdd.cshtml" />
+    <Content Include="Views\Default\reader_card_rent.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

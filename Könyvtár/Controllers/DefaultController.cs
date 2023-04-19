@@ -30,7 +30,7 @@ namespace Könyvtár.App_Data
                 return View("index");
             }
 
-            return View("emptypage");
+            return startPage();
            
         }
         public ActionResult TagPage()
@@ -55,26 +55,37 @@ namespace Könyvtár.App_Data
                 return View("Help");
             return startPage();
         } 
-        public ActionResult ReaderCardPage()
+        public ActionResult CreateReaderCardPage()
         {
             if (Session["username"] != null)
-                return View("reader_card");
+                return View("reader_card_create");
             return startPage();
         }
-
+        public ActionResult RentReaderCardPage()
+        {
+            if (Session["username"] != null)
+                return View("reader_card_rent");
+            return startPage();
+        }
         public ActionResult startPage()
         {
             if (Session["username"] != null) {
-                Log("kijelentkezett");
+                Log("1");
                 Session.Clear();
             } 
             
             return View("emptypage");
         }
-        public ActionResult MetaPage()
+        public ActionResult CreateMetaPage()
         {
               if (Session["username"] != null)
-                return View("TheMetaViewer");
+                return View("TheMetaViewerAdd");
+            return startPage();
+        }
+        public ActionResult DeleteMetaPage()
+        {
+            if (Session["username"] != null)
+                return View("TheMetaViewerRemove");
             return startPage();
         }
         public ActionResult BookPage()
@@ -132,8 +143,8 @@ namespace Könyvtár.App_Data
             wm.aboutpath = "";
             db_book.Writer.Add(wm);
             db_book.SaveChanges();
-            Log("hozzáadott egy Írót", wm.IdWriter+"");
-            return MetaPage();
+            Log("2", wm.IdWriter+"");
+            return CreateMetaPage();
         }
         public ActionResult CreateCategory(string name)
         {
@@ -142,8 +153,8 @@ namespace Könyvtár.App_Data
             cp.Name = name;
             db_book.Categories.Add(cp);
             db_book.SaveChanges();
-            Log("hozzáadott egy kategoriát", cp.IdCategorie+"");
-            return MetaPage();
+            Log("3", cp.IdCategorie+"");
+            return CreateMetaPage();
         }
         public ActionResult CreateBook(string name, string isbn, string auth,string img,string demo,string categori, int quantity,string date)
         {
@@ -216,8 +227,8 @@ namespace Könyvtár.App_Data
             db_book.KonyvPeldany.AddRange(kvp);
             db_book.konyv.Add(kv);
             db_book.SaveChanges();
-            Log("hozzáadott egy könyvet", kv.IdKonyv+"");
-            return MetaPage();
+            Log("5", kv.IdKonyv+"");
+            return CreateMetaPage();
         }
         public ActionResult CreateUser(string Uname, string mail, string Upp, string UppR, bool? Adm, string phone)
         {
@@ -253,14 +264,14 @@ namespace Könyvtár.App_Data
             //{
             //   // return View("Regist");
             //}
-            Log("Létrehozott egy Dologozót", account2.user_id + "");
+            Log("7", account2.user_id + "");
             //Session.Clear();
             return RegisterUserPage();
         }
         public ActionResult CreateReader(string name,string name2, string mail, string Upp, string UppR, string phone, string szid,string home,string birthday,string birthpalace)
         {
             if (Upp != UppR)
-                return ReaderCardPage();
+                return CreateReaderCardPage();
 
             User_sus account1 = new User_sus();
             user account2 = new user();
@@ -290,18 +301,18 @@ namespace Könyvtár.App_Data
             db_book.Reader_Card.Add(rc);
             db_book.SaveChanges();
               
-            Log("Létrehozott egy Tagot", account2.user_id + "");
-            return ReaderCardPage();
+            Log("8", account2.user_id + "");
+            return CreateReaderCardPage();
         }
 
         public ActionResult CreateRent(int? szid,string book_id,string date)
         {
-            if(Session["currentreadercard"] ==null) return ReaderCardPage();
+            if(Session["currentreadercard"] ==null) return RentReaderCardPage();
             string curuser = Session["currentreadercard"].ToString();
 
             if (db_book.Reader_Card.Count(q => q.Personel_ID_Card.Equals(curuser)) < 0)
             {
-                return ReaderCardPage();
+                return RentReaderCardPage();
             }
 
             //int? current = db_book.Reader_Card.FirstOrDefault(q => q.Personel_ID_Card.Equals(curuser)).User_ID;
@@ -320,8 +331,8 @@ namespace Könyvtár.App_Data
             //db_book.konyv.Where(q => q.Id == wichkonyv).First().Available_Quantity -= 1;
             db_book.Rent.Add(rent);
             db_book.SaveChanges();
-            Log("Kiadot egy könyvet", book_id + "");
-            return ReaderCardPage();
+            Log("9", book_id + "");
+            return RentReaderCardPage();
         }
 
         public ActionResult DelWriter(string name)
@@ -331,7 +342,7 @@ namespace Könyvtár.App_Data
             db_book.Writer.Remove(wm);
             db_book.SaveChanges();
             Log("Törölt egy Írót", wm.IdWriter + "");
-            return MetaPage();
+            return DeleteMetaPage();
         }
         public ActionResult DelCategory(string name)
         {
@@ -339,28 +350,16 @@ namespace Könyvtár.App_Data
             db_book.Categories.Remove(cp);
             db_book.SaveChanges();
             Log("Törölt egy kategoriát", cp.IdCategorie + "");
-            return MetaPage();
+            return DeleteMetaPage();
         }
 
         public ActionResult Delbooks(string name)
         {
                 string namesplit = name.Split(';')[0];
                 int wwwm = int.Parse(name.Split(';')[1]);
-               /* KonyvPeldany kmp =*/ db_book.KonyvPeldany.Where(q => q.book_id == namesplit).Where(q => q.PeldanyId == wwwm).First().RemovedTime = DateTime.Now;
-
-                //kmp.RemovedTime= DateTime.Now;
-                //db_book.KonyvPeldany.Where(q => q.book_id == namesplit).Where(q => q.PeldanyId == wwwm).First() = kmp;
-                //for (int i = 0; i < namesplit.Length; i++)
-                //{
-                //    if (namesplit[i].Length <= 0) continue;
-                //    int tempid = int.Parse(namesplit[i]);
-                //    konyv torolj = bullshit.konyv.Where(q => q.Id.Equals(tempid)).FirstOrDefault();
-                //    Log("Törölt egy könyvet", torolj.Id + "");
-                //    bullshit.konyv.Remove(torolj);
-
-                //}
+               db_book.KonyvPeldany.Where(q => q.book_id == namesplit).Where(q => q.PeldanyId == wwwm).First().RemovedTime = DateTime.Now;
                 db_book.SaveChanges();
-
+            Log("6",name);
             return IndexPage();
         }
       
@@ -372,11 +371,11 @@ namespace Könyvtár.App_Data
             DateTime addedDate;
             if (!DateTime.TryParse(date, out addedDate)) addedDate = DateTime.Now;
             rent.Return_Date = addedDate;
-            int wichkonyv = int.Parse(rent.Book_ID.Split(';')[0]);
-            db_book.konyv.Where(q => q.IdKonyv == wichkonyv ).First().Available_Quantity += 1;
+            string wichkonyv = rent.Book_ID.Split(';')[0];
+            db_book.konyv.Where(q => q.ISBN == wichkonyv ).First().Available_Quantity += 1;
             db_book.SaveChanges();
-            Log("visszahozott egy könyvet", bookid + "");
-            return ReaderCardPage();
+            Log("10", bookid + "");
+            return RentReaderCardPage();
         }
         public String Load_Image_Base()
         {
@@ -701,7 +700,7 @@ namespace Könyvtár.App_Data
                             Session["usermail"] = item.email;
                             Session["userid"] = item.Id;
                             Session["level"] = 2;
-                            Log(item.Id, "Bejelentkezett");
+                            Log(item.Id, "0");
                             return IndexPage();                            
                             }
                         }

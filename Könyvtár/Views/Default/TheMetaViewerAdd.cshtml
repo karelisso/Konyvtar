@@ -1,0 +1,38 @@
+﻿@{
+    //Layout = null;
+    konyv[] kv;
+    Reader_Card[] cr;
+    book_vs19Entities1 bullshit = new book_vs19Entities1();
+        kv = bullshit.konyv.ToArray();
+        cr = bullshit.Reader_Card.ToArray();
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title></title>
+</head>
+<body class="container-fluid bg-danger text-white">
+    <div>
+        <header>
+            <h1 class="float-end text-white">Jelenleg: Állománynövelés</h1>
+        </header>
+        <div>
+            @*This is category  *@
+            <div id="Addiptive">
+
+                <h1>
+                    Állománynövekedés
+                </h1>
+                <div class="bg-muted text-white bg-success bg-opacity-50">
+                    <h2 class="opacity-100 ms-5">Könyv</h2>
+                    @RenderPage("book_add.cshtml")
+                </div>
+            </div>
+        </div>
+    </div>
+    <a href="/Default/Indexpage"><button class="btn btn-dark btn-block btn-lg"> vissza a föoldalra</button></a>
+</body>
+</html>

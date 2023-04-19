@@ -1,9 +1,9 @@
 p, a {
-    font-family: "Times New Roman" !important;
+    font-family: 'Sriracha', cursive !important;
 }
 
 h1, h2, h3, h4, h5, h6 {
-    font-family: "Times New Roman" !important;
+    font-family: 'Sriracha', cursive !important;
 }
 
 body {
@@ -12,6 +12,7 @@ body {
     background-position: center;
     background-attachment: fixed;
     min-height = 100vh;
+    font-family: 'Oswald', sans-serif !important;
     /* text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;*/
 }
 table{

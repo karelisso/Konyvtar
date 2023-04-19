@@ -1,0 +1,360 @@
+﻿@{
+    //Layout = null;
+    book_vs19Entities1 bullshit = new book_vs19Entities1();
+    //UsersEntities dogpile = new UsersEntities();
+    konyv[] kv;
+    KonyvPeldany[] kmp;
+    user[] ur = bullshit.user.ToArray();
+    kmp= bullshit.KonyvPeldany.ToArray();
+    kv = bullshit.konyv.ToArray();
+    Reader_Card[] cr = bullshit.Reader_Card.ToArray();
+    Reader_Card rc;
+    List<Rent> rent = new List<Rent>();
+    int puinishment = 0;
+    //int sessionuid = int.Parse(Session["userid"].ToString());
+    //if(Session["currentreadercard"] != null) { sessionuid = int.Parse(Session["currentreadercard"].ToString()); }
+    //rc = bullshit.Reader_Card.Where(q => q.User_ID == sessionuid).FirstOrDefault();
+    //if (rc != null)
+    //{
+    //    //rent = bullshit.Rent.Where(q => q.Card_ID == rc.User_ID).ToList();
+    //    rent = bullshit.Rent.ToList();
+    //}
+    rent = bullshit.Rent.ToList();
+    // Session["readerCard"] != null ? bullshit.Reader_Card.First(q => q.Personel_ID_Card.Equals(Session["readerCard"].ToString())).User_ID : "1132141";
+    int? current;
+        if (Session["currentreadercard"] != null && Session["currentreadercard"].ToString().Length > 0)
+    {
+        string curuser = Session["currentreadercard"].ToString();
+
+        current = bullshit.Reader_Card.First(q => q.Personel_ID_Card.Equals(curuser)).User_ID;
+        //current = bullshit.Reader_Card.First().User_ID;
+    }
+    else
+    {
+        current = -1;// bullshit.Reader_Card.First().User_ID;
+    }
+    string bookk = "0";
+    //int? current = bullshit.Reader_Card.First(q=>q.Personel_ID_Card.Equals("1132141")).User_ID;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title></title>
+</head>
+<body>
+    <header>
+        <h1 class="float-end text-white">
+            Jelenleg: Kölcsönzés
+        </h1>
+    </header>
+    <div>
+        <div id="Dell">
+            <form action="CreateReader" method="post" class="text-white bg-dark bg-opacity-50">
+                <h3 class="opacity-100">Olvasó felvétele</h3>
+
+
+                <table class="w-100">
+                    <tr>
+                        <td> <label>Név:</label>  </td>
+                        <td> <input type="text" name="name" value="" autocomplete="off" />   </td>
+                    </tr>
+                    <tr>
+                        <td> <label>Anyja neve:</label>  </td>
+                        <td> <input type="text" name="name2" value="" autocomplete="off" />   </td>
+
+                    </tr>
+
+                    <tr>
+                        <td class="col-3"> <label>Születési hely:</label>    </td>
+                        <td class="col-9"> <input type="type" name="birthpalace" value="" maxlength="10" required autocomplete="off" /> </td>
+                    </tr>
+
+                    <tr>
+                        <td class="col-3"> <label>Születési dátum:</label>    </td>
+                        <td class="col-9"> <input type="type" name="birthday" value="" maxlength="10" required autocomplete="off" /> </td>
+                    </tr>
+
+
+                    <tr>
+                        <td class="col-3"><label>Személyi igazolvány szám:</label>    </td>
+                        <td class="col-9">  <input class="w-100" type="text" name="szid" value="" autocomplete="off" /> </td>
+                    </tr>
+                    <tr>
+                        <td>  <label>Lakcím:</label>  </td>
+                        <td>  <input type="text" name="home" value="" autocomplete="off" />  </td>
+                    </tr>
+                    <tr>
+                        <td> <label>Tel:</label>   </td>
+                        <td>   <input type="tel" name="phone" value="" autocomplete="off" /> </td>
+                    </tr>
+                    <tr>
+                        <td>  <label>E-mail cím:</label>   </td>
+                        <td>  <input type="email" name="mail" value="" autocomplete="off" />  </td>
+                    </tr>
+                    <tr>
+                        <td>  <label>Jelszó:</label>  </td>
+                        <td>  <input type="password" name="Upp" required autocomplete="off" /> </td>
+                    </tr>
+                    <tr>
+                        <td>   <label>Jelszó megerősítése:</label>  </td>
+                        <td>  <input type="password" name="UppR" required /> </td>
+                    </tr>
+                </table>
+
+                @*<br />
+                 <br />
+                  <br />
+                 <br />
+                <br />
+                 <div class="col-md-6 mb-4 text-white" ">
+                     <label>jelszó</label> <input type="password" name="Upp" required />
+                 </div>
+                 <div class="col-md-6 mb-4">
+                     <div class="form-outline text-white" ">
+                         <label>jelszó megerősítése</label> <input type="password" name="UppR" required />
+                     </div>
+                 </div>*@
+                <input type="submit" name="no" value="regisztrál" />
+
+            </form>
+        </div>
+    <script>
+        var all_Writer = []
+            @foreach (var item in kmp.Where(q => !q.RemovedTime.HasValue))
+            {
+                if (rent.Count(q=>q.Book_ID.Equals((item.book_id + ";" + item.PeldanyId))) <= 0 )
+                {
+                    string varrrr = $"{item.book_id.Trim()};{item.PeldanyId}/{kv.First(q=>q.ISBN.Equals(item.book_id)).name}";
+
+                    @:{ all_Writer.push("@varrrr.Trim()") ;}
+
+                }
+
+
+            }
+
+             var all_Reader = []
+            @foreach (var item in cr)
+            {
+                string varrrr = $"{item.Personel_ID_Card}";
+
+               @:{ all_Reader.push("@varrrr.Trim()") };
+            }
+
+        function autocomplete(inp, arr) {
+            console.log("fsdf")
+            /*the autocomplete function takes two arguments,
+        the text field element and an array of possible autocompleted values:*/
+            var currentFocus;
+            /*execute a function when someone writes in the text field:*/
+            inp.addEventListener("input", function (e) {
+                var container, items, i, val = this.value;
+                /*close any already open lists of autocompleted values*/
+                closeAllLists();
+                if (!val) { return false; }
+                currentFocus = -1;
+                /*create a DIV element that will contain the items (values):*/
+                container = document.createElement("DIV");
+                container.setAttribute("id", this.id + "autocomplete-list");
+                container.setAttribute("class", "autocomplete-items");
+                
+
+
+                container.classList.add("text-dark");
+                container.classList.add("dropdown");
+                container.classList.add("show");
+
+                // Get the input field
+                var inputField = $("#"+inp.id);
+
+                // Get the vertical position of the input field relative to the bottom of the screen
+                var windowHeight = $(window).height();
+                var inputPosition = inputField.offset().top + inputField.outerHeight();
+                var positionPercentage = ((windowHeight - inputPosition) / windowHeight) * 100;
+                console.log(positionPercentage);
+                
+                //container.style.cssText = "top: " + 60 + "% ; width:auto;";
+                /* checkMatchingBook();*/
+                //getselectedBook(valu);
+                /*append the DIV element as a child of the autocomplete container:*/
+                this.parentNode.appendChild(container);
+                //document.appendChild(a);
+
+                itemcontainer = document.createElement("ul");
+                itemcontainer.setAttribute("class", "dropdown-menu show");
+                //itemcontainer.setAttribute("aria-labelledby", inp.id + "-dropdown");
+                /*for each item in the array...*/
+                for (i = 0; i < arr.length; i++) {
+                    /*check if the item starts with the same letters as the text field value:*/
+                    if (arr[i].substr(0, val.length).toUpperCase() == val.toUpperCase()) {
+                        /*create a DIV element for each matching element:*/
+
+
+                        items = document.createElement("li");
+                       
+                        /*make the matching letters bold:*/
+                        items.innerHTML = "<strong>" + arr[i].substr(0, val.length) + "</strong>";
+                        items.innerHTML += arr[i].substr(val.length);
+                        /*insert a input field that will hold the current array item's value:*/
+                        items.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
+                        /*execute a function when someone clicks on the item value (DIV element):*/
+                        items.addEventListener("click", function (e) {
+                            /*insert the value for the autocomplete text field:*/
+                            inp.value = this.getElementsByTagName("input")[0].value.split("/")[0];
+                            $("#konyvname").text(() => {
+                                return this.getElementsByTagName("input")[0].value.split("/")[1];
+                            }) 
+                            szidstart();
+                            /* checkMatchingBook();*/
+                            /*close the list of autocompleted values,
+                            (or any other open lists of autocompleted values:*/
+                            closeAllLists();
+                        });
+                        container.appendChild(itemcontainer);
+                        itemcontainer.appendChild(items);
+                       
+
+                    }
+                }
+            });
+
+
+
+
+            /*execute a function presses a key on the keyboard:*/
+            inp.addEventListener("keydown", function (e) {
+                var x = document.getElementById(this.id + "autocomplete-list");
+                if (x) x = x.getElementsByTagName("li");
+                if (e.keyCode == 40) {
+                    /*If the arrow DOWN key is pressed,
+                    increase the currentFocus variable:*/
+                    currentFocus++;
+                    /*and and make the current item more visible:*/
+                    addActive(x);
+                } else if (e.keyCode == 38) { //up
+                    /*If the arrow UP key is pressed,
+                    decrease the currentFocus variable:*/
+                    currentFocus--;
+                    /*and and make the current item more visible:*/
+                    addActive(x);
+                }
+
+                else if (e.keyCode == 13) {
+                    /*If the ENTER key is pressed, prevent the form from being submitted,*/
+                    e.preventDefault();
+                    if (currentFocus > -1) {
+                        /*and simulate a click on the "active" item:*/
+                        if (x) {
+
+                            x[currentFocus].click();
+                           // setTimeout("checkMatchingBook", 20);
+                        }
+                    }
+                }
+            });
+            function addActive(x) {
+                /*a function to classify an item as "active":*/
+                if (!x) return false;
+                /*start by removing the "active" class on all items:*/
+                removeActive(x);
+                if (currentFocus >= x.length) currentFocus = 0;
+                if (currentFocus < 0) currentFocus = (x.length - 1);
+                /*add class "autocomplete-active":*/
+                x[currentFocus].classList.add("autocomplete-active");
+            }
+            function removeActive(x) {
+                /*a function to remove the "active" class from all autocomplete items:*/
+                for (var i = 0; i < x.length; i++) {
+                    x[i].classList.remove("autocomplete-active");
+                }
+            }
+            function closeAllLists(elmnt) {
+                /*close all autocomplete lists in the document,
+                except the one passed as an argument:*/
+                var x = document.getElementsByClassName("autocomplete-items");
+                for (var i = 0; i < x.length; i++) {
+                    if (elmnt != x[i] && elmnt != inp) {
+                        x[i].parentNode.removeChild(x[i]);
+                    }
+                }
+            }
+            /*execute a function when someone clicks in the document:*/
+            document.addEventListener("click", function (e) {
+                closeAllLists(e.target);
+            });
+        }
+
+
+            $("#szid").on("input", () => {
+                szidstart();
+                //
+            });
+
+        $("#szid").change( () => {
+            szidstart();
+        });
+        function szidstart() {
+            var szidval = document.getElementById("szid").value;
+            console.log("something happened!!")
+
+            console.log("df");
+            if (szidval.length >= 3) {
+                var stuff = document.getElementsByName(".hiddenszid");
+                for (var i = 0; i < stuff.length; i++) {
+                    // stuff[i].value = szidval;
+                }
+                myfunction(szidval);
+            }
+        }
+            autocomplete(document.getElementById("konv"), all_Writer);
+
+        autocomplete(document.getElementById("szid"), all_Reader);
+
+
+
+            function myfunction(val) {
+                console.log($("#szid").value);
+                $.ajax({
+                    url: "/Default/SetSession",
+                    type: "POST",
+                    data: { 'name': "currentreadercard", 'value': val },
+                    success: function () {
+                        document.getElementById("borrowinguser").value = val;
+
+                        $.ajax({
+                            url: "/Default/GetReaderCard",
+                            type: "GET",
+                            data: "",
+                            success: function (data) {
+
+                                document.getElementById("userdata").innerHTML = data;
+                            },
+                            error: function () { alert("error"); }
+                        });
+                        document.getElementById("userdata").innerHTML = "";
+                    },
+                    error: function () { alert("error"); }
+                });
+        }
+
+        $(document).ready(function () {
+            $("#Dell").hide();
+            $("#Addiptive").show();
+            console.log("loadedd");
+        })
+        function enableAdd() {
+            $("#Dell").hide();
+            $("#Addiptive").show();
+        }
+        function enableDell() {
+            $("#Dell").show();
+            $("#Addiptive").hide();
+        }
+    </script>
+
+        </div>
+</body>
+</html>

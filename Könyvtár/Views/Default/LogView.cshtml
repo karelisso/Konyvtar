@@ -1,9 +1,7 @@
 ﻿@{
     List<Log> logok = new List<Log>();
-    using (book_vs19Entities1 bullshit = new book_vs19Entities1())
-    {
-        logok = bullshit.Log.ToList();
-    }
+    book_vs19Entities1 bullshit = new book_vs19Entities1();
+    logok = bullshit.Log.ToList();
 }
 
 <!DOCTYPE html>
@@ -22,16 +20,17 @@
             <thead>
             <td> Tettes</td>
             <td> Időpont</td>
-            <td> tevékenység</td>
+            <td> Tevékenység</td>
             <td> Mivel/Kivel</td>
             </thead>
             <tbody>
                 @foreach (var item in logok)
                 {
+                     int logidasint = item.what.AsInt(); 
                     <tr>
                         <td> @item.who</td>
                         <td> @item.when</td>
-                        <td> @item.what</td>
+                        <td> @bullshit.LogDetail.First(q=>q.IdLogDetail == logidasint).text</td>
                         <td> @item.whom</td>
                     </tr>
                 }
