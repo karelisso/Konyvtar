@@ -165,6 +165,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="0Todo\playground.html" />
     <Content Include="0Todo\Todo.html" />
     <Content Include="App_Data\book_vs19.mdf" />
     <Content Include="App_Data\book_vs19_log.ldf">

@@ -220,7 +220,7 @@
 
 
             </table>
-            <table class="table table-bordered text-light" id="tablfull">
+            <table class="table table-bordered text-light text-center justify-content-center" id="tablfull">
 
                 <thead style="position: sticky;top: 0">
 
@@ -275,30 +275,6 @@
                     @* find every active table row, use the id from the table to delete it from the datbase! *@
                 </table>
             </div>
-
-
-            <!--<table class="table table-bordered text-light">-->
-            @*<tr>
-                <td>Név:</td>
-                <td>@(Session["username"]) </td>
-            </tr>*@
-            @*<tr>
-                <td>Kölcsönzések:</td>
-            </tr>*@
-            @*@if (rc == null)
-            {
-                <tr> jelenleg nincs Olvasokártya </tr>
-            }*@
-            <!--<tr>
-                <td>Könyv azonositó</td>
-                <td>kölcsönzés ideje</td>
-                <td>vissza adás határideje</td>
-                <td>visszavitel ideje</td>
-            </tr>
-
-
-
-        </table>-->
 
     <script>
         var all_Writer = []
@@ -419,9 +395,6 @@
                     currentFocus--;
                     /*and and make the current item more visible:*/
                     addActive(x);
-                }
-                else if (e.keyCode == 39) { 
-                    $("#mybutton").dropdown('toggle')
                 }
 
                 else if (e.keyCode == 13) {

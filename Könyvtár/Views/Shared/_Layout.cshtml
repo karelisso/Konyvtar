@@ -26,9 +26,9 @@
                 @if (Session["username"] == null)
                 {
                     @*<li class="nav-item">
-                            @Html.ActionLink("Regisztráció", "RegisterUserPage", "Default", new { area = "" }, new { @class = "navbar-brand" })
+                @Html.ActionLink("Regisztráció", "RegisterUserPage", "Default", new { area = "" }, new { @class = "navbar-brand" })
 
-                        </li>*@
+            </li>*@
                     <li class="nav-item">
                         @Html.ActionLink("Bejelentkezés", "LogInPage", "Default", new { area = "" }, new { @class = "navbar-brand" })
 
@@ -51,19 +51,27 @@
                     else
                     {
                         @*<li class="nav-item">
-                                Olvasókártya
-                            </li>*@
+                    Olvasókártya
+                </li>*@
                     }
                     @*<li class="nav-item">
-                            @Html.ActionLink("Bejelentkezés", "Secnd", "Default", new { area = "" }, new { @class = "navbar-brand" })
+                @Html.ActionLink("Bejelentkezés", "Secnd", "Default", new { area = "" }, new { @class = "navbar-brand" })
 
-                        </li>*@
+            </li>*@
                     if (int.Parse(Session["level"].ToString()) >= 1)
                     {
+                        @*@Html.ActionLink("Állomány növelés", "MetaPage", "Default", new { area = "" }, new { @class = "" })*@
 
-                        <li class="nav-item">
-                            @Html.ActionLink("Állomány kezelés", "MetaPage", "Default", new { area = "" }, new { @class = "navbar-brand" })
+                        <li class="nav-item dropdown">
+                            <a class="nav-item dropdown-toggle btn" id="searchType" data-bs-toggle="dropdown">
+                                Állomány kezelés
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="searchType">
+                                @Html.ActionLink("Állomány növelés", "MetaPage", "Default", new { area = "" }, new { @class = "dropdown-item" })
+                                @Html.ActionLink("Állomány frissités", "MetaPage", "Default", new { area = "" }, new { @class = "dropdown-item" })
+                                @Html.ActionLink("Állomány csökkentés", "MetaPage", "Default", new { area = "" }, new { @class = "dropdown-item" })
 
+                            </div>
                         </li>
                         <li class="nav-item">
                             @Html.ActionLink("Kölcsönzés", "ReaderCardpage", "Default", new { area = "" }, new { @class = "navbar-brand navbar-right" })

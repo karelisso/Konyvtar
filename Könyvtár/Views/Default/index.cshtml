@@ -48,44 +48,46 @@
         <p>A szépirodalmi művektől a ponyvaregényekig.</p>
     </div>*@
 
-    <div class="container mt-3 text-white">
-        <h3>Könyvek keresése a megadott szempont alapján:</h3>
-        <div class="input-group mb-3">
-            <button type="button" class="btn btn-primary dropdown-toggle" id="searchType" data-bs-toggle="dropdown">
-                Szempont
-            </button>
-            <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="#">Szerző</a></li>
-                <li><a class="dropdown-item" href="#">Cím</a></li>
-                <li><a class="dropdown-item" href="#">ISBN/ISSN</a></li>
-                <li><a class="dropdown-item" href="#">kategoria</a></li>
-                @if (int.Parse(Session["level"].ToString()) > 0)
-                {
-                    <li><a class="dropdown-item" href="#">Olvasók</a></li>
-                }
-                else
-                {
-                    <li><a class="dropdown-item" href="#">nálad</a></li>
-                }
-            </ul>
-            <input type="text" class="form-control" placeholder="Könyvek és időszaki kiadványok keresése" id="livesearchtags">
-            <button class="btn btn-success" type="submit" id="searchbutton">Keresés</button>
-        </div>
+<div class="container mt-3 text-white">
+    <h3>Könyvek keresése a megadott szempont alapján:</h3>
+    <div class="input-group mb-3 dropdown">
+        <button type="button" class="btn btn-primary dropdown-toggle" id="searchType" data-bs-toggle="dropdown">
+            Szempont
+        </button>
+        <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="#">Szerző</a></li>
+            <li><a class="dropdown-item" href="#">Cím</a></li>
+            <li><a class="dropdown-item" href="#">ISBN/ISSN</a></li>
+            <li><a class="dropdown-item" href="#">kategoria</a></li>
+            @if (int.Parse(Session["level"].ToString()) > 0)
+            {
+                <li><a class="dropdown-item" href="#">Olvasók</a></li>
+            }
+            else
+            {
+                <li><a class="dropdown-item" href="#">nálad</a></li>
+            }
+        </ul>
+        <input type="text" class="form-control" placeholder="Könyvek és időszaki kiadványok keresése" id="livesearchtags">
+        <button class="btn btn-success" type="submit" id="searchbutton">Keresés</button>
     </div>
-
-
+  
+</div>
 
     @RenderPage("book_render.cshtml")
 
     <script>
-        $("#searchType").on("click", function () {
-            console.log("clickedon me")
-            $(".dropdown-menu").show()
-        })
+        //$("#searchType").on("click", function () {
+        //    console.log("clickedon me")
+        //    $(".dropdown-menu").show()
+        //})
         $(".dropdown-toggle").next(".dropdown-menu").children().on("click", function () {
             $(this).closest(".dropdown-menu").prev(".dropdown-toggle").text($(this).text());
-            $(".dropdown-menu").hide()
+          /*  $(".dropdown-menu").hide()*/
         })
+
+
+
         //const tablerows = document.querySelectorAll(".clickable-table");
         const hide = document.getElementById("showBook");
         document.getElementById("searchbutton").addEventListener('click', () => {
