@@ -699,7 +699,7 @@ namespace Könyvtár.App_Data
                             Session["username"] = Uname;
                             Session["usermail"] = item.email;
                             Session["userid"] = item.Id;
-                            Session["level"] = 2;
+                            Session["level"] = db_book.user.First(q=>q.user_id==item.Id).admin;
                             Log(item.Id, "0");
                             return IndexPage();                            
                             }
