@@ -14,6 +14,7 @@ using Microsoft.Ajax.Utilities;
 using System.Data.Entity.ModelConfiguration.Configuration;
 using System.Security.Cryptography;
 using System.Text;
+using System.Threading;
 
 namespace Könyvtár.App_Data
 {
@@ -146,17 +147,17 @@ namespace Könyvtár.App_Data
             Log("2", wm.IdWriter+"");
             return CreateMetaPage();
         }
-        public ActionResult CreateCategory(string name)
+        public  ActionResult CreateCategory(string name)
         {
             Categories cp = new Categories();
             cp.IdCategorie = db_book.Categories.Max(q => q.IdCategorie) + 1;
             cp.Name = name;
             db_book.Categories.Add(cp);
-            db_book.SaveChanges();
+             db_book.SaveChanges();
             Log("3", cp.IdCategorie+"");
             return CreateMetaPage();
         }
-        public ActionResult CreateBook(string name, string isbn, string auth,string img,string demo,string categori, int quantity,string date)
+        public  ActionResult CreateBook(string name, string isbn, string auth,string img,string demo,string categori, int quantity,string date)
         {
             konyv kv = new konyv();
             DateTime addedtime;
@@ -172,6 +173,7 @@ namespace Könyvtár.App_Data
             {
                 if( db_book.Categories.Count(q => q.Name.Equals(categori))  <=0) CreateCategory(categori);
             }
+            Thread.Sleep(1000);
             if (auth.Length > 0)
             {
                 if (db_book.Writer.Count(q => q.writer_name.Equals(auth)) <= 0) CreateWriter(auth,"","","");
@@ -225,7 +227,9 @@ namespace Könyvtár.App_Data
                 startindex++;
             }
             db_book.KonyvPeldany.AddRange(kvp);
+            
             db_book.konyv.Add(kv);
+            Thread.Sleep(1000);
             db_book.SaveChanges();
             Log("5", kv.IdKonyv+"");
             return CreateMetaPage();

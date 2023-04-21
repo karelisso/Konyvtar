@@ -19,7 +19,9 @@ table{
     background-color: rgb(78, 78, 78, 0.74);
 }
 /* below is the live autocompletion  */
-
+text-orange{
+    color:orange;
+}
 /** { box-sizing: border-box; }
 body {
   font: 16px Arial;

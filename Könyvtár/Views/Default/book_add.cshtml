@@ -13,8 +13,8 @@
     
     <label class="col-6 h4"> Szerző </label>
     <br>
-    <div class="autocomplete text-dark col-6">
-        <input type="type" name="auth" value="" id="Szerzo" required placeholder="Széchenyi István" autocomplete="nope" />
+    <div class="autocomplete text-dark">
+        <input type="type" name="auth" class="col-6" value="" id="Szerzo" required placeholder="" autocomplete="nope" />
     </div>
     @*<select name="auth">
             @foreach (var item in wrt)
@@ -29,13 +29,13 @@
     @*<label>AUTH int only!!!!</label><input type="number" name="auth" value="0" required/> <br />*@
     @*<label>Boritó kép</label><input type="file" accept="image/*" name="img" required /> <br />  all image types
         <label>Összefoglaló</label><input type="text" name="demo" autocomplete="off" /> <br />*@
-    <label class="col-6 h2">Kategória</label>
+    <label class="col-6 h4">Kategória</label>
 
     @*todo: change it to work like Szerzo then the popup a message contains every new data (writer,categoreies ) then create a list of categories*@
-    <div class="autocomplete text-dark col-6">
-        <input type="type" name="categori" value="" id="Categories" required placeholder="Country" autocomplete="nope" />
+    <div class="autocomplete text-dark ">
+        <input type="type" name="categori" class="col-6" value="" id="Categories" required placeholder="" autocomplete="nope" />
     </div>
-    <input id="livesearchtags" name="livesearchtags" placeholder="Search" autocomplete="off" hidden />
+    <input class="col-6" id="livesearchtags" name="livesearchtags" placeholder="Search" autocomplete="off" hidden />
     <div id="result" class="tag-results">
 
 

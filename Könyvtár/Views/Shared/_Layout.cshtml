@@ -25,7 +25,7 @@
 
     <nav class="navbar navbar-expand-sm bg-dark navbar-dark text-white fixed-top">
         <div class="container-fluid">
-            <button button class="navbar-toggler d-inline" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"
+            <button button class="navbar-toggler d-inline bg-warning rounded-pill me-2"  type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"
                <a href="#"><img src="~/szal/img/icon.png" alt="logo" width="60" ></a>
             </button>
             <ul class="navbar-nav navbar-collapse collapse" id="navbarSupportedContent">
@@ -70,18 +70,18 @@
                         @*@Html.ActionLink("Állomány növelés", "MetaPage", "Default", new { area = "" }, new { @class = "" })*@
 
                         <li class="nav-item dropdown">
-                            <button class="nav-item dropdown-toggle btn text-white" id="navalomany" data-bs-toggle="dropdown">
+                            <button class="navbar-brand dropdown-toggle btn text-white" id="navalomany" data-bs-toggle="dropdown">
                                 Állománykezelés
                             </button>
                             <div class="dropdown-menu" aria-labelledby="navalomany">
-                                @Html.ActionLink("Állománynövelés", "CreateMetaPage", "Default", new { area = "" }, new { @class = "dropdown-item" })
+                                @Html.ActionLink("Állománynövelés", "CreateMetaPage", "Default", new { area = "" }, new { @class = "dropdown-item " })
                                 @Html.ActionLink("Állományfrissítés", "#", "Default", new { area = "" }, new { @class = "dropdown-item disabled" })
                                 @Html.ActionLink("Állománycsökkentés", "DeleteMetaPage", "Default", new { area = "" }, new { @class = "dropdown-item" })
 
                             </div>
                         </li>
                         <li class="nav-item dropdown">
-                            <button class="nav-item dropdown-toggle btn text-white" id="navolvaso" data-bs-toggle="dropdown">
+                            <button class="navbar-brand dropdown-toggle btn text-white" id="navolvaso" data-bs-toggle="dropdown">
                                 Olvasók
                             </button>
                             <div class="dropdown-menu" aria-labelledby="navolvaso">

@@ -45,6 +45,7 @@
     <title></title>
 </head>
 <body>
+    <div style="height:100px"></div>
     <header>
         <h1 class="float-end text-white">
             Jelenleg: Kölcsönzés
@@ -80,7 +81,7 @@
 
                     <tr>
                         <td class="col-3"><label>Személyi igazolvány szám:</label>    </td>
-                        <td class="col-9">  <input class="w-100" type="text" name="szid" value="" autocomplete="off" /> </td>
+                        <td class="col-9">  <input class="" type="text" name="szid" value="" autocomplete="off" /> </td>
                     </tr>
                     <tr>
                         <td>  <label>Lakcím:</label>  </td>
@@ -105,23 +106,23 @@
                 </table>
 
                 @*<br />
-                 <br />
-                  <br />
-                 <br />
-                <br />
-                 <div class="col-md-6 mb-4 text-white" ">
-                     <label>jelszó</label> <input type="password" name="Upp" required />
-                 </div>
-                 <div class="col-md-6 mb-4">
-                     <div class="form-outline text-white" ">
-                         <label>jelszó megerősítése</label> <input type="password" name="UppR" required />
+                     <br />
+                      <br />
+                     <br />
+                    <br />
+                     <div class="col-md-6 mb-4 text-white" ">
+                         <label>jelszó</label> <input type="password" name="Upp" required />
                      </div>
-                 </div>*@
+                     <div class="col-md-6 mb-4">
+                         <div class="form-outline text-white" ">
+                             <label>jelszó megerősítése</label> <input type="password" name="UppR" required />
+                         </div>
+                     </div>*@
                 <input type="submit" name="no" value="regisztrál" />
 
             </form>
         </div>
-    <script>
+        <script>
         var all_Writer = []
             @foreach (var item in kmp.Where(q => !q.RemovedTime.HasValue))
             {
@@ -160,7 +161,7 @@
                 container = document.createElement("DIV");
                 container.setAttribute("id", this.id + "autocomplete-list");
                 container.setAttribute("class", "autocomplete-items");
-                
+
 
 
                 container.classList.add("text-dark");
@@ -175,7 +176,7 @@
                 var inputPosition = inputField.offset().top + inputField.outerHeight();
                 var positionPercentage = ((windowHeight - inputPosition) / windowHeight) * 100;
                 console.log(positionPercentage);
-                
+
                 //container.style.cssText = "top: " + 60 + "% ; width:auto;";
                 /* checkMatchingBook();*/
                 //getselectedBook(valu);
@@ -194,7 +195,7 @@
 
 
                         items = document.createElement("li");
-                       
+
                         /*make the matching letters bold:*/
                         items.innerHTML = "<strong>" + arr[i].substr(0, val.length) + "</strong>";
                         items.innerHTML += arr[i].substr(val.length);
@@ -206,7 +207,7 @@
                             inp.value = this.getElementsByTagName("input")[0].value.split("/")[0];
                             $("#konyvname").text(() => {
                                 return this.getElementsByTagName("input")[0].value.split("/")[1];
-                            }) 
+                            })
                             szidstart();
                             /* checkMatchingBook();*/
                             /*close the list of autocompleted values,
@@ -215,7 +216,7 @@
                         });
                         container.appendChild(itemcontainer);
                         itemcontainer.appendChild(items);
-                       
+
 
                     }
                 }
@@ -353,8 +354,8 @@
             $("#Dell").show();
             $("#Addiptive").hide();
         }
-    </script>
+        </script>
 
-        </div>
+    </div>
 </body>
 </html>
