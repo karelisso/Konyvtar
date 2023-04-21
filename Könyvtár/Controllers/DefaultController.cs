@@ -286,7 +286,7 @@ namespace Könyvtár.App_Data
             account2.admin = 0;
             account2.special_password = Upp;
             db_book.User_sus.Add(account1);
-            //db_user.SaveChanges();
+            db_book.SaveChanges();
 
             account2.user_id = db_book.User_sus.Where(q => q.Username == account1.Username && q.email == account1.email).FirstOrDefault().Id;
             rc.Personel_ID_Card = szid;
@@ -699,7 +699,7 @@ namespace Könyvtár.App_Data
                             Session["username"] = Uname;
                             Session["usermail"] = item.email;
                             Session["userid"] = item.Id;
-                            Session["level"] = db_book.user.First(q=>q.user_id==item.Id).admin;
+                            Session["level"] =  db_book.user.First(q=>q.user_id==item.Id).admin;
                             Log(item.Id, "0");
                             return IndexPage();                            
                             }
