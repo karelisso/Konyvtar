@@ -251,7 +251,7 @@ namespace Könyvtár.App_Data
             //try
             //{
             db_book.User_sus.Add(account1);
-            //db_user.SaveChanges();
+            db_book.SaveChanges();
 
             account2.user_id = db_book.User_sus.Where(q => q.Username == account1.Username && q.email == account1.email).FirstOrDefault().Id;
             db_book.user.Add(account2);
@@ -271,7 +271,11 @@ namespace Könyvtár.App_Data
         public ActionResult CreateReader(string name,string name2, string mail, string Upp, string UppR, string phone, string szid,string home,string birthday,string birthpalace)
         {
             if (Upp != UppR)
+            {
+                Console.WriteLine("problem");
                 return CreateReaderCardPage();
+            }
+              
 
             User_sus account1 = new User_sus();
             user account2 = new user();
@@ -280,11 +284,11 @@ namespace Könyvtár.App_Data
             //account.id = bullshit.user.Count() + 1;
             account1.Username = name;
             account2.Username = name;
-            account1.Userpassword =Upp;
+            account1.Userpassword = ComputeStringToSha256Hash(Upp);
             account1.email = mail;
             account1.phone = phone;
             account2.admin = 0;
-            account2.special_password = Upp;
+            account2.special_password = ComputeStringToSha256Hash(Upp);
             db_book.User_sus.Add(account1);
             db_book.SaveChanges();
 
@@ -596,10 +600,14 @@ namespace Könyvtár.App_Data
             string compare = "";
             int iduser = -1;
             if(!int.TryParse(search,out iduser)) return "Ilyen olvaso nem létezik";
-            foreach (var item in db_book.Rent.Where(q=>q.Card_ID==iduser))
+            foreach (var item in db_book.Rent)
             {
-                    //html_code += $" <tr  onclick=\"tbclick(this)\" ondblclick=\"tbdbclick(this)\"> <td>{item.Id} </td>\r\n                    <td>{item.ISBN}</td>\r\n                    <td> {db_book.Writer.Where(q => q.Id == item.authorId).FirstOrDefault().writer_name} </td>\r\n                    <td>{item.name}</td>\r\n                    <td> <img src=\"/Default/Load_Image_File_Id/{item.imageID}\" alt=\"Alternate Text\" height=\"50px\" /> </td>\r\n                    {"<td>" + item.Quantity + "</td>"}    \r\n                </tr> ";
-                    html_code += RenderBook(db_book.konyv.First(q=>q.ISBN==item.Book_ID));
+                if (db_book.Reader_Card.First(q => q.IdReaderCard == item.Card_ID).Personel_ID_Card.IndexOf(search) > -1)
+                {
+                    string bookisbn = item.Book_ID.Split(';')[0];
+                    html_code += RenderBook(db_book.konyv.First(q => q.ISBN == bookisbn));
+                }
+                //html_code += $" <tr  onclick=\"tbclick(this)\" ondblclick=\"tbdbclick(this)\"> <td>{item.Id} </td>\r\n                    <td>{item.ISBN}</td>\r\n                    <td> {db_book.Writer.Where(q => q.Id == item.authorId).FirstOrDefault().writer_name} </td>\r\n                    <td>{item.name}</td>\r\n                    <td> <img src=\"/Default/Load_Image_File_Id/{item.imageID}\" alt=\"Alternate Text\" height=\"50px\" /> </td>\r\n                    {"<td>" + item.Quantity + "</td>"}    \r\n                </tr> ";
             }
             if (html_code.Length < 3) { html_code = "Ez a olvasó jelenleg nem kölcsönzött ki könyvet"; }
             return html_code;
@@ -763,7 +771,7 @@ namespace Könyvtár.App_Data
         }
 
 
-        static string ComputeStringToSha256Hash(string plainText)
+        public  string ComputeStringToSha256Hash(string plainText)
         {
             string salt = "13579";
             plainText += salt;

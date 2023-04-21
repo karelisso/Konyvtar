@@ -10,7 +10,13 @@
     book_vs19Entities1 bullshit = new book_vs19Entities1();
     kv = bullshit.konyv.ToArray();
     cr = bullshit.Reader_Card.ToArray();
+    int? userid = Session["userid"].ToString().AsInt();
+    string yourszid = "1";
+    if (bullshit.Reader_Card.Where(q => q.User_ID == userid).Count() > 0)
+    {
+      yourszid = bullshit.Reader_Card.Where(q => q.User_ID == userid).First().Personel_ID_Card;
 
+    }
 }
 <!DOCTYPE html>
 
@@ -76,7 +82,7 @@
 
     @RenderPage("book_render.cshtml")
 
-    <script>
+<script>
         //$("#searchType").on("click", function () {
         //    console.log("clickedon me")
         //    $(".dropdown-menu").show()
@@ -226,7 +232,7 @@
                     // You can use the absolute url eg www.site.com/MyControllerName/LiveTagSearch or the relative path live below
                     url: "/Default/LiveSearchReaderCard",
                     // Attach the value to a parameter called search
-                    data: { search: @Session["userid"].ToString()},
+                    data: { search: @yourszid  },
                     datatype: "html",
                     success: function (data) {
                         // Insert the returned search results html into the result element
@@ -252,7 +258,7 @@
             }
             //genevent();
         }
-    </script>
+</script>
 </body>
 
 </html>
