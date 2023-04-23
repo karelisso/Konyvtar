@@ -15,6 +15,7 @@ using System.Data.Entity.ModelConfiguration.Configuration;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
+using System.Web.UI.WebControls;
 
 namespace Könyvtár.App_Data
 {
@@ -24,92 +25,92 @@ namespace Könyvtár.App_Data
         public book_vs19Entities1 db_book = new book_vs19Entities1();
         public string tiltottsessions = "username usermail userid level";
         // GET: Default
-        public ActionResult IndexPage()
+        public async Task<ActionResult> IndexPage()
         {
             if (Session["username"] != null)
             {
                 return View("index");
             }
 
-            return startPage();
+            return await startPage();
            
         }
-        public ActionResult TagPage()
+        public async Task<ActionResult> TagPage()
         {
             if (Session["username"] != null)
             {
                 return View("TagAdd");
             }
-            return startPage();
+            return await startPage();
         }
-        public ActionResult MainPage()
+        public async Task<ActionResult> MainPage()
         {
             if (Session["username"] != null)
             {
                 return View("main_page");
             }
-            return startPage();
+            return await startPage();
         }
-        public ActionResult HelperPage()
+        public async Task<ActionResult> HelperPage()
         {
             if (Session["username"] != null)
                 return View("Help");
-            return startPage();
+            return await startPage();
         } 
-        public ActionResult CreateReaderCardPage()
+        public async Task<ActionResult> CreateReaderCardPage()
         {
             if (Session["username"] != null)
                 return View("reader_card_create");
-            return startPage();
+            return await startPage();
         }
-        public ActionResult RentReaderCardPage()
+        public async Task<ActionResult> RentReaderCardPage()
         {
             if (Session["username"] != null)
                 return View("reader_card_rent");
-            return startPage();
+            return await startPage();
         }
-        public ActionResult startPage()
+        public async Task<ActionResult> startPage()
         {
             if (Session["username"] != null) {
-                Log("1");
+                await Log("1");
                 Session.Clear();
             } 
             
             return View("emptypage");
         }
-        public ActionResult CreateMetaPage()
+        public async Task<ActionResult> CreateMetaPage()
         {
               if (Session["username"] != null)
                 return View("TheMetaViewerAdd");
-            return startPage();
+            return await startPage();
         }
-        public ActionResult DeleteMetaPage()
+        public async Task<ActionResult> DeleteMetaPage()
         {
             if (Session["username"] != null)
                 return View("TheMetaViewerRemove");
-            return startPage();
+            return await startPage();
         }
-        public ActionResult BookPage()
+        public async Task<ActionResult> BookPage()
         {
             if (Session["username"] != null)
                 return View("book_detail");
-            return startPage();
+            return await startPage();
         }
-        public ActionResult LogPage()
+        public async Task<ActionResult> LogPage()
         {
             if (Session["username"] != null)
                 return View("LogView");
-            return startPage();
+            return await startPage();
         }
-        public ActionResult LogInPage()
+        public async Task<ActionResult> LogInPage()
         {
                 return View("LogIn");
         }
-        public ActionResult RegisterUserPage()
+        public async Task<ActionResult> RegisterUserPage()
         {
             if (Session["username"] != null)
                 return View("Regist");
-            return startPage();
+            return await startPage();
         }
 
         public void SetSession(string name, string value)
@@ -127,7 +128,7 @@ namespace Könyvtár.App_Data
            return Session[name]?.ToString();
         }
 
-        public ActionResult CreateWriter(string name, string name2, string life, string about)
+        public async Task<ActionResult> CreateWriter(string name, string name2, string life, string about)
         {
             Writer wm = new Writer();
             wm.writer_Date = "";
@@ -143,21 +144,21 @@ namespace Könyvtár.App_Data
             wm.real_name = name2;
             wm.aboutpath = "";
             db_book.Writer.Add(wm);
-            db_book.SaveChanges();
-            Log("2", wm.IdWriter+"");
-            return CreateMetaPage();
+            await SaveDatabaseBook();
+            await Log("2", wm.IdWriter+"");
+            return await CreateMetaPage();
         }
-        public  ActionResult CreateCategory(string name)
+        public async Task<ActionResult> CreateCategory(string name)
         {
             Categories cp = new Categories();
             cp.IdCategorie = db_book.Categories.Max(q => q.IdCategorie) + 1;
             cp.Name = name;
             db_book.Categories.Add(cp);
-             db_book.SaveChanges();
-            Log("3", cp.IdCategorie+"");
-            return CreateMetaPage();
+            await SaveDatabaseBook();
+            await Log("3", cp.IdCategorie+"");
+            return await CreateMetaPage();
         }
-        public  ActionResult CreateBook(string name, string isbn, string auth,string img,string demo,string categori, int quantity,string date)
+        public async Task<ActionResult> CreateBook(string name, string isbn, string auth,string img,string demo,string categori, int quantity,string date)
         {
             konyv kv = new konyv();
             DateTime addedtime;
@@ -171,12 +172,11 @@ namespace Könyvtár.App_Data
             }
             if(categori.Length > 0)
             {
-                if( db_book.Categories.Count(q => q.Name.Equals(categori))  <=0) CreateCategory(categori);
+                if( db_book.Categories.Count(q => q.Name.Equals(categori))  <=0) await CreateCategory(categori);
             }
-            Thread.Sleep(1000);
             if (auth.Length > 0)
             {
-                if (db_book.Writer.Count(q => q.writer_name.Equals(auth)) <= 0) CreateWriter(auth,"","","");
+                if (db_book.Writer.Count(q => q.writer_name.Equals(auth)) <= 0) await CreateWriter(auth,"","","");
             }
             if (!DateTime.TryParse(date, out addedtime)) addedtime = DateTime.Now;
             //long? pictureimage;
@@ -189,7 +189,7 @@ namespace Könyvtár.App_Data
                     Images imageadd = new Images();
                     imageadd.JPG = imageData;
                     db_book.Images.Add(imageadd);
-                    db_book.SaveChanges();
+                    await SaveDatabaseBook();
                     kv.imageID = db_book.Images.Where(q => q.JPG == imageData).First().Id ;
                 }
             }
@@ -229,15 +229,14 @@ namespace Könyvtár.App_Data
             db_book.KonyvPeldany.AddRange(kvp);
             
             db_book.konyv.Add(kv);
-            Thread.Sleep(1000);
-            db_book.SaveChanges();
-            Log("5", kv.IdKonyv+"");
-            return CreateMetaPage();
+            await SaveDatabaseBook();
+            await Log("5", kv.IdKonyv+"");
+            return await CreateMetaPage();
         }
-        public ActionResult CreateUser(string Uname, string mail, string Upp, string UppR, bool? Adm, string phone)
+        public async Task<ActionResult> CreateUser(string Uname, string mail, string Upp, string UppR, bool? Adm, string phone)
         {
             if (Upp != UppR)
-                return startPage();
+                return await startPage();
 
             User_sus account1 = new User_sus();
             user account2 = new user();
@@ -255,12 +254,12 @@ namespace Könyvtár.App_Data
             //try
             //{
             db_book.User_sus.Add(account1);
-            db_book.SaveChanges();
+            await SaveDatabaseBook();
 
             account2.user_id = db_book.User_sus.Where(q => q.Username == account1.Username && q.email == account1.email).FirstOrDefault().Id;
             db_book.user.Add(account2);
 
-            db_book.SaveChanges();
+            await SaveDatabaseBook();
 
             //Session["username"] = Uname;
             //}
@@ -268,16 +267,16 @@ namespace Könyvtár.App_Data
             //{
             //   // return View("Regist");
             //}
-            Log("7", account2.user_id + "");
+            await Log("7", account2.user_id + "");
             //Session.Clear();
-            return RegisterUserPage();
+            return await RegisterUserPage();
         }
-        public ActionResult CreateReader(string name,string name2, string mail, string Upp, string UppR, string phone, string szid,string home,string birthday,string birthpalace)
+        public async Task<ActionResult> CreateReader(string name,string name2, string mail, string Upp, string UppR, string phone, string szid,string home,string birthday,string birthpalace)
         {
             if (Upp != UppR)
             {
                 Console.WriteLine("problem");
-                return CreateReaderCardPage();
+                return await CreateReaderCardPage();
             }
               
 
@@ -294,7 +293,7 @@ namespace Könyvtár.App_Data
             account2.admin = 0;
             account2.special_password = ComputeStringToSha256Hash(Upp);
             db_book.User_sus.Add(account1);
-            db_book.SaveChanges();
+            await SaveDatabaseBook();
 
             account2.user_id = db_book.User_sus.Where(q => q.Username == account1.Username && q.email == account1.email).FirstOrDefault().Id;
             rc.Personel_ID_Card = szid;
@@ -307,20 +306,20 @@ namespace Könyvtár.App_Data
             rc.User_ID = account2.user_id;
             db_book.user.Add(account2);
             db_book.Reader_Card.Add(rc);
-            db_book.SaveChanges();
+            await SaveDatabaseBook();
               
-            Log("8", account2.user_id + "");
-            return CreateReaderCardPage();
+            await Log("8", account2.user_id + "");
+            return await CreateReaderCardPage();
         }
 
-        public ActionResult CreateRent(int? szid,string book_id,string date)
+        public async Task<ActionResult> CreateRent(int? szid,string book_id,string date)
         {
-            if(Session["currentreadercard"] ==null) return RentReaderCardPage();
+            if(Session["currentreadercard"] ==null) return await RentReaderCardPage();
             string curuser = Session["currentreadercard"].ToString();
 
             if (db_book.Reader_Card.Count(q => q.Personel_ID_Card.Equals(curuser)) < 0)
             {
-                return RentReaderCardPage();
+                return await RentReaderCardPage();
             }
 
             //int? current = db_book.Reader_Card.FirstOrDefault(q => q.Personel_ID_Card.Equals(curuser)).User_ID;
@@ -338,40 +337,40 @@ namespace Könyvtár.App_Data
             //int wichkonyv = int.Parse(book_id);
             //db_book.konyv.Where(q => q.Id == wichkonyv).First().Available_Quantity -= 1;
             db_book.Rent.Add(rent);
-            db_book.SaveChanges();
-            Log("9", book_id + "");
-            return RentReaderCardPage();
+            await SaveDatabaseBook();
+            await Log("9", book_id + "");
+            return await RentReaderCardPage();
         }
 
-        public ActionResult DelWriter(string name)
+        public async Task<ActionResult> DelWriter(string name)
         {
             int data = int.Parse(name);
             Writer wm = db_book.Writer.Where(q => q.IdWriter == data).First();
             db_book.Writer.Remove(wm);
-            db_book.SaveChanges();
-            Log("Törölt egy Írót", wm.IdWriter + "");
-            return DeleteMetaPage();
+            await SaveDatabaseBook();
+            await Log("Törölt egy Írót", wm.IdWriter + "");
+            return await DeleteMetaPage();
         }
-        public ActionResult DelCategory(string name)
+        public async Task<ActionResult> DelCategory(string name)
         {
             Categories cp = db_book.Categories.Where(c => c.Name == name).First();
             db_book.Categories.Remove(cp);
-            db_book.SaveChanges();
-            Log("Törölt egy kategoriát", cp.IdCategorie + "");
-            return DeleteMetaPage();
+            await SaveDatabaseBook();
+            await Log("Törölt egy kategoriát", cp.IdCategorie + "");
+            return await DeleteMetaPage();
         }
 
-        public ActionResult Delbooks(string name)
+        public async Task<ActionResult> Delbooks(string name)
         {
                 string namesplit = name.Split(';')[0];
                 int wwwm = int.Parse(name.Split(';')[1]);
                db_book.KonyvPeldany.Where(q => q.book_id == namesplit).Where(q => q.PeldanyId == wwwm).First().RemovedTime = DateTime.Now;
-                db_book.SaveChanges();
-            Log("6",name);
-            return IndexPage();
+               await SaveDatabaseBook();
+            await Log("6",name);
+            return await IndexPage();
         }
       
-        public ActionResult delRent(string bookid,string date)
+        public async Task<ActionResult> delRent(string bookid,string date)
         {
             string[] bookidsplit = bookid.Split(';');
             Rent rent = db_book.Rent.First(q => q.Book_ID.Equals(bookid));
@@ -381,9 +380,9 @@ namespace Könyvtár.App_Data
             rent.Return_Date = addedDate;
             string wichkonyv = rent.Book_ID.Split(';')[0];
             db_book.konyv.Where(q => q.ISBN == wichkonyv ).First().Available_Quantity += 1;
-            db_book.SaveChanges();
-            Log("10", bookid + "");
-            return RentReaderCardPage();
+            await SaveDatabaseBook();
+            await Log("10", bookid + "");
+            return await RentReaderCardPage();
         }
         public String Load_Image_Base()
         {
@@ -425,13 +424,13 @@ namespace Könyvtár.App_Data
                 return null;
             }
         }
-        public Image byteArrayToImage(byte[] byteArrayIn)
+        public System.Drawing.Image byteArrayToImage(byte[] byteArrayIn)
         {
             try
             {
                 MemoryStream ms = new MemoryStream(byteArrayIn, 0, byteArrayIn.Length);
                 ms.Write(byteArrayIn, 0, byteArrayIn.Length);
-                return Image.FromStream(ms, true);//Exception occurs here
+                return System.Drawing.Image.FromStream(ms, true);//Exception occurs here
             }
             catch { }
             return null;
@@ -694,14 +693,10 @@ namespace Könyvtár.App_Data
             System.Diagnostics.Debug.WriteLine(kv[0].ToString());
             Response.Write( kv[0].ToString());
         }
-        public ActionResult LogInUser(string Uname,string Upp,string RegYet)
+        public async Task<ActionResult> LogInUser(string Uname,string Upp,string RegYet)
         {
-            //if (RegYet != null)
-            //    return RegisterUser();
-            //Session["username"] = Uname;
+            bool succesfullogin = false;
             foreach (var item in db_book.User_sus)
-                {
-                try
                 {
                     if (item.Username.ToLower() == Uname.ToLower() || item.email.ToLower() == Uname.ToLower())
                         {
@@ -711,24 +706,22 @@ namespace Könyvtár.App_Data
                             Session["username"] = Uname;
                             Session["usermail"] = item.email;
                             Session["userid"] = item.Id;
-                            Session["level"] =  db_book.user.First(q=>q.user_id==item.Id).admin;
-                            Log(item.Id, "0");
-                            return IndexPage();                            
+                            Session["level"] =  db_book.user.First(q=>q.user_id==item.Id).admin;                            
+                            succesfullogin = true;
+                            break;
                             }
                         }
-            }
-                    catch (Exception e)
+        }
+            if (succesfullogin)
             {
+                await Log(Session["userid"].ToString(), "0");
+                return await IndexPage();
             }
-
-        }
-
-           
-            return startPage();
+            else return await startPage();
         }
 
 
-        public void Log(string what)
+        public async Task Log(string what)
         {
             Log data = new Log();
             data.who = int.Parse(Session["userid"].ToString());
@@ -736,9 +729,9 @@ namespace Könyvtár.App_Data
             data.when = DateTime.Now;
             data.whom = "--";
             db_book.Log.Add(data);
-            db_book.SaveChangesAsync();
+          await SaveDatabaseBook();
         }
-        public void Log(int id, string what)
+        public async Task Log(int id, string what)
         {
             Log data = new Log();
             data.who = id;
@@ -746,9 +739,10 @@ namespace Könyvtár.App_Data
             data.when = DateTime.Now;
             data.whom = "--";
             db_book.Log.Add(data);
-            db_book.SaveChangesAsync();
+           await SaveDatabaseBook();
+
         }
-        public void Log(int id,string what,string whom)
+        public async Task Log(int id,string what,string whom)
         {
             Log data = new Log();
             data.who = id;
@@ -756,9 +750,9 @@ namespace Könyvtár.App_Data
             data.when = DateTime.Now;
             data.whom = whom;
             db_book.Log.Add(data);
-            db_book.SaveChangesAsync();
+           await SaveDatabaseBook();
         }
-        public void Log(string what, string whom)
+        public async Task Log(string what, string whom)
         {
             Log data = new Log();
             data.who = int.Parse(Session["userid"].ToString());
@@ -766,7 +760,7 @@ namespace Könyvtár.App_Data
             data.when = DateTime.Now;
             data.whom = whom;
             db_book.Log.Add(data);
-            db_book.SaveChangesAsync();
+           await SaveDatabaseBook();
         }
         public string[] KonyvSTR(konyv inp)
         {
@@ -794,6 +788,15 @@ namespace Könyvtár.App_Data
                 return stringbuilder.ToString();
             }
         }
-
+        protected async Task<int> SaveDatabaseBook()
+        {
+                await db_book.SaveChangesAsync();
+                return 0;
+           
+        }
     }
 }
+
+
+
+
