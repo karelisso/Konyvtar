@@ -61,7 +61,7 @@
           <Property Name="AddedTime" Type="date" Nullable="false" />
           <Property Name="RemovedTime" Type="date" />
           <Property Name="PeldanyId" Type="int" Nullable="false" />
-          <Property Name="isBorrowed" Type="bit" />
+          <Property Name="isBorrowed" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="KonyvTorolt">
           <Key>
@@ -89,6 +89,20 @@
           </Key>
           <Property Name="IdLogDetail" Type="int" Nullable="false" />
           <Property Name="text" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="MessagesError">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="message" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="MessagesSucces">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Message" Type="nvarchar(max)" Nullable="false" />
         </EntityType>
         <EntityType Name="Reader_Card">
           <Key>
@@ -196,6 +210,8 @@
           <EntitySet Name="KonyvTorolt" EntityType="Self.KonyvTorolt" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Log" EntityType="Self.Log" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="LogDetail" EntityType="Self.LogDetail" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MessagesError" EntityType="Self.MessagesError" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MessagesSucces" EntityType="Self.MessagesSucces" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Reader_Card" EntityType="Self.Reader_Card" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Relation_AuthorWriterBook" EntityType="Self.Relation_AuthorWriterBook" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Relation_BookCategorie" EntityType="Self.Relation_BookCategorie" Schema="dbo" store:Type="Tables" />
@@ -221,6 +237,8 @@
           <EntitySet Name="KonyvTorolt" EntityType="book_vs19Model.KonyvTorolt" />
           <EntitySet Name="Log" EntityType="book_vs19Model.Log" />
           <EntitySet Name="LogDetail" EntityType="book_vs19Model.LogDetail" />
+          <EntitySet Name="MessagesError" EntityType="book_vs19Model.MessagesError" />
+          <EntitySet Name="MessagesSucces" EntityType="book_vs19Model.MessagesSucces" />
           <EntitySet Name="Reader_Card" EntityType="book_vs19Model.Reader_Card" />
           <EntitySet Name="Relation_AuthorWriterBook" EntityType="book_vs19Model.Relation_AuthorWriterBook" />
           <EntitySet Name="Relation_BookCategorie" EntityType="book_vs19Model.Relation_BookCategorie" />
@@ -288,7 +306,7 @@
           <Property Name="AddedTime" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="RemovedTime" Type="DateTime" Precision="0" />
           <Property Name="PeldanyId" Type="Int32" Nullable="false" />
-          <Property Name="isBorrowed" Type="Boolean" />
+          <Property Name="isBorrowed" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="KonyvTorolt">
           <Key>
@@ -316,6 +334,20 @@
           </Key>
           <Property Name="IdLogDetail" Type="Int32" Nullable="false" />
           <Property Name="text" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="MessagesError">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="message" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="MessagesSucces">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Message" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="Reader_Card">
           <Key>
@@ -510,6 +542,22 @@
               <MappingFragment StoreEntitySet="LogDetail">
                 <ScalarProperty Name="text" ColumnName="text" />
                 <ScalarProperty Name="IdLogDetail" ColumnName="IdLogDetail" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MessagesError">
+            <EntityTypeMapping TypeName="book_vs19Model.MessagesError">
+              <MappingFragment StoreEntitySet="MessagesError">
+                <ScalarProperty Name="message" ColumnName="message" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MessagesSucces">
+            <EntityTypeMapping TypeName="book_vs19Model.MessagesSucces">
+              <MappingFragment StoreEntitySet="MessagesSucces">
+                <ScalarProperty Name="Message" ColumnName="Message" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

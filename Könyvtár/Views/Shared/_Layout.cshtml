@@ -156,6 +156,55 @@
 
 
     <div class="container body-content">
+
+        @if (Session["error"] != null && Session["error"].ToString().Length > 1)
+        {
+            <div class="modal fade id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog ">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title" id="myModalLabel">Modal Title</h4>
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        </div>
+                        <div class="modal-body">
+                            @Session["error"]
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <script>
+                $(document).ready(function () {
+                    $('#myModal').modal('show');
+                    ResetSession("error");
+                });
+            </script>
+        }
+
+        @if (Session["success"] != null && Session["success"].ToString().Length > 1)
+        {
+            <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title" id="myModalLabel">Modal Title</h4>
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        </div>
+                        <div class="modal-body">
+                            @Session["success"]
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <script>
+                $(document).ready(function () {
+                    $('#myModal').modal('show');
+                    ResetSession("success");
+                });
+            </script>
+        }
+
+
+
         @RenderBody()
         <hr />
         <footer>
@@ -170,6 +219,18 @@
             setInterval(2000);
             $("#navosbar").css("height", "33px");
         }
+
+        function ResetSession(value) {
+            $.ajax({
+                url: "/Default/SetSession",
+                type: "POST",
+                data: { 'name': value, 'value': "" },
+                success: function () {
+                },
+                error: function () { alert("error"); }
+            });
+        }
+
     </script>
 
     @RenderSection("scripts", required: false)

@@ -23,7 +23,7 @@ namespace Könyvtár.App_Data
     {
         //public static UsersEntities db_user = new UsersEntities(); db_user.User_sus
         public book_vs19Entities1 db_book = new book_vs19Entities1();
-        public string tiltottsessions = "username usermail userid level";
+        public string tiltottsessions = "username usermail userid level "; // error success
         // GET: Default
         public async Task<ActionResult> IndexPage()
         {
@@ -314,11 +314,16 @@ namespace Könyvtár.App_Data
 
         public async Task<ActionResult> CreateRent(int? szid,string book_id,string date)
         {
-            if(Session["currentreadercard"] ==null) return await RentReaderCardPage();
+            if (Session["currentreadercard"] == null) {
+                Session["error"] = db_book.MessagesError.First(q=>q.Id==5).message;
+                return await RentReaderCardPage(); 
+            }
             string curuser = Session["currentreadercard"].ToString();
 
             if (db_book.Reader_Card.Count(q => q.Personel_ID_Card.Equals(curuser)) < 0)
             {
+                Session["error"] = db_book.MessagesError.First(q => q.Id == 5).message;
+
                 return await RentReaderCardPage();
             }
 
@@ -342,6 +347,7 @@ namespace Könyvtár.App_Data
             db_book.Rent.Add(rent);
             await SaveDatabaseBook();
             await Log("9", book_id + "");
+            Session["success"] = db_book.MessagesSucces.First(q => q.Id == 2).Message;
             return await RentReaderCardPage();
         }
 
@@ -440,13 +446,13 @@ namespace Könyvtár.App_Data
 
         public string RenderBook(konyv item)
         {
-            return $" <tr  onclick=\"tbclick(this)\" ondblclick=\"tbdbclick(this)\"> <td>{item.IdKonyv} </td>\r\n                    <td>{item.ISBN}</td>\r\n                    <td> {db_book.Writer.Where(q => q.IdWriter == item.authorId).FirstOrDefault().writer_name} </td>\r\n                    <td>{item.name}</td>\r\n                          <td>{db_book.Categories.Where(q => q.IdCategorie == item.Categories).FirstOrDefault().Name}</td>\r\n                    {"<td>" + db_book.KonyvPeldany.Where(q => q.book_id == item.ISBN).Count(q => !q.isBorrowed.Value)  +" / " + db_book.KonyvPeldany.Count(q => q.book_id == item.ISBN) + "</td>"}    \r\n                </tr> ";
+            return $" <tr  onclick=\"tbclick(this)\" ondblclick=\"tbdbclick(this)\"> <td>{item.IdKonyv} </td>\r\n                    <td>{item.ISBN}</td>\r\n                    <td> {db_book.Writer.Where(q => q.IdWriter == item.authorId).FirstOrDefault().writer_name} </td>\r\n                    <td>{item.name}</td>\r\n                          <td>{db_book.Categories.Where(q => q.IdCategorie == item.Categories).FirstOrDefault().Name}</td>\r\n                    {"<td>" + db_book.KonyvPeldany.Where(q => q.book_id == item.ISBN).Count(q => !q.isBorrowed)  +" / " + db_book.KonyvPeldany.Count(q => q.book_id == item.ISBN) + "</td>"}    \r\n                </tr> ";
         }
         public string RenderBookItem(string isbn)
         {
             string issbn = isbn.Split(';')[0];
             konyv item = db_book.konyv.First(q=>q.ISBN == issbn);
-            return $" <tr  onclick=\"tbclick(this)\" ondblclick=\"tbdbclick(this)\"> <td>{item.IdKonyv} </td>\r\n                    <td>{item.ISBN}</td>\r\n                    <td> {db_book.Writer.Where(q => q.IdWriter == item.authorId).FirstOrDefault().writer_name} </td>\r\n                    <td>{item.name}</td>\r\n                          <td>{db_book.Categories.Where(q => q.IdCategorie == item.Categories).FirstOrDefault().Name}</td>\r\n                    {"<td>" + db_book.KonyvPeldany.Where(q=>q.book_id == item.ISBN).Count(q=>!q.isBorrowed.Value) +" / " + db_book.KonyvPeldany.Count(q => q.book_id == item.ISBN) + "</td>"}    \r\n                </tr> ";
+            return $" <tr  onclick=\"tbclick(this)\" ondblclick=\"tbdbclick(this)\"> <td>{item.IdKonyv} </td>\r\n                    <td>{item.ISBN}</td>\r\n                    <td> {db_book.Writer.Where(q => q.IdWriter == item.authorId).FirstOrDefault().writer_name} </td>\r\n                    <td>{item.name}</td>\r\n                          <td>{db_book.Categories.Where(q => q.IdCategorie == item.Categories).FirstOrDefault().Name}</td>\r\n                    {"<td>" + db_book.KonyvPeldany.Where(q=>q.book_id == item.ISBN).Count(q=>!q.isBorrowed) +" / " + db_book.KonyvPeldany.Count(q => q.book_id == item.ISBN) + "</td>"}    \r\n                </tr> ";
 
         }
         public string LiveSearchWriter(string search = "")
@@ -708,8 +714,10 @@ namespace Könyvtár.App_Data
                             Session["username"] = Uname;
                             Session["usermail"] = item.email;
                             Session["userid"] = item.Id;
-                            Session["level"] =  db_book.user.First(q=>q.user_id==item.Id).admin;                            
+                            Session["level"] =  db_book.user.First(q=>q.user_id==item.Id).admin;
+                            Session["success"] = db_book.MessagesSucces.First(q => q.Id == 4).Message;
                             succesfullogin = true;
+                        
                             break;
                             }
                         }
@@ -719,7 +727,12 @@ namespace Könyvtár.App_Data
                 await Log(Session["userid"].ToString(), "0");
                 return await IndexPage();
             }
-            else return await startPage();
+
+            else
+            {
+                Session["error"] = db_book.MessagesError.First(q => q.Id == 3).message;
+                return await LogInPage();
+            }
         }
 
 

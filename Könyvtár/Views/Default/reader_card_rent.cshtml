@@ -187,7 +187,7 @@
 
 
             }*@
-        @foreach (var item in kmp.Where(q => !q.isBorrowed.Value))
+        @foreach (var item in kmp.Where(q => !q.isBorrowed))
             {
                     string varrrr = $"{item.book_id.Trim()};{item.PeldanyId}/{kv.First(q=>q.ISBN.Equals(item.book_id)).name}";
 

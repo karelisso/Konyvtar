@@ -34,6 +34,8 @@ namespace Könyvtár
         public virtual DbSet<KonyvTorolt> KonyvTorolt { get; set; }
         public virtual DbSet<Log> Log { get; set; }
         public virtual DbSet<LogDetail> LogDetail { get; set; }
+        public virtual DbSet<MessagesError> MessagesError { get; set; }
+        public virtual DbSet<MessagesSucces> MessagesSucces { get; set; }
         public virtual DbSet<Reader_Card> Reader_Card { get; set; }
         public virtual DbSet<Relation_AuthorWriterBook> Relation_AuthorWriterBook { get; set; }
         public virtual DbSet<Relation_BookCategorie> Relation_BookCategorie { get; set; }
