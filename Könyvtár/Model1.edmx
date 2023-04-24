@@ -61,6 +61,7 @@
           <Property Name="AddedTime" Type="date" Nullable="false" />
           <Property Name="RemovedTime" Type="date" />
           <Property Name="PeldanyId" Type="int" Nullable="false" />
+          <Property Name="isBorrowed" Type="bit" />
         </EntityType>
         <EntityType Name="KonyvTorolt">
           <Key>
@@ -287,6 +288,7 @@
           <Property Name="AddedTime" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="RemovedTime" Type="DateTime" Precision="0" />
           <Property Name="PeldanyId" Type="Int32" Nullable="false" />
+          <Property Name="isBorrowed" Type="Boolean" />
         </EntityType>
         <EntityType Name="KonyvTorolt">
           <Key>
@@ -472,6 +474,7 @@
           <EntitySetMapping Name="KonyvPeldany">
             <EntityTypeMapping TypeName="book_vs19Model.KonyvPeldany">
               <MappingFragment StoreEntitySet="KonyvPeldany">
+                <ScalarProperty Name="isBorrowed" ColumnName="isBorrowed" />
                 <ScalarProperty Name="PeldanyId" ColumnName="PeldanyId" />
                 <ScalarProperty Name="RemovedTime" ColumnName="RemovedTime" />
                 <ScalarProperty Name="AddedTime" ColumnName="AddedTime" />

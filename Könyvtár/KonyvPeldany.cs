@@ -19,5 +19,6 @@ namespace Könyvtár
         public System.DateTime AddedTime { get; set; }
         public Nullable<System.DateTime> RemovedTime { get; set; }
         public int PeldanyId { get; set; }
+        public Nullable<bool> isBorrowed { get; set; }
     }
 }

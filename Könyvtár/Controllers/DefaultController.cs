@@ -334,8 +334,11 @@ namespace Könyvtár.App_Data
             if (!DateTime.TryParse(date, out addedtime)) addedtime = DateTime.Now;
             rent.Rent_Date = addedtime.Date;
             rent.Due_Date = addedtime.AddDays(14).Date;
-            //int wichkonyv = int.Parse(book_id);
-            //db_book.konyv.Where(q => q.Id == wichkonyv).First().Available_Quantity -= 1;
+            string isbn = book_id.Split(';')[0];
+            long db = long.Parse( book_id.Split(';')[1]);
+            db_book.KonyvPeldany.Where(q => q.book_id == isbn).First(q=>q.PeldanyId == db).isBorrowed = true;
+
+
             db_book.Rent.Add(rent);
             await SaveDatabaseBook();
             await Log("9", book_id + "");
@@ -378,8 +381,7 @@ namespace Könyvtár.App_Data
             DateTime addedDate;
             if (!DateTime.TryParse(date, out addedDate)) addedDate = DateTime.Now;
             rent.Return_Date = addedDate;
-            string wichkonyv = rent.Book_ID.Split(';')[0];
-            db_book.konyv.Where(q => q.ISBN == wichkonyv ).First().Available_Quantity += 1;
+            db_book.KonyvPeldany.Where(q => q.book_id == bookid).First().isBorrowed = false;
             await SaveDatabaseBook();
             await Log("10", bookid + "");
             return await RentReaderCardPage();
@@ -438,13 +440,13 @@ namespace Könyvtár.App_Data
 
         public string RenderBook(konyv item)
         {
-            return $" <tr  onclick=\"tbclick(this)\" ondblclick=\"tbdbclick(this)\"> <td>{item.IdKonyv} </td>\r\n                    <td>{item.ISBN}</td>\r\n                    <td> {db_book.Writer.Where(q => q.IdWriter == item.authorId).FirstOrDefault().writer_name} </td>\r\n                    <td>{item.name}</td>\r\n                          <td>{db_book.Categories.Where(q => q.IdCategorie == item.Categories).FirstOrDefault().Name}</td>\r\n                    {"<td>" + db_book.KonyvPeldany.Where(q => q.book_id == item.ISBN).Count(q => !q.RemovedTime.HasValue) + "</td>"}    \r\n                </tr> ";
+            return $" <tr  onclick=\"tbclick(this)\" ondblclick=\"tbdbclick(this)\"> <td>{item.IdKonyv} </td>\r\n                    <td>{item.ISBN}</td>\r\n                    <td> {db_book.Writer.Where(q => q.IdWriter == item.authorId).FirstOrDefault().writer_name} </td>\r\n                    <td>{item.name}</td>\r\n                          <td>{db_book.Categories.Where(q => q.IdCategorie == item.Categories).FirstOrDefault().Name}</td>\r\n                    {"<td>" + db_book.KonyvPeldany.Where(q => q.book_id == item.ISBN).Count(q => !q.isBorrowed.Value)  +" / " + db_book.KonyvPeldany.Count(q => q.book_id == item.ISBN) + "</td>"}    \r\n                </tr> ";
         }
         public string RenderBookItem(string isbn)
         {
             string issbn = isbn.Split(';')[0];
             konyv item = db_book.konyv.First(q=>q.ISBN == issbn);
-            return $" <tr  onclick=\"tbclick(this)\" ondblclick=\"tbdbclick(this)\"> <td>{item.IdKonyv} </td>\r\n                    <td>{item.ISBN}</td>\r\n                    <td> {db_book.Writer.Where(q => q.IdWriter == item.authorId).FirstOrDefault().writer_name} </td>\r\n                    <td>{item.name}</td>\r\n                          <td>{db_book.Categories.Where(q => q.IdCategorie == item.Categories).FirstOrDefault().Name}</td>\r\n                    {"<td>" + db_book.KonyvPeldany.Where(q => q.book_id == item.ISBN).Count(q => !q.RemovedTime.HasValue) + "</td>"}    \r\n                </tr> ";
+            return $" <tr  onclick=\"tbclick(this)\" ondblclick=\"tbdbclick(this)\"> <td>{item.IdKonyv} </td>\r\n                    <td>{item.ISBN}</td>\r\n                    <td> {db_book.Writer.Where(q => q.IdWriter == item.authorId).FirstOrDefault().writer_name} </td>\r\n                    <td>{item.name}</td>\r\n                          <td>{db_book.Categories.Where(q => q.IdCategorie == item.Categories).FirstOrDefault().Name}</td>\r\n                    {"<td>" + db_book.KonyvPeldany.Where(q=>q.book_id == item.ISBN).Count(q=>!q.isBorrowed.Value) +" / " + db_book.KonyvPeldany.Count(q => q.book_id == item.ISBN) + "</td>"}    \r\n                </tr> ";
 
         }
         public string LiveSearchWriter(string search = "")
