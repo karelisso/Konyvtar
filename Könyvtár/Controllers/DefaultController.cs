@@ -347,7 +347,7 @@ namespace Könyvtár.App_Data
             db_book.Rent.Add(rent);
             await SaveDatabaseBook();
             await Log("9", book_id + "");
-            Session["success"] = db_book.MessagesSucces.First(q => q.Id == 2).Message;
+            Session["success"] = db_book.MessagesSucces.First(q => q.Id == 2).Message + $" {rent.Book_ID}";
             return await RentReaderCardPage();
         }
 
@@ -703,6 +703,8 @@ namespace Könyvtár.App_Data
         }
         public async Task<ActionResult> LogInUser(string Uname,string Upp,string RegYet)
         {
+            Session["success"] = "";
+            Session["error"] = "";
             bool succesfullogin = false;
             foreach (var item in db_book.User_sus)
                 {
@@ -716,8 +718,9 @@ namespace Könyvtár.App_Data
                             Session["userid"] = item.Id;
                             Session["level"] =  db_book.user.First(q=>q.user_id==item.Id).admin;
                             Session["success"] = db_book.MessagesSucces.First(q => q.Id == 4).Message;
+                            Session["error"] = db_book.MessagesError.First(q => q.Id == 3).message;
                             succesfullogin = true;
-                        
+                            
                             break;
                             }
                         }

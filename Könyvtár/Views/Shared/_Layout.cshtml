@@ -23,7 +23,7 @@
 </head>
 <body>
 
-    <nav class="navbar navbar-expand-sm bg-dark navbar-dark text-white fixed-top">
+    <nav class="navbar navbar-expand-lg bg-dark navbar-dark text-white fixed-top">
         <div class="container-fluid">
             <button button class="navbar-toggler d-inline bg-warning rounded-pill me-2"  type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"
                <a href="#"><img src="~/szal/img/icon.png" alt="logo" width="60" ></a>
@@ -86,6 +86,7 @@
                             </button>
                             <div class="dropdown-menu" aria-labelledby="navolvaso">
                                 @Html.ActionLink("Tagfelvétel", "CreateReaderCardPage", "Default", new { area = "" }, new { @class = "dropdown-item" })
+                                @Html.ActionLink("Tag kezelés", "CreateReaderCardPage", "Default", new { area = "" }, new { @class = "dropdown-item" })
                                 @Html.ActionLink("Kölcsönzések kezelése", "RentReaderCardPage", "Default", new { area = "" }, new { @class = "dropdown-item" })
                             </div>
                         </li>
@@ -141,7 +142,7 @@
                     }
 
                     <li class="nav-item">
-                        @Html.ActionLink("Kijelentkezés", "startpage", "Default", new { area = "" }, new { @class = "navbar-brand" })
+                        @Html.ActionLink("Kilép", "startpage", "Default", new { area = "" }, new { @class = "navbar-brand" })
                     </li>
 
 
@@ -157,30 +158,7 @@
 
     <div class="container body-content">
 
-        @if (Session["error"] != null && Session["error"].ToString().Length > 1)
-        {
-            <div class="modal fade id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                <div class="modal-dialog ">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h4 class="modal-title" id="myModalLabel">Modal Title</h4>
-                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        </div>
-                        <div class="modal-body">
-                            @Session["error"]
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <script>
-                $(document).ready(function () {
-                    $('#myModal').modal('show');
-                    ResetSession("error");
-                });
-            </script>
-        }
-
-        @if (Session["success"] != null && Session["success"].ToString().Length > 1)
+        @if ( (Session["success"] != null || Session["error"] != null)  && (Session["success"].ToString().Length > 1 || Session["error"].ToString().Length > 1))
         {
             <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
@@ -190,6 +168,8 @@
                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                         </div>
                         <div class="modal-body">
+                            @Session["error"]
+                            <hr>
                             @Session["success"]
                         </div>
                     </div>
@@ -198,6 +178,7 @@
             <script>
                 $(document).ready(function () {
                     $('#myModal').modal('show');
+                    ResetSession("error");
                     ResetSession("success");
                 });
             </script>
@@ -216,8 +197,8 @@
         function toogelnav() {
 
             console.log("fgdsdf")
-            setInterval(2000);
-            $("#navosbar").css("height", "33px");
+           // setInterval(2000);
+          //  $("#navosbar").css("height", "33px");
         }
 
         function ResetSession(value) {
