@@ -2,7 +2,17 @@
     book_vs19Entities1 bullshit = new book_vs19Entities1();
 
     Reader_Card[] cr = bullshit.Reader_Card.ToArray();
-
+    var ReaderCard = from card in bullshit.Reader_Card join user in bullshit.User_sus on card.User_ID equals user.Id select new
+    {
+        card.Personel_ID_Card,
+        card.Birthday,
+        card.Birtpalace,
+        card.Momname,
+        card.home,
+        user.Username,
+        user.phone,
+        user.email,
+    };
 }
 <div style="height:100px"></div>
 <header>
@@ -10,21 +20,36 @@
         Jelenleg: Olvasókártyák kezelése
     </h1>
 </header>
-<table class="table table-responsive">
+<table class="table table-responsive table-bordered table-striped text-center justify-content-center">
+    <thead class="bg-warning">
+    <tr>
+    <td>Személyi</td>
+    <td>Név</td>
+    <td>Anyja neve</td>
+    <td>Születési dátum</td>
+    <td>Születési hely</td>
+    <td>Lakcím</td>
+    <td>Tell</td>
+    <td>E-mail cím</td>
 
-    @foreach (var item in bullshit.Reader_Card)
-    {
-         <td>
-            <tr>@item.IdReaderCard</tr>
-            <tr>@item.Birthday</tr>
-            <tr>@item.Personel_ID_Card</tr>
-            <tr>@item.home</tr>
-            <tr>@item.Momname</tr>
-            <tr>@item.User_ID</tr>
-        </td>
+    </tr>
+    </thead>
+    <tbody class="bg-white">
+        @foreach (var item in ReaderCard)
+        {
+        <tr>
+            <td>@item.Personel_ID_Card</td>
+            <td>@item.Username</td>
+            <td>@item.Momname</td>
+            <td>@item.Birthday</td>
+            <td>@item.Birtpalace</td>
+            <td>@item.home</td>
+            <td>@item.phone</td>
+            <td>@item.email</td>
+        </tr>
     }
-
-</table>
+        </tbody>
+    </table>
 
 
 

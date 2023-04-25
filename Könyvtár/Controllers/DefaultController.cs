@@ -63,6 +63,13 @@ namespace Könyvtár.App_Data
                 return View("reader_card_create");
             return await startPage();
         }
+        public async Task<ActionResult> ManageReaderCardPage()
+        {
+            if (Session["username"] != null)
+                return View("reader_card_all");
+            return await startPage();
+        }
+
         public async Task<ActionResult> RentReaderCardPage()
         {
             if (Session["username"] != null)
@@ -84,6 +91,13 @@ namespace Könyvtár.App_Data
                 return View("TheMetaViewerAdd");
             return await startPage();
         }
+        public async Task<ActionResult> ChangeMetaPage()
+        {
+            if (Session["username"] != null)
+                return View("TheMetaViewerChange");
+            return await startPage();
+        }
+
         public async Task<ActionResult> DeleteMetaPage()
         {
             if (Session["username"] != null)

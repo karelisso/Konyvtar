@@ -402,6 +402,8 @@
     <Content Include="Views\Default\TheMetaViewerAdd.cshtml" />
     <Content Include="Views\Default\reader_card_rent.cshtml" />
     <Content Include="Views\Default\reader_card_all.cshtml" />
+    <Content Include="Views\Default\TheMetaViewerChange.cshtml" />
+    <Content Include="Views\Default\book_change.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

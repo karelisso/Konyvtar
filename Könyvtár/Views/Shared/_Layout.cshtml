@@ -75,7 +75,7 @@
                             </button>
                             <div class="dropdown-menu" aria-labelledby="navalomany">
                                 @Html.ActionLink("Állománynövelés", "CreateMetaPage", "Default", new { area = "" }, new { @class = "dropdown-item " })
-                                @Html.ActionLink("Állományfrissítés", "#", "Default", new { area = "" }, new { @class = "dropdown-item disabled" })
+                                @Html.ActionLink("Állományfrissítés", "ChangeMetaPage", "Default", new { area = "" }, new { @class = "dropdown-item" })
                                 @Html.ActionLink("Állománycsökkentés", "DeleteMetaPage", "Default", new { area = "" }, new { @class = "dropdown-item" })
 
                             </div>
@@ -86,7 +86,7 @@
                             </button>
                             <div class="dropdown-menu" aria-labelledby="navolvaso">
                                 @Html.ActionLink("Tagfelvétel", "CreateReaderCardPage", "Default", new { area = "" }, new { @class = "dropdown-item" })
-                                @Html.ActionLink("Tag kezelés", "CreateReaderCardPage", "Default", new { area = "" }, new { @class = "dropdown-item" })
+                                @Html.ActionLink("Tag kezelés", "ManageReaderCardPage", "Default", new { area = "" }, new { @class = "dropdown-item" })
                                 @Html.ActionLink("Kölcsönzések kezelése", "RentReaderCardPage", "Default", new { area = "" }, new { @class = "dropdown-item" })
                             </div>
                         </li>
