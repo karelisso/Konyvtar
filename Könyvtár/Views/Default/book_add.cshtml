@@ -16,19 +16,12 @@
     <div class="autocomplete text-dark">
         <input type="type" name="auth" class="col-6" value="" id="Szerzo" required placeholder="" autocomplete="nope" />
     </div>
-    @*<select name="auth">
-            @foreach (var item in wrt)
-            {
-                <option value="@item.Id">@item.writer_name</option>
-            }
-        </select>*@
     <label class="col-6 h4">Cím</label> <br>  <input class="col-6" type="type" name="name" value="" required autocomplete="off" /> <br />
     <label class="col-6 h4">ISBN code</label> <br>   <input class="col-6" type="type" name="isbn" value="" maxlength="13" required autocomplete="off" /> <br />
     <label class="col-6 h4">Beszerzés dátuma</label> <br>  <input class="col-6" type="date" name="date" value="" maxlength="10" autocomplete="off" /> <br />
     <label class="col-6 h4">Darabszám</label> <br>  <input class="col-6" type="number" name="quantity" value="1" required autocomplete="off" /> <br />
     @*<label>AUTH int only!!!!</label><input type="number" name="auth" value="0" required/> <br />*@
-    <label>Boritó kép</label><input type="file" accept="image/*" name="img"  /> <br />  @*all image types*@
-        @*<label>Összefoglaló</label><input type="text" name="demo" autocomplete="off" /> <br />*@
+    <!--<label>Boritó kép</label><input type="file" accept="image/*" name="img"  /> <br />-->  @*all image types*@
     <label class="col-6 h4">Kategória</label>
 
     @*todo: change it to work like Szerzo then the popup a message contains every new data (writer,categoreies ) then create a list of categories*@

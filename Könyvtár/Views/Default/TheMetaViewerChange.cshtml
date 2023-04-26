@@ -1,12 +1,9 @@
 ﻿@{
-
-}
-
-@{
     //Layout = null;
     konyv[] kv;
     Reader_Card[] cr;
     book_vs19Entities1 bullshit = new book_vs19Entities1();
+    var img = bullshit.Images.ToArray();
     kv = bullshit.konyv.ToArray();
     cr = bullshit.Reader_Card.ToArray();
 }
@@ -29,13 +26,29 @@
             @*This is category  *@
 
             <h1>
-                Állomány kivétele
+                Állomány kezelése
             </h1>
 
             <div class="bg-muted text-white bg-success bg-opacity-50">
                 <h3 class="opacity-100">Könyv</h3>
                 @RenderPage("book_change.cshtml")
             </div>
+
+            @*<div class="bg-muted text-white bg-success bg-opacity-50">
+                <h3 class="opacity-100">Képek</h3>
+                @foreach (var item in img)
+                {
+                    <div class="card" style="width: 18rem;">
+                        <img class="card-img-top" src="data:image;base64,@System.Convert.ToBase64String(item.JPG)" alt="Card image cap">
+                        <div class="card-body">
+                            <h5 class="card-title">Card title</h5>
+                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                            <a href="#" class="btn btn-primary">Go somewhere</a>
+                        </div>
+                    </div>
+                }
+            </div>*@
+
         </div>
 
     </div>

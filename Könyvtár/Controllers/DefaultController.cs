@@ -174,16 +174,10 @@ namespace Könyvtár.App_Data
         }
         public async Task<ActionResult> CreateBook(string name, string isbn, string auth,string img,string demo,string categori, int quantity,string date)
         {
-            konyv kv = new konyv();
+            konyv kv = db_book.konyv.FirstOrDefault(q=>q.ISBN.Equals(isbn));
+            bool isNewEntry = kv == null;
+            if (isNewEntry) kv = new konyv();
             DateTime addedtime;
-            if(img == null)
-            {
-                img = "0";
-            }
-            if (img.Length < 9)
-            {
-                img = "0";
-            }
             if(categori.Length > 0)
             {
                 if( db_book.Categories.Count(q => q.Name.Equals(categori))  <=0) await CreateCategory(categori);
@@ -196,30 +190,32 @@ namespace Könyvtár.App_Data
             //long? pictureimage;
             if(Request.Files.Count > 0)
             {
-                // HttpPostedFile image = Request.Files[0].InputStream;
                 using (var binaryReader = new BinaryReader(Request.Files[0].InputStream))
                 {
                     var imageData = binaryReader.ReadBytes((int)binaryReader.BaseStream.Length);
                     Images imageadd = new Images();
                     imageadd.JPG = imageData;
                     db_book.Images.Add(imageadd);
-                    await SaveDatabaseBook();
-                    kv.imageID = db_book.Images.Where(q => q.JPG == imageData).First().Id ;
+                    //imageData = imageadd.JPG;
+                    int nothing =  await SaveDatabaseBook();
+
+                    kv.imageID = db_book.Images.Where(q => q.JPG == imageData).First().Id;
+
+                    
                 }
             }
-            else
+            else if(isNewEntry)
             {
                 kv.imageID = 0;
             }
-           
-            kv.authorId = 0;
+           if(isNewEntry) kv.authorId = 0;
             if (auth.Length > 0)
             {
                 kv.authorId = db_book.Writer.First(q => q.writer_name == auth).IdWriter;
             }
-            kv.Categories = db_book.Categories.First(q=>q.Name.Equals(categori)).IdCategorie;
-            kv.ISBN = isbn;
-            kv.name = name;
+            if (categori.Length > 0) kv.Categories = db_book.Categories.First(q=>q.Name.Equals(categori)).IdCategorie;
+            if (isbn.Length > 9) kv.ISBN = isbn;
+            if (name.Length > 0) kv.name = name;
             kv.demo = demo;
             try
             {
@@ -241,8 +237,7 @@ namespace Könyvtár.App_Data
                 startindex++;
             }
             db_book.KonyvPeldany.AddRange(kvp);
-            
-            db_book.konyv.Add(kv);
+            if (isNewEntry) db_book.konyv.Add(kv);
             await SaveDatabaseBook();
             await Log("5", kv.IdKonyv+"");
             return await CreateMetaPage();
@@ -406,6 +401,10 @@ namespace Könyvtár.App_Data
             await Log("10", bookid + "");
             return await RentReaderCardPage();
         }
+
+
+
+
         public String Load_Image_Base()
         {
 
@@ -469,6 +468,25 @@ namespace Könyvtár.App_Data
             return $" <tr  onclick=\"tbclick(this)\" ondblclick=\"tbdbclick(this)\"> <td>{item.IdKonyv} </td>\r\n                    <td>{item.ISBN}</td>\r\n                    <td> {db_book.Writer.Where(q => q.IdWriter == item.authorId).FirstOrDefault().writer_name} </td>\r\n                    <td>{item.name}</td>\r\n                          <td>{db_book.Categories.Where(q => q.IdCategorie == item.Categories).FirstOrDefault().Name}</td>\r\n                    {"<td>" + db_book.KonyvPeldany.Where(q=>q.book_id == item.ISBN).Count(q=>!q.isBorrowed) +" / " + db_book.KonyvPeldany.Count(q => q.book_id == item.ISBN) + "</td>"}    \r\n                </tr> ";
 
         }
+
+        public ActionResult GetBook(string isbn)
+        {
+            isbn = isbn.Split(';')[0];
+            var item = from k in db_book.konyv
+            join c in db_book.Categories on k.Categories equals c.IdCategorie
+            join w in db_book.Writer on k.authorId equals w.IdWriter
+            where k.ISBN == isbn
+            select new
+            {
+                k,
+                c.Name,
+                w.writer_name
+            };
+
+            return Json(item,JsonRequestBehavior.AllowGet);
+        }
+
+
         public string LiveSearchWriter(string search = "")
         {
 
@@ -801,7 +819,7 @@ namespace Könyvtár.App_Data
         }
 
 
-        public  string ComputeStringToSha256Hash(string plainText)
+        public string ComputeStringToSha256Hash(string plainText)
         {
             string salt = "13579";
             plainText += salt;

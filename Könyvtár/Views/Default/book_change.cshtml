@@ -17,13 +17,11 @@
         <label class="col-6 h4 text-white">ISBN code</label> <br>   <input id="isbn" class="col-6" type="type" name="isbn" value="" maxlength="13" required autocomplete="off" /> <br />
     </div>
     <label class="col-6 h4"> Szerző </label>  <input type="type" name="auth" class="col-6" value="" id="Szerzo" placeholder="" autocomplete="off" /> <br>
-    <label class="col-6 h4">Cím</label> <br>  <input class="col-6" type="type" name="name" value="" autocomplete="off" /> <br />
-    <label class="col-6 h4">Beszerzés dátuma</label> <br>  <input class="col-6" type="date" name="date" value="" maxlength="10" autocomplete="off" /> <br />
-    <label class="col-6 h4">Darabszám</label> <br>  <input class="col-6" type="number" name="quantity" value="1" required autocomplete="off" /> <br />
-    <label>Boritó kép</label><input type="file" accept="image/*" name="img" /> <br />
-    @*<label>AUTH int only!!!!</label><input type="number" name="auth" value="0" required/> <br />*@
-    @*<label>Boritó kép</label><input type="file" accept="image/*" name="img" required /> <br />  all image types
-        <label>Összefoglaló</label><input type="text" name="demo" autocomplete="off" /> <br />*@
+    <label class="col-6 h4">Cím</label> <br>  <input id="bookname" class="col-6" type="type" name="name" value="" autocomplete="off" /> <br />
+    @*<label class="col-6 h4">Beszerzés dátuma</label> <br>  <input class="col-6" type="date" name="date" value="" maxlength="10" autocomplete="off" /> <br />
+    <label class="col-6 h4">Darabszám</label> <br>  <input class="col-6" type="number" name="quantity" value="1" required autocomplete="off" /> <br />*@
+    @*<label>Boritó kép</label><input type="file" accept="image/*" name="img" /> <br />*@
+
     <label class="col-6 h4">Kategória</label>
 
     @*todo: change it to work like Szerzo then the popup a message contains every new data (writer,categoreies ) then create a list of categories*@
@@ -68,9 +66,9 @@
         });
     }
     function returnString() {
-        var vissza = all_Writer.Includes($("#Szerzo").value);
-        vissza += all_Writer.Includes($("#Categories").value);
-        returntext = vissza + 'Biztos, hogy rögzíteni akarod?';
+        //var vissza = all_Writer.Includes($("#Szerzo").value);
+        //vissza += all_Writer.Includes($("#Categories").value);
+        //returntext = vissza + 'Biztos, hogy rögzíteni akarod?';
     }
     function autocomplete(inp, arr) {
         console.log("fsdf")
@@ -141,6 +139,7 @@
     /*execute a function presses a key on the keyboard:*/
     inp.addEventListener("keydown", function (e) {
         var x = document.getElementById(this.id + "autocomplete-list");
+        AutocompleteBook();
         if (x) x = x.getElementsByTagName("li");
         if (e.keyCode == 40) {
             /*If the arrow DOWN key is pressed,
@@ -196,7 +195,32 @@
     });
 }
 
-
+    function AutocompleteBook() {
+        $.ajax({
+            url: '/Default/GetBook?isbn=' + document.getElementById('isbn').value, // Change the URL to the action method that returns the book data
+            type: 'GET',
+            success: function (data) {
+                // Loop through the book data and create rows for the table
+                console.log(data)
+                console.log(data.writer_name)
+                console.log(data.Name)
+                $("#Szerzo").val(data[0].writer_name);
+                $("#bookname").val(data[0].k.name);
+                $("#Categories").val(data[0].Name);
+                //$.each(data, function (i, item) {
+                //    var $row = $('<tr>').append(
+                //        $('<td>').text(item.ISBN),
+                //        $('<td>').text(item.Name),
+                //        $('<td>').text(item.Writer)
+                //    );
+                //    $('#bookTableBody').append($row);
+                //});
+            },
+            error: function () {
+                
+            }
+        });
+    }
 
     autocomplete(document.getElementById("isbn"), all_Writer);
 </script>
