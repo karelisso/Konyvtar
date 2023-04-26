@@ -316,7 +316,7 @@ namespace Könyvtár.App_Data
             if (DateTime.TryParse(birthday, out addedtime)) addedtime = DateTime.Now;
             rc.Birthday = addedtime;
             rc.Birtpalace = birthpalace;
-            //todo change every id to int!!!
+            rc.Momname = name2;
             rc.User_ID = account2.user_id;
             db_book.user.Add(account2);
             db_book.Reader_Card.Add(rc);
