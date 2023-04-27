@@ -1,0 +1,65 @@
+﻿@{
+        book_vs19Entities1 bullshit = new book_vs19Entities1();
+        int userid = int.Parse(Session["userid"].ToString());
+        int.TryParse(Session["cur_user"].ToString(), out userid);
+        var Usersus = bullshit.User_sus.Where(q => q.Id.Equals(userid)).FirstOrDefault();
+        //var User = bullshit.user.Where(q => q.user_id .Equals(Session["userid"])).FirstOrDefault();
+        var card = bullshit.Reader_Card.Where(q => q.User_ID == userid).FirstOrDefault();
+        string actionpath = card == null ? "CreateUser" : "CreateReader";
+
+    }
+<div style="height:100px"></div>
+<h1 class="text-warning shadow align-self-center pt-5 text-center">Profil</h1>
+
+
+<DIV>
+    <form action="@actionpath" method="post" onsubmit="return confirm( 'Biztos, hogy rögzíteni akarod?' );">
+        @* User Deails*@
+        <table class="table table-responsive-md bg-white w-100 text-center">
+            <tr>
+                <th>Felhasználói adatok:</th>
+            </tr>
+            <tr>
+                <th>Felhasználónév</th>
+                <th>Telefonszám</th>
+                <th>E-mail cím</th>
+                <th>Új jelszó</th>
+                <th>jelszó megerősítése</th>
+            </tr>
+            <tr>
+                <td> <input type="text" class="form-control" name="Uname" readonly value="@Usersus.Username">   </td>
+                <td> <input type="text" class="form-control" name="phone" value="@Usersus.phone"> </td>
+                <td> <input type="text" class="form-control" name="mail" value="@Usersus.email"> </td>
+                <td> <input type="text" class="form-control" name="Upp" value=""> </td>
+                <td> <input type="text" class="form-control" name="Uppr" value=""> </td>
+            </tr>
+        </table>
+
+        @* Readercard*@
+        @if (card != null)
+        {
+            <table class="table table-responsive-md bg-white w-100 text-center">
+                <tr>
+                    <th>OlvasóKártya:</th>
+                </tr>
+                <tr>
+                    <th>Személyi</th>
+                    <th>Anyja neve</th>
+                    <th>Lakcím</th>
+                    <th>Születési dátum</th>
+                    <th>Születési hely</th>
+                </tr>
+                <tr>
+                    <td> <input type="text" class="form-control" readonly value="@card.Personel_ID_Card"> </td>
+                    <td> <input type="text" class="form-control" name="name2" value="@card.Momname"> </td>
+                    <td> <input type="text" class="form-control" name="home" value="@card.home"> </td>
+                    <td> <input type="date" class="form-control" name="birthday" value="@card.Birthday">  </td>
+                    <td> <input type="text" class="form-control" name="birthpalace" value="@card.Birtpalace">  </td>
+                </tr>
+            </table>
+        }
+        <input type="submit" value="Változatások megerősítése" class="btn btn-danger">
+
+    </form>
+
+</DIV>

@@ -127,6 +127,13 @@ namespace Könyvtár.App_Data
             return await startPage();
         }
 
+        public async Task<ActionResult> ProfilePage()
+        {
+            if (Session["username"] != null)
+                return View("Profile");
+            return await startPage();
+        }
+
         public void SetSession(string name, string value)
         {
             if(!tiltottsessions.Contains(name.ToLower()))
@@ -247,40 +254,41 @@ namespace Könyvtár.App_Data
             if (Upp != UppR)
                 return await startPage();
 
-            User_sus account1 = new User_sus();
-            user account2 = new user();
-            //this should be fine until i find out to use auto increment.
-            //account.id = bullshit.user.Count() + 1;
+            User_sus account1 = db_book.User_sus.Where(q=>q.Username == Uname).FirstOrDefault();
+            user account2 = db_book.user.Where(q => q.Username == Uname).FirstOrDefault();
+            bool isNewEntry = account1 == null;
+            if (isNewEntry)
+            {
+                if (Upp.Length < 3)
+                    return await startPage();
+                 account1 = new User_sus();
+                 account2 = new user();
+            }
             account1.Username = Uname;
             account2.Username = Uname;
-            account1.Userpassword = ComputeStringToSha256Hash(Upp);
-            account1.email = mail;
-            account1.phone = phone;
+            if(Upp.Length > 3) account1.Userpassword = ComputeStringToSha256Hash(Upp);
+            
+            if(mail.Length > 3) account1.email = mail;
+            
+            if(phone.Length > 3) account1.phone = phone;
             if (Adm == null)
                 Adm = false;
-            account2.admin = (bool)Adm ? 2 : 1;
+            if (isNewEntry || Adm == true) account2.admin = (bool)Adm ? 2 : 1;
+
             account2.special_password = ComputeStringToSha256Hash(Upp);
-            //try
-            //{
-            db_book.User_sus.Add(account1);
+            if(isNewEntry) db_book.User_sus.Add(account1);
             await SaveDatabaseBook();
 
-            account2.user_id = db_book.User_sus.Where(q => q.Username == account1.Username && q.email == account1.email).FirstOrDefault().Id;
-            db_book.user.Add(account2);
-
+            if (isNewEntry)
+            {
+                account2.user_id = db_book.User_sus.Where(q => q.Username == account1.Username && q.email == account1.email).FirstOrDefault().Id;
+                db_book.user.Add(account2);
+            }
             await SaveDatabaseBook();
-
-            //Session["username"] = Uname;
-            //}
-            //catch (Exception)
-            //{
-            //   // return View("Regist");
-            //}
             await Log("7", account2.user_id + "");
-            //Session.Clear();
             return await RegisterUserPage();
         }
-        public async Task<ActionResult> CreateReader(string name,string name2, string mail, string Upp, string UppR, string phone, string szid,string home,string birthday,string birthpalace)
+        public async Task<ActionResult> CreateReader(string Uname,string name2, string mail, string Upp, string UppR, string phone, string szid,string home,string birthday,string birthpalace)
         {
             if (Upp != UppR)
             {
@@ -289,32 +297,43 @@ namespace Könyvtár.App_Data
             }
               
 
-            User_sus account1 = new User_sus();
-            user account2 = new user();
-            Reader_Card rc = new Reader_Card();
-            //this should be fine until i find out to use auto increment.
-            //account.id = bullshit.user.Count() + 1;
-            account1.Username = name;
-            account2.Username = name;
-            account1.Userpassword = ComputeStringToSha256Hash(Upp);
-            account1.email = mail;
-            account1.phone = phone;
+            User_sus account1 = db_book.User_sus.Where(q => q.Username == Uname).FirstOrDefault();
+            user account2 = db_book.user.Where(q => q.Username == Uname).FirstOrDefault();
+            Reader_Card rc = new Reader_Card(); 
+            bool isNewEntry = account1 == null;
+            if (isNewEntry)
+            {
+                if (Upp.Length < 3)
+                    return await startPage();
+                account1 = new User_sus();
+                account2 = new user();
+
+            }
+            else
+            {
+                rc = db_book.Reader_Card.Where(q => q.User_ID == account1.Id).FirstOrDefault();
+            }
+            account1.Username = Uname;
+            account2.Username = Uname;
+            if(Upp.Length > 3) account1.Userpassword = ComputeStringToSha256Hash(Upp);
+            if(mail.Length > 3) account1.email = mail;
+            if(phone.Length > 3) account1.phone = phone;
             account2.admin = 0;
             account2.special_password = ComputeStringToSha256Hash(Upp);
-            db_book.User_sus.Add(account1);
+            if(isNewEntry) db_book.User_sus.Add(account1);
             await SaveDatabaseBook();
 
             account2.user_id = db_book.User_sus.Where(q => q.Username == account1.Username && q.email == account1.email).FirstOrDefault().Id;
-            rc.Personel_ID_Card = szid;
-            rc.home = home;
+            if(isNewEntry) rc.Personel_ID_Card = szid;
+            if(home.Length > 3) rc.home = home;
             DateTime addedtime;
             if (DateTime.TryParse(birthday, out addedtime)) addedtime = DateTime.Now;
-            rc.Birthday = addedtime;
-            rc.Birtpalace = birthpalace;
-            rc.Momname = name2;
-            rc.User_ID = account2.user_id;
-            db_book.user.Add(account2);
-            db_book.Reader_Card.Add(rc);
+            if(isNewEntry) rc.Birthday = addedtime;
+            if (isNewEntry) rc.Birtpalace = birthpalace;
+            if (name2.Length>3) rc.Momname = name2;
+            if(isNewEntry) rc.User_ID = account2.user_id;
+            if (isNewEntry) db_book.user.Add(account2);
+            if (isNewEntry) db_book.Reader_Card.Add(rc);
             await SaveDatabaseBook();
               
             await Log("8", account2.user_id + "");

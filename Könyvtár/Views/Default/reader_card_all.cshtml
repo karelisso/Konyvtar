@@ -12,6 +12,7 @@
         user.Username,
         user.phone,
         user.email,
+        user.Id
     };
 }
 <div style="height:100px"></div>
@@ -37,7 +38,11 @@
     <tbody class="bg-white">
         @foreach (var item in ReaderCard)
         {
-        <tr>
+        <tr onclick="gotoprofile(this.getElementsByTagName('td')[0].getElementsByTagName('input')[0].value)">
+            <td style="display:none">
+                <input value="@item.Id" readonly>
+            </td>
+            
             <td>@item.Personel_ID_Card</td>
             <td>@item.Username</td>
             <td>@item.Momname</td>
@@ -54,6 +59,16 @@
 
 
 <script>
+    function gotoprofile(adat) {
+        console.log(adat);
+        $.ajax({
+            url: "/Default/SetSession",
+            type: "POST",
+            data: { 'name': "cur_user", 'value': adat },
+            success: function () { window.location.href = "/Default/profilepage"; },
+            error: function () { alert("error"); }
+        });
+    }
              var all_Reader = []
             @foreach (var item in cr)
             {
@@ -61,7 +76,6 @@
 
                @:{ all_Reader.push("@varrrr.Trim()") };
             }
-
         function autocomplete(inp, arr) {
             console.log("fsdf")
             /*the autocomplete function takes two arguments,
@@ -204,13 +218,10 @@
                 closeAllLists(e.target);
             });
         }
-
-
             $("#szid").on("input", () => {
                 szidstart();
-                //
+                
             });
-
         $("#szid").change( () => {
             szidstart();
         });
@@ -227,11 +238,7 @@
                 myfunction(szidval);
             }
         }
-
-        autocomplete(document.getElementById("szid"), all_Reader);
-
-
-
+        //autocomplete(document.getElementById("szid"), all_Reader);
             function myfunction(val) {
                 console.log($("#szid").value);
                 $.ajax({

@@ -278,11 +278,11 @@
     <Compile Include="Categories.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Controllers\DalController.cs" />
     <Compile Include="Controllers\DefaultController.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
-    <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -404,6 +404,7 @@
     <Content Include="Views\Default\reader_card_all.cshtml" />
     <Content Include="Views\Default\TheMetaViewerChange.cshtml" />
     <Content Include="Views\Default\book_change.cshtml" />
+    <Content Include="Views\Default\Profile.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

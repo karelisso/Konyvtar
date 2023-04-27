@@ -87,6 +87,8 @@
                             <div class="dropdown-menu" aria-labelledby="navolvaso">
                                 @Html.ActionLink("Tagfelvétel", "CreateReaderCardPage", "Default", new { area = "" }, new { @class = "dropdown-item" })
                                 @Html.ActionLink("Tag kezelés", "ManageReaderCardPage", "Default", new { area = "" }, new { @class = "dropdown-item" })
+                                @Html.ActionLink("Saját profil", "ProfilePage", "Default", new { area = "" }, new { @class = "dropdown-item" })
+
                                 @Html.ActionLink("Kölcsönzések kezelése", "RentReaderCardPage", "Default", new { area = "" }, new { @class = "dropdown-item" })
                             </div>
                         </li>
@@ -117,12 +119,10 @@
                     }
                     else
                     {
-                        @*<li class="nav-item m-2">
-                    Álomány kezelés
-                </li>
-                <li class="nav-item m-2">
-                    Olvasókártya
-                </li>*@
+                        <li class="nav-item">
+                            @Html.ActionLink("Saját profil", "ProfilePage", "Default", new { area = "" }, new { @class = "navbar-brand navbar-right" })
+
+                        </li>
                     }
 
 
@@ -142,7 +142,7 @@
                     }
 
                     <li class="nav-item">
-                        @Html.ActionLink("Kilép", "startpage", "Default", new { area = "" }, new { @class = "navbar-brand" })
+                        @Html.ActionLink("Kilépés", "startpage", "Default", new { area = "" }, new { @class = "navbar-brand" })
                     </li>
 
 
