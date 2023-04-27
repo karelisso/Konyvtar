@@ -478,13 +478,13 @@ namespace Könyvtár.App_Data
 
         public string RenderBook(konyv item)
         {
-            return $" <tr  onclick=\"tbclick(this)\" ondblclick=\"tbdbclick(this)\"> <td>{item.IdKonyv} </td>\r\n                    <td>{item.ISBN}</td>\r\n                    <td> {db_book.Writer.Where(q => q.IdWriter == item.authorId).FirstOrDefault().writer_name} </td>\r\n                    <td>{item.name}</td>\r\n                          <td>{db_book.Categories.Where(q => q.IdCategorie == item.Categories).FirstOrDefault().Name}</td>\r\n                    {"<td>" + db_book.KonyvPeldany.Where(q => q.book_id == item.ISBN).Count(q => !q.isBorrowed)  +" / " + db_book.KonyvPeldany.Count(q => q.book_id == item.ISBN) + "</td>"}    \r\n                </tr> ";
+            return $" <tr  onclick=\"tbclick(this)\" ondblclick=\"tbdbclick(this)\"> <td>{item.IdKonyv} </td>\r\n                    <td>{item.ISBN}</td>\r\n                    <td> {db_book.Writer.Where(q => q.IdWriter == item.authorId).FirstOrDefault().writer_name} </td>\r\n                    <td>{item.name}</td>\r\n                          <td>{db_book.Categories.Where(q => q.IdCategorie == item.Categories).FirstOrDefault().Name}</td>\r\n                    {"<td>" +  db_book.KonyvPeldany.Count(q => q.book_id == item.ISBN) + " / " + db_book.KonyvPeldany.Where(q => q.book_id == item.ISBN).Count(q => !q.isBorrowed) +  "</td>"}    \r\n                </tr> ";
         }
         public string RenderBookItem(string isbn)
         {
             string issbn = isbn.Split(';')[0];
             konyv item = db_book.konyv.First(q=>q.ISBN == issbn);
-            return $" <tr  onclick=\"tbclick(this)\" ondblclick=\"tbdbclick(this)\"> <td>{item.IdKonyv} </td>\r\n                    <td>{item.ISBN}</td>\r\n                    <td> {db_book.Writer.Where(q => q.IdWriter == item.authorId).FirstOrDefault().writer_name} </td>\r\n                    <td>{item.name}</td>\r\n                          <td>{db_book.Categories.Where(q => q.IdCategorie == item.Categories).FirstOrDefault().Name}</td>\r\n                    {"<td>" + db_book.KonyvPeldany.Where(q=>q.book_id == item.ISBN).Count(q=>!q.isBorrowed) +" / " + db_book.KonyvPeldany.Count(q => q.book_id == item.ISBN) + "</td>"}    \r\n                </tr> ";
+            return $" <tr  onclick=\"tbclick(this)\" ondblclick=\"tbdbclick(this)\"> <td>{item.IdKonyv} </td>\r\n                    <td>{item.ISBN}</td>\r\n                    <td> {db_book.Writer.Where(q => q.IdWriter == item.authorId).FirstOrDefault().writer_name} </td>\r\n                    <td>{item.name}</td>\r\n                          <td>{db_book.Categories.Where(q => q.IdCategorie == item.Categories).FirstOrDefault().Name}</td>\r\n                    {"<td>" + db_book.KonyvPeldany.Count(q => q.book_id == item.ISBN) + " / " + db_book.KonyvPeldany.Where(q => q.book_id == item.ISBN).Count(q => !q.isBorrowed) + "</td>"}    \r\n                </tr> ";
 
         }
 
@@ -770,6 +770,7 @@ namespace Könyvtár.App_Data
                             Session["level"] =  db_book.user.First(q=>q.user_id==item.Id).admin;
                             Session["success"] = db_book.MessagesSucces.First(q => q.Id == 4).Message;
                             Session["error"] = db_book.MessagesError.First(q => q.Id == 3).message;
+                            Session["current_page"] = 1;
                             succesfullogin = true;
                             
                             break;

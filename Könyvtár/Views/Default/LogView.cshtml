@@ -2,6 +2,8 @@
     List<Log> logok = new List<Log>();
     book_vs19Entities1 bullshit = new book_vs19Entities1();
     logok = bullshit.Log.ToList();
+    int singlepage = 30;
+    int currentpage = Session["current_page"].ToString().AsInt();
 }
 
 <!DOCTYPE html>
@@ -13,9 +15,11 @@
 </head>
 <body class="container">
     <header>
+        <div style="height:100px"></div>
         <h1 class="float-end text-white">Jelenleg: Log</h1>
     </header>
     <div>
+        <h2 class="text-white"> Jelnleg @currentpage / @logok.Count() </h2>
         <table class="table table-responsive-md table-bordered text-white">
             <thead>
             <td> Tettes</td>
@@ -24,7 +28,7 @@
             <td> Mivel/Kivel</td>
             </thead>
             <tbody>
-                @foreach (var item in logok)
+                @foreach (var item in logok.Skip(singlepage*(currentpage-1)).Take(singlepage))
                 {
                      int logidasint = item.what.AsInt(); 
                     <tr>

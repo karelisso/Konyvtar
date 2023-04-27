@@ -70,8 +70,8 @@
                             </button>
                             <div class="dropdown-menu" aria-labelledby="navalomany">
                                 @Html.ActionLink("Állománynövelés", "CreateMetaPage", "Default", new { area = "" }, new { @class = "dropdown-item " })
-                                @Html.ActionLink("Állományfrissítés", "ChangeMetaPage", "Default", new { area = "" }, new { @class = "dropdown-item" })
                                 @Html.ActionLink("Állománycsökkentés", "DeleteMetaPage", "Default", new { area = "" }, new { @class = "dropdown-item" })
+                                @Html.ActionLink("Állománymodosítás", "ChangeMetaPage", "Default", new { area = "" }, new { @class = "dropdown-item" })
 
                             </div>
                         </li>
@@ -86,7 +86,7 @@
                             </button>
                             <div class="dropdown-menu" aria-labelledby="navolvaso">
                                 @Html.ActionLink("Tagfelvétel", "CreateReaderCardPage", "Default", new { area = "" }, new { @class = "dropdown-item" })
-                                @Html.ActionLink("Tag kezelés", "ManageReaderCardPage", "Default", new { area = "" }, new { @class = "dropdown-item" })
+                                @Html.ActionLink("Taglista", "ManageReaderCardPage", "Default", new { area = "" }, new { @class = "dropdown-item" })
                                 @Html.ActionLink("Saját profil", "ProfilePage", "Default", new { area = "" }, new { @class = "dropdown-item" })
 
                                 @Html.ActionLink("Kölcsönzések kezelése", "RentReaderCardPage", "Default", new { area = "" }, new { @class = "dropdown-item" })
@@ -168,7 +168,7 @@
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h4 class="modal-title" id="myModalLabel">Modal Title</h4>
+                            <h4 class="modal-title" id="myModalLabel">Esemény</h4>
                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                         </div>
                         <div class="modal-body">
