@@ -767,8 +767,7 @@ namespace Könyvtár.App_Data
                             Session["username"] = Uname;
                             Session["usermail"] = item.email;
                             Session["userid"] = item.Id;
-                            Session["level"] =  db_book.user.First(q=>q.user_id==item.Id).admin;
-                            Session["success"] = db_book.MessagesSucces.First(q => q.Id == 4).Message;
+                            Session["level"] =  db_book.user.First(q=>q.user_id==item.Id).admin;                       
                             Session["error"] = db_book.MessagesError.First(q => q.Id == 3).message;
                             Session["current_page"] = 1;
                             succesfullogin = true;
