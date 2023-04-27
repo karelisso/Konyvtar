@@ -13,12 +13,16 @@
 }
 <form action="Delbooks" method="post" enctype="multipart/form-data" class="text-white" onsubmit="return confirm('Biztos hogy Törölni szeretnéd ezt a könyvet az állományból');">
 
-
-    <div class="autocomplete text-dark ">
-        <input type="type" name="name" value="" id="konv" required placeholder="" autocomplete="nope" />
+    <div class="row mb-2 w-100">
+    <div class="autocomplete text-dark col-8">
+        <input class="w-100 form-control" type="type" name="name" value="" id="konv" required placeholder="" autocomplete="nope" />
     </div>
-    <div id="result" class="tag-results"> </div>
-    <input type="submit" name="btnSubmit" value="Törlés" />
+    <div class="col-4">
+        <input type="submit" class="btn btn-danger w-100" name="btnSubmit" value="Törlés" />
+    </div>
+    </div>
+    @*<div id="result" class="tag-results"> </div>*@
+
 </form>
 <table class="table table-responsive-md table-bordered text-light" id="tablfull">
 

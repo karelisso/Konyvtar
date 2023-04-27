@@ -45,26 +45,21 @@
                 }
                 else
                 {
-                    <li class="nav-item">
-                        @Html.ActionLink("Könyvkeresés", "IndexPage", "Default", new { area = "" }, new { @class = "navbar-brand navbar-right" })
-                    </li>
+
                     if (int.Parse(Session["level"].ToString()) > 1)
                     {
                         <li class="nav-item">
-                            @Html.ActionLink("Új dolgozó felvétele", "RegisterUserPage", "Default", new { area = "" }, new { @class = "navbar-brand" })
+                            @Html.ActionLink("Regisztráció", "RegisterUserPage", "Default", new { area = "" }, new { @class = "navbar-brand" })
 
                         </li>
                     }
                     else
                     {
-                        @*<li class="nav-item">
-                    Olvasókártya
-                </li>*@
-                    }
-                    @*<li class="nav-item">
-                @Html.ActionLink("Bejelentkezés", "Secnd", "Default", new { area = "" }, new { @class = "navbar-brand" })
 
-            </li>*@
+                    }
+
+
+
                     if (int.Parse(Session["level"].ToString()) >= 1)
                     {
                         @*@Html.ActionLink("Állomány növelés", "MetaPage", "Default", new { area = "" }, new { @class = "" })*@
@@ -80,6 +75,11 @@
 
                             </div>
                         </li>
+
+                        <li class="nav-item">
+                            @Html.ActionLink("Könyvkeresés", "IndexPage", "Default", new { area = "" }, new { @class = "navbar-brand navbar-right" })
+                        </li>
+
                         <li class="nav-item dropdown">
                             <button class="navbar-brand dropdown-toggle btn text-white" style="font-family: 'Sriracha', cursive !important;" id="navolvaso" data-bs-toggle="dropdown">
                                 Kölcsönzések
@@ -119,6 +119,10 @@
                     }
                     else
                     {
+                        <li class="nav-item">
+                            @Html.ActionLink("Könyvkeresés", "IndexPage", "Default", new { area = "" }, new { @class = "navbar-brand navbar-right" })
+                        </li>
+
                         <li class="nav-item">
                             @Html.ActionLink("Saját profil", "ProfilePage", "Default", new { area = "" }, new { @class = "navbar-brand navbar-right" })
 
