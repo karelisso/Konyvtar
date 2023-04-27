@@ -35,13 +35,29 @@
         <input type="submit" name="btnSubmit" value="hozzáadás" />
 </form>
 <script>
-        var all_Writer = []
+        var all_isbn = []
         @foreach (var item in km)
         {
                 string varrrr = $"{item.ISBN.Trim()}/{item.name}";
 
-                @:{ all_Writer.push("@varrrr.Trim()") ;}
+                @:{ all_isbn.push("@varrrr.Trim()") ;}
         }
+        var all_Writer = []
+        @foreach (var item in wrt)
+        {
+            string varrrr = item.writer_name ;
+
+           @:{ all_Writer.push("@varrrr.Trim()") };
+        }
+        var all_categories =[]
+        @foreach (var item in crt)
+        {
+            string varrrr = item.Name;
+
+           @:{ all_categories.push("@varrrr.Trim()") };
+        }
+
+
 
     document.getElementById('livesearchtags').addEventListener('keyup', function (e) {
         //Run LiveSearch on ever key up
@@ -217,10 +233,12 @@
                 //});
             },
             error: function () {
-                
+
             }
         });
     }
 
-    autocomplete(document.getElementById("isbn"), all_Writer);
+    autocomplete(document.getElementById("isbn"), all_isbn);
+    autocomplete(document.getElementById("Szerzo"), all_Writer);
+    autocomplete(document.getElementById("Categories"), all_categories);
 </script>

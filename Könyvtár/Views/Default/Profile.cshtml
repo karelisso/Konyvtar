@@ -1,7 +1,10 @@
 ﻿@{
         book_vs19Entities1 bullshit = new book_vs19Entities1();
         int userid = int.Parse(Session["userid"].ToString());
-        int.TryParse(Session["cur_user"].ToString(), out userid);
+    if(Session["cur_user"] != null && Session["cur_user"].ToString().Length > 0)
+            {
+            userid = int.Parse(Session["cur_user"].ToString());
+            }
         var Usersus = bullshit.User_sus.Where(q => q.Id.Equals(userid)).FirstOrDefault();
         //var User = bullshit.user.Where(q => q.user_id .Equals(Session["userid"])).FirstOrDefault();
         var card = bullshit.Reader_Card.Where(q => q.User_ID == userid).FirstOrDefault();
@@ -61,5 +64,10 @@
         <input type="submit" value="Változatások megerősítése" class="btn btn-danger">
 
     </form>
+    <script>
+        window.onload = (event) => {
+            ResetSession("cur_user");
 
+        }
+    </script
 </DIV>

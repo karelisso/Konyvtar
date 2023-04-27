@@ -73,7 +73,7 @@
                 }*@
                     <li><a class="dropdown-item" href="#">Nálad</a></li>
             </ul>
-            <input type="text" class="form-control" placeholder="Könyvek, időszaki kiadványok keresése" id="livesearchtags">
+            <input type="text" class="form-control" placeholder="Könyvek, időszaki kiadványok keresése" id="livesearchtags" onkeydown="pressSubmit(event)">
             <button class="btn btn-success" type="submit" id="searchbutton">Keresés</button>
         </div>
 
@@ -82,10 +82,13 @@
     @RenderPage("book_render.cshtml")
 
     <script>
-        //$("#searchType").on("click", function () {
-        //    console.log("clickedon me")
-        //    $(".dropdown-menu").show()
-        //})
+        function pressSubmit(event) {
+            if (event.keycode == 13) {
+                $("#searchbutton").click();
+
+            }
+        }
+
         $(".dropdown-toggle").next(".dropdown-menu").children().on("click", function () {
             $(this).closest(".dropdown-menu").prev(".dropdown-toggle").text($(this).text());
           /*  $(".dropdown-menu").hide()*/
