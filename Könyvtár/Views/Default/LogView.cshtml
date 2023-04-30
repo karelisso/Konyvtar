@@ -19,7 +19,15 @@
         <h1 class="float-end text-white">Jelenleg: Napló</h1>
     </header>
     <div>
-        <h2 class="text-white"> Jelenleg: @currentpage / @(logok.Count()/singlepage) </h2>
+        <div class="row w-100 m-auto">
+            <div class="col-4"> <button class="btn btn-warning" onclick="pageNext(-@logok.Count)" ><<</button>
+                <button class="btn btn-warning" onclick="pageNext(-1)"><</button>
+            </div>
+            <h2 class="text-white col-4 text-center" > Jelenleg: <span id="currentpage">@currentpage</span> / <span id="maxpage">@((logok.Count()/singlepage) + (logok.Count()%singlepage !=0 ? 1:0) )</span> </h2>
+            <div class="col-4 "> <button class="btn btn-warning " onclick="pageNext(1)"> > </button> 
+                <button class="btn btn-warning" onclick="pageNext(@logok.Count)"> >> </button> 
+            </div>
+        </div>
         <table class="table table-responsive-md table-bordered text-white">
             <thead>
             <td> Tettes</td>
@@ -27,7 +35,7 @@
             <td> Tevékenység</td>
             <td> Mivel/Kivel</td>
             </thead>
-            <tbody>
+            <tbody >
                 @foreach (var item in logok.Skip(singlepage*(currentpage-1)).Take(singlepage))
                 {
                      int logidasint = item.what.AsInt(); 
@@ -42,5 +50,37 @@
         </table>
 
     </div>
+    <script>
+        function pageNext(nextpage) {
+            var pagecurrent = parseInt($("#currentpage").text());
+            var pagemax = parseInt($("#maxpage").text());
+            pagecurrent += nextpage;
+            if (pagecurrent > pagemax) pagecurrent = pagemax;
+            else if (pagecurrent < 1) pagecurrent = 1;
+            $("#currentpage").text(pagecurrent);
+            $.ajax({
+                url: "/Default/GetLogBook",
+                type: "GET",
+                data: { 'page': pagecurrent },
+                success: function (data) {
+                    var tabledata = "";
+                    data.forEach(function (invdata) {
+                        console.log(invdata);
+                        var milliseconds = parseInt(invdata.logdata.when.replace(/\/Date\((\d+)\)\//, '$1'));
+                        var date = new Date(milliseconds);
+                        tabledata += "<tr>"
+                        tabledata += "<td>" + invdata.logdata.who + "</td>";
+                        tabledata += "<td>" + date + "</td>";
+                        tabledata += "<td>" + invdata.logtext.text + "</td>";
+                        tabledata += "<td>" + invdata.logdata.whom + "</td>";
+
+                        tabledata += "</tr>"
+                    });
+                    $("tbody").html(tabledata);
+                },
+                error: function () { alert("error"); }
+            });
+        }
+    </script>
 </body>
 </html>
