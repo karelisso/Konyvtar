@@ -17,6 +17,7 @@ using System.Text;
 using System.Threading;
 using System.Web.UI.WebControls;
 using System.Data.Entity;
+using WebGrease.ImageAssemble;
 
 namespace Könyvtár.App_Data
 {
@@ -236,12 +237,14 @@ namespace Könyvtár.App_Data
             }
             KonyvPeldany[] kvp = new KonyvPeldany[quantity];
             int startindex = db_book.KonyvPeldany.Where(q => q.book_id == kv.ISBN).Count();
+            Session["success"] = "Sikeresen hozzáadott könyvek:\n";
             for (int i = 0; i < kvp.Length; i++)
             {
                 kvp[i] = new KonyvPeldany();
                 kvp[i].AddedTime = addedtime;
                 kvp[i].book_id = kv.ISBN;
                 kvp[i].PeldanyId = startindex;
+                Session["success"] += $"{kv.ISBN};{startindex}";
                 startindex++;
             }
             db_book.KonyvPeldany.AddRange(kvp);
@@ -491,10 +494,10 @@ namespace Könyvtár.App_Data
 
         //input search = isbn / bookname / writer / categories
         //output {"item":[{"k":{"IdKonyv":,"name":"","writerID":,"authorId":,
-            //"ISBN":"","Categories":,"Descrpition":,"imageID":,"demo":,"Available_Quantity":}
-            //,"Name":"","writer_name":""}],"pages":1}
+        //"ISBN":"","Categories":,"Descrpition":,"imageID":,"demo":,"Available_Quantity":}
+        //,"Name":"","writer_name":""}],"pages":1}
         [HttpGet]
-        public ActionResult Book(string search = "",int page = 1)
+        public ActionResult Book(string search = "", int page = 1)
         {
             var item = from k in db_book.konyv
                        join c in db_book.Categories on k.Categories equals c.IdCategorie
@@ -502,13 +505,27 @@ namespace Könyvtár.App_Data
                        select new
                        {
                            k,
-                           c.Name,
-                           w.writer_name
+                           categori = c.Name,
+                           quantity = db_book.KonyvPeldany.Where(q => q.book_id == k.ISBN).Count()+
+                           "/" +
+                           db_book.KonyvPeldany.Where(q => q.book_id == k.ISBN && !q.isBorrowed).Count(),
+                           w.writer_name,
                        };
-            
-            if (search.Equals(string.Empty)) return Json(item.OrderBy(q=>q.k.IdKonyv).Skip(30 * (page - 1)).Take(30), JsonRequestBehavior.AllowGet);
+            int pages;
+            if (search.Equals(string.Empty))
+            {
+                pages = (int)Math.Ceiling((double)item.Count() / 30);
+                item = item.OrderBy(q => q.k.IdKonyv).Skip(30 * (page - 1)).Take(30);
+
+                var valuenow = new
+                               {
+                                   item,
+                                   pages
+                               };
+                return Json(valuenow, JsonRequestBehavior.AllowGet);
+            }
             string[] searchsplit = search.ToLower().Split('/');
-            if(searchsplit.Length != 4)
+            if (searchsplit.Length != 4)
             {
                 Session["error"] = " LiveSearchBook: input is not formated correctly, it should be ' isbn / bookname / writer / categories '";
             }
@@ -522,17 +539,21 @@ namespace Könyvtár.App_Data
             string searchedbook = searchsplit[1];
             string searchedwriter = searchsplit[2];
             string searchedcategories = searchsplit[3];
-            item = item.Where(q => q.k.name.Contains(searchedbook) 
+            item = item.Where(q => q.k.name.Contains(searchedbook)
             && q.writer_name.Contains(searchedwriter)
-            && q.Name.Contains(searchedcategories));
-            int pages = (int) Math.Ceiling((double)item.Count() / 30);
+            && q.categori.Contains(searchedcategories));
+            pages = (int)Math.Ceiling((double)item.Count() / 30);
             item = item.OrderBy(q => q.k.IdKonyv).Skip(30 * (page - 1)).Take(30);
-            var value = new { item , pages };
+            var value =  new
+                        {
+                            item,
+                            pages
+                        };
             return Json(value, JsonRequestBehavior.AllowGet);
 
         }
         [HttpGet]
-        public ActionResult Rent(string search = "",int page = 1)
+        public ActionResult Rent(string search = "", int page = 1)
         {
             search = search.Trim();
             var rents = db_book.Rent.ToList();
@@ -547,15 +568,15 @@ namespace Könyvtár.App_Data
                            konyv.name,
                            card.Personel_ID_Card
                        };
-            if (search.Length > 0) item = item.Where(q => q.Personel_ID_Card.Contains(search));
-            int pages = 1;// (int) Math.Ceiling((double)item.Count() / 30);
+            if (search.Length > 0) item = item.Where(q => q.Personel_ID_Card.Contains(search));            
+            int pages = (int)Math.Ceiling((double)item.Count() / 30);
             item = item.OrderBy(q => q.rent.Rent_Date).Skip(30 * (page - 1)).Take(30);
             var value = new
             {
                 item,
                 pages
             };
-            return Json(value,JsonRequestBehavior.AllowGet);
+            return Json(value, JsonRequestBehavior.AllowGet);
         }
 
         public string AllBook()
@@ -616,33 +637,33 @@ namespace Könyvtár.App_Data
                            logtext
                        };
             if (page.HasValue) currentpage = page.Value;
-            logs = logs.OrderBy(q=>q.logdata.IdLog).Skip(30 * (currentpage - 1)).Take(30);
-            return Json(logs,JsonRequestBehavior.AllowGet);
+            logs = logs.OrderBy(q => q.logdata.IdLog).Skip(30 * (currentpage - 1)).Take(30);
+            return Json(logs, JsonRequestBehavior.AllowGet);
         }
-        public async Task<ActionResult> LogInUser(string Uname,string Upp,string RegYet)
+        public async Task<ActionResult> LogInUser(string Uname, string Upp, string RegYet)
         {
             Session["success"] = "";
             Session["error"] = "";
             bool succesfullogin = false;
             foreach (var item in db_book.User_sus)
+            {
+                if (item.Username.ToLower() == Uname.ToLower() || item.email.ToLower() == Uname.ToLower())
                 {
-                    if (item.Username.ToLower() == Uname.ToLower() || item.email.ToLower() == Uname.ToLower())
-                        {
-                    
-                        if (item.Userpassword == ComputeStringToSha256Hash(Upp))
-                            {
-                            Session["username"] = Uname;
-                            Session["usermail"] = item.email;
-                            Session["userid"] = item.Id;
-                            Session["level"] =  db_book.user.First(q=>q.user_id==item.Id).admin;                       
-                            Session["success"] = db_book.MessagesSucces.First(q => q.Id == 4).Message;
-                            Session["current_page"] = 1;
-                            succesfullogin = true;
-                            
-                            break;
-                            }
-                        }
-        }
+
+                    if (item.Userpassword == ComputeStringToSha256Hash(Upp))
+                    {
+                        Session["username"] = Uname;
+                        Session["usermail"] = item.email;
+                        Session["userid"] = item.Id;
+                        Session["level"] = db_book.user.First(q => q.user_id == item.Id).admin;
+                        Session["success"] = db_book.MessagesSucces.First(q => q.Id == 4).Message;
+                        Session["current_page"] = 1;
+                        succesfullogin = true;
+
+                        break;
+                    }
+                }
+            }
             if (succesfullogin)
             {
                 await Log("0", Session["userid"].ToString());
@@ -665,7 +686,7 @@ namespace Könyvtár.App_Data
             data.when = DateTime.Now;
             data.whom = "--";
             db_book.Log.Add(data);
-          await SaveDatabaseBook();
+            await SaveDatabaseBook();
         }
         public async Task Log(int id, string what)
         {
@@ -675,10 +696,10 @@ namespace Könyvtár.App_Data
             data.when = DateTime.Now;
             data.whom = "--";
             db_book.Log.Add(data);
-           await SaveDatabaseBook();
+            await SaveDatabaseBook();
 
         }
-        public async Task Log(int id,string what,string whom)
+        public async Task Log(int id, string what, string whom)
         {
             Log data = new Log();
             data.who = id;
@@ -686,7 +707,7 @@ namespace Könyvtár.App_Data
             data.when = DateTime.Now;
             data.whom = whom;
             db_book.Log.Add(data);
-           await SaveDatabaseBook();
+            await SaveDatabaseBook();
         }
         public async Task Log(string what, string whom)
         {
@@ -696,7 +717,7 @@ namespace Könyvtár.App_Data
             data.when = DateTime.Now;
             data.whom = whom;
             db_book.Log.Add(data);
-           await SaveDatabaseBook();
+            await SaveDatabaseBook();
         }
         private string ComputeStringToSha256Hash(string plainText)
         {
@@ -719,9 +740,9 @@ namespace Könyvtár.App_Data
         }
         protected async Task<int> SaveDatabaseBook()
         {
-                await db_book.SaveChangesAsync();
-                return 0;
-           
+            await db_book.SaveChangesAsync();
+            return 0;
+
         }
     }
 }

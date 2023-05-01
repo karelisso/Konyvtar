@@ -9,7 +9,11 @@
     //var User = bullshit.user.Where(q => q.user_id .Equals(Session["userid"])).FirstOrDefault();
     var card = bullshit.Reader_Card.Where(q => q.User_ID == userid).FirstOrDefault();
     string actionpath = card == null ? "CreateUser" : "CreateReader";
-    Rent[] rent = bullshit.Rent.Where(q=>q.Card_ID==card.IdReaderCard).ToArray();
+    List<Rent> rent = new List<Rent>();
+    if (card != null)
+    {
+         rent = bullshit.Rent.Where(q => q.Card_ID == card.IdReaderCard).ToList();
+    }
     string bookk = "0";
     }
 <div style="height:100px"></div>
@@ -70,34 +74,30 @@
                         <td><strong>könyv címe</strong> </td>
                         <td> <strong>Személyi igazolvány</strong>  </td>
                         <td><strong>kölcsönadás ideje</strong> </td>
-                        <td><strong>visszavétel ideje</strong> </td>
                         <td><strong>visszavétel hatálya</strong> </td>
-                        <td><strong>adatok rögzitése</strong> </td>
                         @*<td> <strong>Darab</strong> </td>*@
                     </tr>
 
                 </thead>
                 <tbody>
-        @foreach (var item3 in rent.Where(q => !q.Return_Date.HasValue))
-        {
-                <tr>
-                    <td>
-                        @item3.Book_ID <input type="text" readonly value="@item3.Book_ID" name="bookid" hidden>   @{ bookk = item3.Book_ID.Split(';')[0]; }
-                        <input value="@item3.Book_ID" name="bookid" hidden>
-                    </td>
-                    <td> @bullshit.konyv.FirstOrDefault(q => q.ISBN == bookk).name  </td>
-                    <td> @bullshit.Reader_Card.First(q => q.IdReaderCard.Equals(item3.Card_ID)).Personel_ID_Card</td>
-                    <td> @item3.Rent_Date </td>
-                    <td> <input type="date" required name="date"> </td>
-                    <td> @item3.Due_Date </td>
-                    <td> <input type="submit" value="Rögzités"> </td>
-                </tr>
-        }
+            @foreach (var item3 in rent.Where(q => !q.Return_Date.HasValue))
+            {
+                    <tr>
+                        <td>
+                            @item3.Book_ID <input type="text" readonly value="@item3.Book_ID" name="bookid" hidden>   @{ bookk = item3.Book_ID.Split(';')[0]; }
+                            <input value="@item3.Book_ID" name="bookid" hidden>
+                        </td>
+                        <td> @bullshit.konyv.FirstOrDefault(q => q.ISBN == bookk).name  </td>
+                        <td> @bullshit.Reader_Card.First(q => q.IdReaderCard.Equals(item3.Card_ID)).Personel_ID_Card</td>
+                        <td> @item3.Rent_Date </td>
+                        <td> @item3.Due_Date </td>
+                    </tr>
+            }
         </tbody>
 
         @* find every active table row, use the id from the table to delete it from the datbase! *@
         </table>
-    }
+        }
         <input type="submit" value="Változatások megerősítése" class="btn btn-danger">
 
         </form>

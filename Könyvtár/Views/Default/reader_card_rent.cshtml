@@ -149,7 +149,7 @@
                     </tr>
 
                     </form>
-
+                    <div id="rentable">
                     @foreach (var item3 in rent.Where(q => !q.Return_Date.HasValue))
                     {
                         <form action="delRent" method="post">
@@ -167,13 +167,14 @@
                             </tr>
                         </form>
                         }
+                    </div>
                     </tbody>
 
                     @* find every active table row, use the id from the table to delete it from the datbase! *@
                 </table>
             </div>
 
-        <script>
+    <script>
         var all_Writer = []
             @*@foreach (var item in kmp.Where(q => !q.RemovedTime.HasValue))
             {
@@ -260,6 +261,7 @@
 
             function myfunction(val) {
                 console.log($("#szid").value);
+                let pages = 1;//parseInt($("#currentpage").text());
                 $.ajax({
                     url: "/Default/SetSession",
                     type: "POST",
@@ -274,6 +276,36 @@
                             success: function (data) {
 
                                 document.getElementById("userdata").innerHTML = data;
+                                //$.ajax({
+                                //    url: "/Default/Rent",
+                                //    type: "GET",
+                                //    data: { search: val, page: pages },
+                                //    success: function (data2) {
+                                //        console.log(data2);
+                                //        var rentthings = "";
+                                //        //data2.forEach((item) => {
+                                //        //    rentthings += `<form action="delRent" method="post"> <tr>`;
+                                //        //    rentthings += ` <td>
+                                //        //        `+ item.Book_ID + ` <input type="text" readonly value="`+item.Book_ID +`" name="bookid" hidden>
+                                //        //        <input value="`+ item.Book_ID + ` " name="bookid" hidden> </td>`
+                                //        //    rentthings += `<td> ` + item.name + `</td>`;
+                                //        //    rentthings += `<td> ` + item.Personel_ID_Card + `</td>`;
+                                //        //    rentthings += `<td> ` + item.rentdate + `</td>`;
+                                //        //    rentthings += `<td> <input type="date" required name="date"> </td>`;
+                                //        //    rentthings += `<td> ` + item.dueadate + `</td>`;
+                                //        //    rentthings += `<td> <input type="submit" value="Rögzités"> </td>`;
+                                //        //    rentthings += `</tr> </form>`;
+                                //        //});
+
+                                //        $("#rentable").html(rentthings);
+
+
+
+                                //    },
+                                //    error: function () { alert("error"); }
+                                //});
+
+
                             },
                             error: function () { alert("error"); }
                         });
@@ -282,7 +314,7 @@
                     error: function () { alert("error"); }
                 });
         }
-        </script>
+    </script>
 
         </div>
 </body>

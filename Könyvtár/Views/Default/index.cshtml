@@ -63,204 +63,258 @@
                 Szempontok
             </button>
             <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="#">Szerző</a></li>
-                <li><a class="dropdown-item" href="#">Cím</a></li>
-                <li><a class="dropdown-item" href="#">ISBN/ISSN</a></li>
-                <li><a class="dropdown-item" href="#">Kategória</a></li>
-                @*@if (int.Parse(Session["level"].ToString()) > 0)
-                    {
-                        <li><a class="dropdown-item" href="#">Olvasók</a></li>
-                    }*@
-                <li><a class="dropdown-item" href="#">Nálad</a></li>
+                <li><a class="dropdown-item" href="#" onclick="hidecomplex()">Szerző</a></li>
+                <li><a class="dropdown-item" href="#" onclick="hidecomplex()">Cím</a></li>
+                <li><a class="dropdown-item" href="#" onclick="hidecomplex()">ISBN/ISSN</a></li>
+                <li><a class="dropdown-item" href="#" onclick="hidecomplex()">Kategória</a></li>
+                <li><a class="dropdown-item" href="#" onclick="showcomplex()">Összetett</a></li>
             </ul>
             <input type="text" class="form-control" placeholder="Könyvek, időszaki kiadványok keresése" id="livesearchtags" onkeydown="pressSubmit(event)">
+            <div class="row d-none" id="livesearchcomplex">
+                <div class="col">
+                    <input type="text" class="form-control" placeholder="Cím" id="livesearchname" onkeydown="pressSubmit(event)">
+                </div>
+                <div class="col">
+                    <input type="text" class="form-control" placeholder="Szerző" id="livesearchwriter" onkeydown="pressSubmit(event)">
+                </div>
+                <div class="col">
+                    <input type="text" class="form-control" placeholder="Kategória" id="livesearchcategorie" onkeydown="pressSubmit(event)">
+                </div>
+            </div>
             <button class="btn btn-success" type="submit" id="searchbutton">Keresés</button>
         </div>
-
     </div>
-    @RenderPage("book_render.cshtml")
+    <div>
+        <div class="row w-100 m-auto">
+            <div class="col-4">
+                <button class="btn btn-warning" onclick="pageNext(-@kv.Count())"> << </button>
+                <button class="btn btn-warning" onclick="pageNext(-1)"> << </button>
+            </div>
+            <h2 class="text-white col-4 text-center"> Jelenleg: <span id="currentpage">1</span> / <span id="maxpage">@((kv.Count()/30) + (kv.Count()%30 !=0 ? 1:0) )</span> </h2>
+            <div class="col-4 ">
+                <button class="btn btn-warning " onclick="pageNext(1)"> > </button>
+                <button class="btn btn-warning" onclick="pageNext(@kv.Count())"> >> </button>
+            </div>
+        </div>
 
-    <script>
-        function pressSubmit(event) {
-            if (event.keycode == 13) {
-                $("#searchbutton").click();
+        <table class="table table-responsive-md table-bordered table-striped text-center justify-content-center">
 
+            <thead style="position: sticky;top: 0">
+
+                <tr class="text-dark bg-warning">
+                    <td class=""> <strong>ID</strong>   </td>
+                    <td> <strong>ISBN</strong>  </td>
+                    <td><strong>Szerző</strong> </td>
+                    <td><strong>cím</strong> </td>
+                    <td><strong>Kategoria</strong> </td>
+                    <td> <strong>Darab</strong> </td>
+                </tr>
+
+            </thead>
+            <tbody id="booktable" class="bg-light">
+            </tbody>
+        </table>
+
+
+        <script>
+            function pressSubmit(event) {
+                if (event.keycode == 13) {
+                    LiveSearch();
+
+                }
             }
-        }
 
-        $(".dropdown-toggle").next(".dropdown-menu").children().on("click", function () {
-            $(this).closest(".dropdown-menu").prev(".dropdown-toggle").text($(this).text());
-          /*  $(".dropdown-menu").hide()*/
-        })
-
+            $(".dropdown-toggle").next(".dropdown-menu").children().on("click", function () {
+                $(this).closest(".dropdown-menu").prev(".dropdown-toggle").text($(this).text());
+                /*  $(".dropdown-menu").hide()*/
+            })
 
 
-        //const tablerows = document.querySelectorAll(".clickable-table");
-        const hide = document.getElementById("showBook");
-        document.getElementById("searchbutton").addEventListener('click', () => {
-            LiveSearch();
-        });
 
-
-        window.onload = (event) => {
-            $.ajax({
-                url: "/Default/GetSession",
-                type: "GET",
-                data: { 'name': "LastSearch" },
-                success: function (data1) {
-                    document.getElementById('livesearchtags').value = data1;
-                    $.ajax({
-                        url: "/Default/GetSession",
-                        type: "POST",
-                        data: { 'name': "LastType" },
-                        success: function (data2) {
-                            document.getElementById('searchType').innerText = data2
-                            LiveSearch();
-                        },
-                        error: function () { alert("error tags"); }
-                    });
-                },
-                error: function () { alert("error name"); }
+            //const tablerows = document.querySelectorAll(".clickable-table");
+            const hide = document.getElementById("showBook");
+            document.getElementById("searchbutton").addEventListener('click', () => {
+                LiveSearch();
             });
 
-        }
 
-
-        function LiveSearch() {
-            //Get the input value
-            let value = document.getElementById('livesearchtags').value;
-            let type = document.getElementById('searchType').innerText;
-            if (type.length > 0) {
+            window.onload = (event) => {
                 $.ajax({
-                    url: "/Default/SetSession",
-                    type: "POST",
-                    data: { 'name': "LastSearch", 'value': value },
-                    success: function () {
+                    url: "/Default/GetSession",
+                    type: "GET",
+                    data: { 'name': "LastSearch" },
+                    success: function (data1) {
+                        document.getElementById('livesearchtags').value = data1;
                         $.ajax({
-                            url: "/Default/SetSession",
+                            url: "/Default/GetSession",
                             type: "POST",
-                            data: { 'name': "LastType", 'value': type },
-                            success: function () { },
-                            error: function () { alert("error"); }
+                            data: { 'name': "LastType" },
+                            success: function (data2) {
+                                document.getElementById('searchType').innerText = data2
+                                LiveSearch();
+                            },
+                            error: function () { alert("error tags"); }
                         });
                     },
-                    error: function () { alert("error"); }
+                    error: function () { alert("error name"); }
                 });
+
             }
 
-            if (type == "Cím") {
-                $.ajax({
-                    type: "POST",
-                    // You can use the absolute url eg www.site.com/MyControllerName/LiveTagSearch or the relative path live below
-                    url: "/Default/LiveSearchName",
-                    // Attach the value to a parameter called search
-                    data: { search: value },
-                    datatype: "html",
-                    success: function (data) {
-                        // Insert the returned search results html into the result element
-                        console.log(data);
-                        document.getElementById('booktable').innerHTML = data;
-                    }
-                });
-            }
-            else if (type == "Szerző") {
-                $.ajax({
-                    type: "POST",
-                    // You can use the absolute url eg www.site.com/MyControllerName/LiveTagSearch or the relative path live below
-                    url: "/Default/LiveSearchWriter",
-                    // Attach the value to a parameter called search
-                    data: { search: value },
-                    datatype: "html",
-                    success: function (data) {
-                        // Insert the returned search results html into the result element
 
-                        console.log(data);
-                        document.getElementById('booktable').innerHTML = data;
-                    },
-                });
-            }
-            else if (type == "ISBN/ISSN") {
-                $.ajax({
-                    type: "POST",
-                    // You can use the absolute url eg www.site.com/MyControllerName/LiveTagSearch or the relative path live below
-                    url: "/Default/LiveSearchISBN",
-                    // Attach the value to a parameter called search
-                    data: { search: value },
-                    datatype: "html",
-                    success: function (data) {
-                        // Insert the returned search results html into the result element
-                        console.log(data);
-                        console.log(data);
-                        document.getElementById('booktable').innerHTML = data;
-                    },
-                });
-            }
-            else if (type == "Kategória") {
-                $.ajax({
-                    type: "POST",
-                    // You can use the absolute url eg www.site.com/MyControllerName/LiveTagSearch or the relative path live below
-                    url: "/Default/LiveSearchCategries",
-                    // Attach the value to a parameter called search
-                    data: { search: value },
-                    datatype: "html",
-                    success: function (data) {
-                        // Insert the returned search results html into the result element
-                        console.log(data);
-                        console.log(data);
-                        document.getElementById('booktable').innerHTML = data;
-                    },
-                });
-            }
-            @*else if (type == "Olvasók") {
-                $.ajax({
-                    type: "POST",
-                    // You can use the absolute url eg www.site.com/MyControllerName/LiveTagSearch or the relative path live below
-                    url: "/Default/LiveSearchReaderCard",
-                    // Attach the value to a parameter called search
-                    data: { search: value },
-                    datatype: "html",
-                    success: function (data) {
-                        // Insert the returned search results html into the result element
-                        console.log(data);
-                        console.log(data);
-                        document.getElementById('booktable').innerHTML = data;
-                    },
-                });
-            }
-            else if (type == "Nálad") {
-                $.ajax({
-                    type: "POST",
-                    // You can use the absolute url eg www.site.com/MyControllerName/LiveTagSearch or the relative path live below
-                    url: "/Default/LiveSearchReaderCard",
-                    // Attach the value to a parameter called search
-                    data: { search: @yourszid  },
-                    datatype: "html",
-                    success: function (data) {
-                        // Insert the returned search results html into the result element
-                        console.log(data);
-                        console.log(data);
-                        document.getElementById('booktable').innerHTML = data;
-                    },
-                });
-            }*@
-            else {
-                $.ajax({
-                    type: "POST",
-                    // You can use the absolute url eg www.site.com/MyControllerName/LiveTagSearch or the relative path live below
-                    url: "/Default/LiveSearchISBN",
-                    // Attach the value to a parameter called search
-                    data: { search: "" },
-                    datatype: "html",
-                    success: function (data) {
-                        // Insert the returned search results html into the result element
-                        document.getElementById('booktable').innerHTML = data;
-                    },
-                });
-            }
-            //genevent();
-        }
 
-    </script>
+            function pageNext(nextpage) {
+                var pagecurrent = parseInt($("#currentpage").text());
+                console.log(nextpage);
+                var pagemax = parseInt($("#maxpage").text());
+                pagecurrent += nextpage;
+                if (pagecurrent > pagemax) pagecurrent = pagemax;
+                else if (pagecurrent < 1) pagecurrent = 1;
+
+                $("#currentpage").text(pagecurrent);
+                console.log(nextpage);
+                LiveSearch();
+            }
+
+
+            function hidecomplex() {
+                document.getElementById("livesearchtags").classList.remove("d-none");
+                document.getElementById("livesearchcomplex").classList.add("d-none");
+            }
+            function showcomplex() {
+                document.getElementById("livesearchtags").classList.add("d-none");
+                document.getElementById("livesearchcomplex").classList.remove("d-none");
+            }
+
+            function LiveSearch() {
+                //Get the input value
+                let valueuniversal = document.getElementById('livesearchtags').value;
+                let valuename = document.getElementById('livesearchname').value;
+                let valuewriter = document.getElementById('livesearchwriter').value;
+                let valuecategorie = document.getElementById('livesearchcategorie').value;
+                let pages = parseInt($("#currentpage").text());
+                let valuefull = "";
+                let type = document.getElementById('searchType').innerText;
+                //if (type.length > 0) {
+                //    $.ajax({
+                //        url: "/Default/SetSession",
+                //        type: "POST",
+                //        data: { 'name': "LastSearch", 'value': value },
+                //        success: function () {
+                //            $.ajax({
+                //                url: "/Default/SetSession",
+                //                type: "POST",
+                //                data: { 'name': "LastType", 'value': type },
+                //                success: function () { },
+                //                error: function () { alert("error"); }
+                //            });
+                //        },
+                //        error: function () { alert("error"); }
+                //    });
+                //}
+
+                if (type == "Cím") {
+                    valuefull = "/" + valueuniversal + "//";
+                    $.ajax({
+                        type: "GET",
+                        // You can use the absolute url eg www.site.com/MyControllerName/LiveTagSearch or the relative path live below
+                        url: "/Default/Book",
+                        // Attach the value to a parameter called search
+                        data: { search: valuefull, page: pages },
+                        datatype: "html",
+                        success: function (data) {
+                            RenderBooks(data);
+                        }
+                    });
+                }
+                else if (type == "Szerző") {
+                    valuefull = "//" + valueuniversal + "/";
+                    $.ajax({
+                        type: "GET",
+                        // You can use the absolute url eg www.site.com/MyControllerName/LiveTagSearch or the relative path live below
+                        url: "/Default/Book",
+                        // Attach the value to a parameter called search
+                        data: { search: valuefull, page: pages },
+                        datatype: "html",
+                        success: function (data) {
+                            RenderBooks(data);
+                        },
+                    });
+                }
+                else if (type == "ISBN/ISSN") {
+                    valuefull = valueuniversal + "///";
+                    $.ajax({
+                        type: "GET",
+                        // You can use the absolute url eg www.site.com/MyControllerName/LiveTagSearch or the relative path live below
+                        url: "/Default/Book",
+                        // Attach the value to a parameter called search
+                        data: { search: valuefull, page: pages },
+                        datatype: "html",
+                        success: function (data) {
+                            RenderBooks(data);
+                        },
+                    });
+                }
+                else if (type == "Kategória") {
+                    valuefull = "///" + valueuniversal;
+                    $.ajax({
+                        type: "POST",
+                        // You can use the absolute url eg www.site.com/MyControllerName/LiveTagSearch or the relative path live below
+                        url: "/Default/Book",
+                        // Attach the value to a parameter called search
+                        data: { search: valuefull, page: pages },
+                        datatype: "html",
+                        success: function (data) {
+                            RenderBooks(data);
+                        },
+                    });
+                }
+                else if (type == "Összetett") {
+                    valuefull = "/" + valuename + "/" + valuewriter + "/" + valuecategorie;
+                    $.ajax({
+                        type: "GET",
+                        // You can use the absolute url eg www.site.com/MyControllerName/LiveTagSearch or the relative path live below
+                        url: "/Default/Book",
+                        // Attach the value to a parameter called search
+                        data: { search: valuefull, page: pages },
+                        datatype: "html",
+                        success: function (data) {
+                            // Insert the returned search results html into the result element
+                            RenderBooks(data);
+                        },
+                    });
+                }
+                else {
+                    $.ajax({
+                        type: "GET",
+                        // You can use the absolute url eg www.site.com/MyControllerName/LiveTagSearch or the relative path live below
+                        url: "/Default/Book",
+                        // Attach the value to a parameter called search
+                        data: {  page: pages },
+                        datatype: "html",
+                        success: function (data) {
+                            // Insert the returned search results html into the result element
+                            RenderBooks(data);
+                        },
+                    });
+                }
+                //genevent();
+            }
+            function RenderBooks(data) {
+                var innerstuff = "";
+                data.item.forEach((i) => {
+                    innerstuff += "<tr> <td>" + i.k.IdKonyv + "</td>";
+                    innerstuff += "<td>" + i.k.ISBN + "</td>";
+                    innerstuff += "<td>" + i.writer_name + "</td>";
+                    innerstuff += "<td>" + i.k.name + "</td>";
+                    innerstuff += "<td>" + i.categori + "</td>";
+                    innerstuff += "<td>" + i.quantity + "</td> </tr>";
+                });
+
+                $("#booktable").html(innerstuff);
+                $("#maxpage").text(data.pages);
+            }
+        </script>
 </body>
 
 </html>
