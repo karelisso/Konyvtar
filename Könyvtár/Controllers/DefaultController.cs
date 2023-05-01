@@ -226,15 +226,19 @@ namespace Könyvtár.App_Data
             if (isbn.Length > 9) kv.ISBN = isbn;
             if (name.Length > 0) kv.name = name;
             kv.demo = demo;
-            try
+            if (isNewEntry)
             {
-                kv.IdKonyv = db_book.konyv.Max(q => q.IdKonyv) + 1;
-            }
-            catch (Exception)
-            {
+                try
+                {
+                    kv.IdKonyv = db_book.konyv.Max(q => q.IdKonyv) + 1;
+                }
+                catch (Exception)
+                {
 
-                kv.IdKonyv = 0;
+                    kv.IdKonyv = 0;
+                }
             }
+
             KonyvPeldany[] kvp = new KonyvPeldany[quantity];
             int startindex = db_book.KonyvPeldany.Where(q => q.book_id == kv.ISBN).Count();
             Session["success"] = "Sikeresen hozzáadott könyvek:\n";
