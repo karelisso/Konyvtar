@@ -132,26 +132,5 @@ else
 
         });
     }
-
-    function Dell() {
-        let selectedrows = document.getElementsByClassName(".selected").innerText;
-        console.log($(".selected td:first-child").text());
-        $.post("/Default/delbooks", { 'name': $(".selected td:first-child").text() })
-            .done(function () {
-
-                // document.getElementsByClassName(".selected")[0].remove();
-                const button = document.querySelectorAll('.selected');
-                for (i = 0; i < button.length; ++i) {
-                    button[i].remove();
-                }
-                alert("second success");
-            })
-            .fail(function () {
-                alert("error");
-            });
-        //$.get("/Default/Retrievebooks", function (data) {
-        //    alert(data);
-        //});
-    }
 </script>
 

@@ -68,17 +68,16 @@
                 <li><a class="dropdown-item" href="#">ISBN/ISSN</a></li>
                 <li><a class="dropdown-item" href="#">Kategória</a></li>
                 @*@if (int.Parse(Session["level"].ToString()) > 0)
-                {
-                    <li><a class="dropdown-item" href="#">Olvasók</a></li>
-                }*@
-                    <li><a class="dropdown-item" href="#">Nálad</a></li>
+                    {
+                        <li><a class="dropdown-item" href="#">Olvasók</a></li>
+                    }*@
+                <li><a class="dropdown-item" href="#">Nálad</a></li>
             </ul>
             <input type="text" class="form-control" placeholder="Könyvek, időszaki kiadványok keresése" id="livesearchtags" onkeydown="pressSubmit(event)">
             <button class="btn btn-success" type="submit" id="searchbutton">Keresés</button>
         </div>
 
     </div>
-
     @RenderPage("book_render.cshtml")
 
     <script>
@@ -212,7 +211,7 @@
                     },
                 });
             }
-            else if (type == "Olvasók") {
+            @*else if (type == "Olvasók") {
                 $.ajax({
                     type: "POST",
                     // You can use the absolute url eg www.site.com/MyControllerName/LiveTagSearch or the relative path live below
@@ -243,7 +242,7 @@
                         document.getElementById('booktable').innerHTML = data;
                     },
                 });
-            }
+            }*@
             else {
                 $.ajax({
                     type: "POST",
@@ -260,7 +259,6 @@
             }
             //genevent();
         }
-
 
     </script>
 </body>

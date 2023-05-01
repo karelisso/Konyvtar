@@ -1,33 +1,33 @@
-﻿function pageNext(nextpage) {
-    var pagecurrent = parseInt($("#currentpage").text());
-    var pagemax = parseInt($("#maxpage").text());
-    pagecurrent += nextpage;
-    if (pagecurrent > pagemax) pagecurrent = pagemax;
-    else if (pagecurrent < 1) pagecurrent = 1;
-    $("#currentpage").text(pagecurrent);
-    $.ajax({
-        url: "/Default/GetLogBook",
-        type: "GET",
-        data: { 'page': pagecurrent },
-        success: function (data) {
-            var tabledata = "";
-            data.forEach(function (invdata) {
-                console.log(invdata);
-                var milliseconds = parseInt(invdata.logdata.when.replace(/\/Date\((\d+)\)\//, '$1'));
-                var date = new Date(milliseconds);
-                tabledata += "<tr>"
-                tabledata += "<td>" + invdata.logdata.who + "</td>";
-                tabledata += "<td>" + date + "</td>";
-                tabledata += "<td>" + invdata.logtext.text + "</td>";
-                tabledata += "<td>" + invdata.logdata.whom + "</td>";
+﻿//function pageNext(nextpage) {
+//    var pagecurrent = parseInt($("#currentpage").text());
+//    var pagemax = parseInt($("#maxpage").text());
+//    pagecurrent += nextpage;
+//    if (pagecurrent > pagemax) pagecurrent = pagemax;
+//    else if (pagecurrent < 1) pagecurrent = 1;
+//    $("#currentpage").text(pagecurrent);
+//    $.ajax({
+//        url: "/Default/GetLogBook",
+//        type: "GET",
+//        data: { 'page': pagecurrent },
+//        success: function (data) {
+//            var tabledata = "";
+//            data.forEach(function (invdata) {
+//                console.log(invdata);
+//                var milliseconds = parseInt(invdata.logdata.when.replace(/\/Date\((\d+)\)\//, '$1'));
+//                var date = new Date(milliseconds);
+//                tabledata += "<tr>"
+//                tabledata += "<td>" + invdata.logdata.who + "</td>";
+//                tabledata += "<td>" + date + "</td>";
+//                tabledata += "<td>" + invdata.logtext.text + "</td>";
+//                tabledata += "<td>" + invdata.logdata.whom + "</td>";
 
-                tabledata += "</tr>"
-            });
-            $("tbody").html(tabledata);
-        },
-        error: function () { alert("error"); }
-    });
-}
+//                tabledata += "</tr>"
+//            });
+//            $("tbody").html(tabledata);
+//        },
+//        error: function () { alert("error"); }
+//    });
+//}
 
 function autocomplete(inp, arr) {
     console.log("fsdf")

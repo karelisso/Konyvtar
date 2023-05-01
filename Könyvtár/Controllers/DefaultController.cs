@@ -16,6 +16,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
 using System.Web.UI.WebControls;
+using System.Data.Entity;
 
 namespace Könyvtár.App_Data
 {
@@ -488,199 +489,75 @@ namespace Könyvtár.App_Data
 
         }
 
-        public ActionResult GetBook(string isbn)
+        //input search = isbn / bookname / writer / categories
+        //output {"item":[{"k":{"IdKonyv":,"name":"","writerID":,"authorId":,
+            //"ISBN":"","Categories":,"Descrpition":,"imageID":,"demo":,"Available_Quantity":}
+            //,"Name":"","writer_name":""}],"pages":1}
+        [HttpGet]
+        public ActionResult Book(string search = "",int page = 1)
         {
-            isbn = isbn.Split(';')[0];
             var item = from k in db_book.konyv
                        join c in db_book.Categories on k.Categories equals c.IdCategorie
                        join w in db_book.Writer on k.authorId equals w.IdWriter
-                       where k.ISBN == isbn
                        select new
                        {
                            k,
                            c.Name,
                            w.writer_name
                        };
+            
+            if (search.Equals(string.Empty)) return Json(item.OrderBy(q=>q.k.IdKonyv).Skip(30 * (page - 1)).Take(30), JsonRequestBehavior.AllowGet);
+            string[] searchsplit = search.ToLower().Split('/');
+            if(searchsplit.Length != 4)
+            {
+                Session["error"] = " LiveSearchBook: input is not formated correctly, it should be ' isbn / bookname / writer / categories '";
+            }
+            for (int i = 0; i < 4; i++)
+            {
+                searchsplit[i] = searchsplit[i].Trim();
+                if (searchsplit[i].Length < 1) searchsplit[i] = "";
 
-            return Json(item, JsonRequestBehavior.AllowGet);
+            }
+            string searchisbn = searchsplit[0];
+            string searchedbook = searchsplit[1];
+            string searchedwriter = searchsplit[2];
+            string searchedcategories = searchsplit[3];
+            item = item.Where(q => q.k.name.Contains(searchedbook) 
+            && q.writer_name.Contains(searchedwriter)
+            && q.Name.Contains(searchedcategories));
+            int pages = (int) Math.Ceiling((double)item.Count() / 30);
+            item = item.OrderBy(q => q.k.IdKonyv).Skip(30 * (page - 1)).Take(30);
+            var value = new { item , pages };
+            return Json(value, JsonRequestBehavior.AllowGet);
+
         }
-
-
-        public string LiveSearchWriter(string search = "")
+        [HttpGet]
+        public ActionResult Rent(string search = "",int page = 1)
         {
-
             search = search.Trim();
-            if (search.Length < 1)
+            var rents = db_book.Rent.ToList();
+            var item = from rent in rents
+                       let bookIdParts = rent.Book_ID.Split(';')
+                       let bookId = bookIdParts[0]
+                       join konyv in db_book.konyv on bookId equals konyv.ISBN
+                       join card in db_book.Reader_Card on rent.Card_ID equals card.IdReaderCard
+                       select new
+                       {
+                           rent,
+                           konyv.name,
+                           card.Personel_ID_Card
+                       };
+            if (search.Length > 0) item = item.Where(q => q.Personel_ID_Card.Contains(search));
+            int pages = 1;// (int) Math.Ceiling((double)item.Count() / 30);
+            item = item.OrderBy(q => q.rent.Rent_Date).Skip(30 * (page - 1)).Take(30);
+            var value = new
             {
-                return AllBook();
-            }
-            string html_code = "";
-            int occurances = 0;
-            Dictionary<string, int> irok = new Dictionary<string, int>();
-
-            foreach (var wr in db_book.Writer)
-            {
-                foreach (var item in db_book.konyv)
-                {
-                    //if (LevenshteinDistance(search.Trim().ToLower(), wr.real_name.ToLower().Trim()) < 10)
-                    //{
-                    //    html_code += $" <tr class=\"clickable-table\"> <td>{bk.Id} </td>\r\n                    <td>{bk.ISBN}</td>\r\n                    <td> {db_book.Writer.Where(q => q.Id == bk.authorId).FirstOrDefault().writer_name} </td>\r\n                    <td>{bk.name}</td>\r\n                    <td> <img src=\"/Default/Load_Image_File_Id/{bk.imageID}\" alt=\"Alternate Text\" height=\"50px\" /> </td>\r\n                    <td> @bk.Available_Quantity @*<input type=\"number\" min=\"0\" name=\"name\" value=\"@bk.Available_Quantity\" />*@  </td>    \r\n                </tr> ";
-
-                    //}
-                    if (wr.real_name.ToLower().Contains(search.ToLower()) || wr.writer_name.ToLower().Contains(search.ToLower()))
-                    {
-                        string compare = item.IdKonyv.ToString();
-                        if (item.authorId.Equals(wr.IdWriter))
-                            //html_code += $" <tr  onclick=\"tbclick(this)\" ondblclick=\"tbdbclick(this)\"> <td>{item.Id} </td>\r\n                    <td>{item.ISBN}</td>\r\n                    <td> {db_book.Writer.Where(q => q.Id == item.authorId).FirstOrDefault().writer_name} </td>\r\n                    <td>{item.name}</td>\r\n                    <td> <img src=\"/Default/Load_Image_File_Id/{item.imageID}\" alt=\"Alternate Text\" height=\"50px\" /> </td>\r\n                    {"<td>" + item.Quantity + "</td>"}    \r\n                </tr> ";
-                            html_code += RenderBook(item);
-
-                    }
-                }
-            }
-            if (html_code.Length < 3) { html_code = "Ez a szerző nem szerepel nálunk!"; }
-            return html_code;
+                item,
+                pages
+            };
+            return Json(value,JsonRequestBehavior.AllowGet);
         }
 
-        public string LiveSearchName(string search = "")
-        {
-
-            search = search.Trim();
-            if (search.Length < 1)
-            {
-                return AllBook();
-            }
-            string html_code = "";
-            int occurances = 0;
-            string compare = "";
-
-            foreach (var item in db_book.konyv)
-            {
-                if (item.name.ToLower().Contains(search.ToLower()))
-                {
-                    occurances++;
-                    compare = item.IdKonyv.ToString();
-                    //html_code += $" <tr  onclick=\"tbclick(this)\" ondblclick=\"tbdbclick(this)\"> <td>{ item.Id } </td>\r\n                    <td>{item.ISBN}</td>\r\n                    <td> {db_book.Writer.Where(q => q.Id == item.authorId).FirstOrDefault().writer_name} </td>\r\n                    <td>{item.name}</td>\r\n                    <td> <img src=\"/Default/Load_Image_File_Id/{item.imageID}\" alt=\"Alternate Text\" height=\"50px\" /> </td>\r\n                    { "<td>" + item.Quantity + "</td>" }    \r\n                </tr> ";
-                    html_code += RenderBook(item);
-                }
-            }
-            //if (occurances <= 0)
-            //{
-            //    Dictionary<string, int> writers = new Dictionary<string, int>();
-            //    foreach (var item in db_book.konyv)
-            //    {
-            //        writers.Add(item.name.ToLower(), LevenshteinDistance(search.Trim().ToLower(), item.name.ToLower().Trim()));
-            //        if (!writers.ContainsKey(item.name.ToLower()))
-            //        {
-            //            writers.Add(item.name.ToLower(), LevenshteinDistance(search.Trim().ToLower(), item.real_name.ToLower().Trim()));
-            //        }
-            //        else if (LevenshteinDistance(search.Trim().ToLower(), item.real_name.ToLower().Trim()) < writers[item.name.ToLower()])
-            //        {
-            //            writers.Add(item.name.ToLower(), LevenshteinDistance(search.Trim().ToLower(), item.real_name.ToLower().Trim()));
-            //        }
-            //        //if (LevenshteinDistance(search.Trim().ToLower(),item.writer_name.ToLower().Trim()) < 3 + search.Length / 4 + item.writer_name.Length)
-            //        //{
-            //        //    occurances++;
-            //        //    html_code += $"<div>{item.writer_name} </div> <br>";
-            //        //}
-            //        //if (LevenshteinDistance(search.ToLower(), item.real_name.ToLower().Trim()) < 3 + search.Length / 4 + item.real_name.Length)
-            //        //{
-            //        //    occurances++;
-            //        //    html_code += $"<div>{item.writer_name} </div> <br>";
-            //        //}
-            //    }
-            //    writers = writers.OrderBy(q => q.Value).ToDictionary(w => w.Key, w => w.Value);
-            //    int counter = 0;
-            //    foreach (var item in writers)
-            //    {
-            //        counter++;
-            //        Writer wm = db_book.Writer.Where(q => q.writer_name == item.Key).FirstOrDefault();
-            //        html_code += $"<div>{wm.writer_name} </div> <br>";
-            //        if (counter > 1)
-            //        {
-            //            break;
-            //        }
-            //    }
-            //}
-            if (html_code.Length < 3) { html_code = "Ez a mű jelenleg nem szerepel az állományunkban";
-            }
-            return html_code;
-        }
-
-        public string LiveSearchISBN(string search = "")
-        {
-
-            search = search.Trim();
-            string html_code = "";
-            if (search.Length < 1)
-            {
-                return AllBook();
-            }
-            string compare = "";
-            foreach (var item in db_book.konyv)
-            {
-                if (item.ISBN.Contains(search))
-                {
-                    compare = item.IdKonyv.ToString();
-                    //html_code += $" <tr  onclick=\"tbclick(this)\" ondblclick=\"tbdbclick(this)\"> <td>{item.Id} </td>\r\n                    <td>{item.ISBN}</td>\r\n                    <td> {db_book.Writer.Where(q => q.Id == item.authorId).FirstOrDefault().writer_name} </td>\r\n                    <td>{item.name}</td>\r\n                    <td> <img src=\"/Default/Load_Image_File_Id/{item.imageID}\" alt=\"Alternate Text\" height=\"50px\" /> </td>\r\n                    {"<td>" + item.Quantity + "</td>"}    \r\n                </tr> ";
-                    html_code += RenderBook(item);
-                }
-            }
-            if (html_code.Length < 3) { html_code = "Ez a mű jelenleg nem szerepel az állományunkban"; }
-            return html_code;
-        }
-        public string LiveSearchCategries(string search = "")
-        {
-
-            search = search.Trim();
-            string html_code = "";
-            if (search.Length < 1)
-            {
-                return AllBook();
-            }
-            string compare = "";
-            foreach (var item in db_book.konyv)
-            {
-                if (db_book.Categories.First(q => q.IdCategorie == item.Categories).Name.Contains(search))
-                {
-                    compare = item.IdKonyv.ToString();
-                    //html_code += $" <tr  onclick=\"tbclick(this)\" ondblclick=\"tbdbclick(this)\"> <td>{item.Id} </td>\r\n                    <td>{item.ISBN}</td>\r\n                    <td> {db_book.Writer.Where(q => q.Id == item.authorId).FirstOrDefault().writer_name} </td>\r\n                    <td>{item.name}</td>\r\n                    <td> <img src=\"/Default/Load_Image_File_Id/{item.imageID}\" alt=\"Alternate Text\" height=\"50px\" /> </td>\r\n                    {"<td>" + item.Quantity + "</td>"}    \r\n                </tr> ";
-                    html_code += RenderBook(item);
-                }
-            }
-            if (html_code.Length < 3) { html_code = "Ez a kategoria jelenleg nem szerepel az állományunkban"; }
-            return html_code;
-        }
-        public string LiveSearchReaderCard(string search = "")
-        {
-
-            search = search.Trim();
-            string html_code = "";
-            if (search.Length < 1)
-            {
-                return AllBook();
-            }
-            string compare = "";
-            int iduser = -1;
-            if (!int.TryParse(search, out iduser)) return "Ilyen olvaso nem létezik";
-            foreach (var item in db_book.Rent)
-            {
-                if (db_book.Reader_Card.First(q => q.IdReaderCard == item.Card_ID).Personel_ID_Card.IndexOf(search) > -1)
-                {
-                    string bookisbn = item.Book_ID.Split(';')[0];
-                    html_code += RenderBook(db_book.konyv.First(q => q.ISBN == bookisbn));
-                }
-                //html_code += $" <tr  onclick=\"tbclick(this)\" ondblclick=\"tbdbclick(this)\"> <td>{item.Id} </td>\r\n                    <td>{item.ISBN}</td>\r\n                    <td> {db_book.Writer.Where(q => q.Id == item.authorId).FirstOrDefault().writer_name} </td>\r\n                    <td>{item.name}</td>\r\n                    <td> <img src=\"/Default/Load_Image_File_Id/{item.imageID}\" alt=\"Alternate Text\" height=\"50px\" /> </td>\r\n                    {"<td>" + item.Quantity + "</td>"}    \r\n                </tr> ";
-            }
-            if (html_code.Length < 3) { html_code = "Ez a olvasó jelenleg nem kölcsönzött ki könyvet"; }
-            return html_code;
-        }
-        //public ActionResult RenderReaderDetails(string szid)
-        //{
-        //    Reader_Card rc = db_book.Reader_Card.FirstOrDefault(q => q.Personel_ID_Card == szid);
-        //    if (rc == null) Session["readerCard"] = "";
-        //    else Session["readerCard"] = $"{rc.Personel_ID_Card}";
-        //    return ReaderCard();
-        //}
         public string AllBook()
         {
             string html_code = "";
@@ -727,16 +604,6 @@ namespace Könyvtár.App_Data
             }
             return distance[a.Length, b.Length];
         }
-
-        //public konyv[] Retrievebooks()
-        //{
-        //    konyv[] kv;
-        //    using (book_vs19Entities1 bullshit = new book_vs19Entities1())
-        //    {
-        //        kv = bullshit.konyv.ToArray();
-        //    }
-        //    return kv.ToArray();
-        //}
         [HttpGet]
         public ActionResult GetLogBook(int? page)
         {
@@ -751,20 +618,6 @@ namespace Könyvtár.App_Data
             if (page.HasValue) currentpage = page.Value;
             logs = logs.OrderBy(q=>q.logdata.IdLog).Skip(30 * (currentpage - 1)).Take(30);
             return Json(logs,JsonRequestBehavior.AllowGet);
-        }
-        public void Retrievebooks()
-        {
-            List<String[]> kv = new List<string[]>();
-            using (book_vs19Entities1 bullshit = new book_vs19Entities1())
-            {
-                foreach (var item in bullshit.konyv)
-                {         
-                    kv.Add(KonyvSTR(item));
-                }
-               
-            }
-            System.Diagnostics.Debug.WriteLine(kv[0].ToString());
-            Response.Write( kv[0].ToString());
         }
         public async Task<ActionResult> LogInUser(string Uname,string Upp,string RegYet)
         {
@@ -792,7 +645,7 @@ namespace Könyvtár.App_Data
         }
             if (succesfullogin)
             {
-                await Log(Session["userid"].ToString(), "0");
+                await Log("0", Session["userid"].ToString());
                 return await IndexPage();
             }
 
@@ -845,13 +698,6 @@ namespace Könyvtár.App_Data
             db_book.Log.Add(data);
            await SaveDatabaseBook();
         }
-        public string[] KonyvSTR(konyv inp)
-        {
-            String[] vm = new string[4] { inp.IdKonyv.ToString(), inp.ISBN, inp.name, "author" + db_book.Author.Where(q=>q.IdAuthor == inp.authorId).First().name   };
-            return vm;
-        }
-
-
         private string ComputeStringToSha256Hash(string plainText)
         {
             string salt = "13579";

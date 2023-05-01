@@ -1,15 +1,16 @@
 ﻿@{
-        book_vs19Entities1 bullshit = new book_vs19Entities1();
-        int userid = int.Parse(Session["userid"].ToString());
+    book_vs19Entities1 bullshit = new book_vs19Entities1();
+    int userid = int.Parse(Session["userid"].ToString());
     if(Session["cur_user"] != null && Session["cur_user"].ToString().Length > 0)
-            {
-            userid = int.Parse(Session["cur_user"].ToString());
-            }
-        var Usersus = bullshit.User_sus.Where(q => q.Id.Equals(userid)).FirstOrDefault();
-        //var User = bullshit.user.Where(q => q.user_id .Equals(Session["userid"])).FirstOrDefault();
-        var card = bullshit.Reader_Card.Where(q => q.User_ID == userid).FirstOrDefault();
-        string actionpath = card == null ? "CreateUser" : "CreateReader";
-
+    {
+        userid = int.Parse(Session["cur_user"].ToString());
+    }
+    var Usersus = bullshit.User_sus.Where(q => q.Id.Equals(userid)).FirstOrDefault();
+    //var User = bullshit.user.Where(q => q.user_id .Equals(Session["userid"])).FirstOrDefault();
+    var card = bullshit.Reader_Card.Where(q => q.User_ID == userid).FirstOrDefault();
+    string actionpath = card == null ? "CreateUser" : "CreateReader";
+    Rent[] rent = bullshit.Rent.Where(q=>q.Card_ID==card.IdReaderCard).ToArray();
+    string bookk = "0";
     }
 <div style="height:100px"></div>
 <h1 class="text-warning shadow align-self-center pt-5 text-center">Profil</h1>
@@ -60,14 +61,50 @@
                     <td> <input type="text" class="form-control" name="birthpalace" value="@card.Birtpalace">  </td>
                 </tr>
             </table>
+            <table class="table table-responsive-md  table-bordered text-light text-center justify-content-center" id="tablfull">
+
+                <thead style="position: sticky;top: 0">
+
+                    <tr class="text-dark bg-warning">
+                        <td> <strong>ISBN</strong>  </td>
+                        <td><strong>könyv címe</strong> </td>
+                        <td> <strong>Személyi igazolvány</strong>  </td>
+                        <td><strong>kölcsönadás ideje</strong> </td>
+                        <td><strong>visszavétel ideje</strong> </td>
+                        <td><strong>visszavétel hatálya</strong> </td>
+                        <td><strong>adatok rögzitése</strong> </td>
+                        @*<td> <strong>Darab</strong> </td>*@
+                    </tr>
+
+                </thead>
+                <tbody>
+        @foreach (var item3 in rent.Where(q => !q.Return_Date.HasValue))
+        {
+                <tr>
+                    <td>
+                        @item3.Book_ID <input type="text" readonly value="@item3.Book_ID" name="bookid" hidden>   @{ bookk = item3.Book_ID.Split(';')[0]; }
+                        <input value="@item3.Book_ID" name="bookid" hidden>
+                    </td>
+                    <td> @bullshit.konyv.FirstOrDefault(q => q.ISBN == bookk).name  </td>
+                    <td> @bullshit.Reader_Card.First(q => q.IdReaderCard.Equals(item3.Card_ID)).Personel_ID_Card</td>
+                    <td> @item3.Rent_Date </td>
+                    <td> <input type="date" required name="date"> </td>
+                    <td> @item3.Due_Date </td>
+                    <td> <input type="submit" value="Rögzités"> </td>
+                </tr>
         }
+        </tbody>
+
+        @* find every active table row, use the id from the table to delete it from the datbase! *@
+        </table>
+    }
         <input type="submit" value="Változatások megerősítése" class="btn btn-danger">
 
-    </form>
-    <script>
-        window.onload = (event) => {
-            ResetSession("cur_user");
+        </form>
+        <script>
+            window.onload = (event) => {
+                ResetSession("cur_user");
 
-        }
-    </script
-</DIV>
+            }
+        </script>
+    </DIV>
