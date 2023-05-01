@@ -21,7 +21,7 @@
         Jelenleg: Taglista
     </h1>
 </header>
-<table class="table table-responsive table-bordered table-striped text-center justify-content-center">
+<table class="table table-hover table-responsive table-bordered text-center justify-content-center">
     <thead class="bg-warning">
     <tr>
     <td>Személyi</td>
@@ -35,7 +35,7 @@
 
     </tr>
     </thead>
-    <tbody class="bg-white">
+    <tbody class="bg-white ">
         @foreach (var item in ReaderCard)
         {
         <tr onclick="gotoprofile(this.getElementsByTagName('td')[0].getElementsByTagName('input')[0].value)">

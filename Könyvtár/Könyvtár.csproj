@@ -273,9 +273,6 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Author.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
     <Compile Include="Categories.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -288,9 +285,6 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Images.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
-    <Compile Include="InformationBundle.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="konyv.cs">
@@ -348,22 +342,7 @@
     <Compile Include="Reader_Card.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
-    <Compile Include="Relation_AuthorWriterBook.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Relation_BookCategorie.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Relation_UserBook.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Relation_UserCategorie.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
     <Compile Include="Rent.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
-    <Compile Include="staff_role.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="user.cs">

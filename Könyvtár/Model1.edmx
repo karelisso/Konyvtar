@@ -5,14 +5,6 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="book_vs19Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
-        <EntityType Name="Author">
-          <Key>
-            <PropertyRef Name="IdAuthor" />
-          </Key>
-          <Property Name="IdAuthor" Type="int" Nullable="false" />
-          <Property Name="name" Type="nchar" MaxLength="60" />
-          <Property Name="Date" Type="nchar" MaxLength="30" />
-        </EntityType>
         <EntityType Name="Categories">
           <Key>
             <PropertyRef Name="IdCategorie" />
@@ -27,15 +19,6 @@
           </Key>
           <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="JPG" Type="varbinary(max)" />
-        </EntityType>
-        <EntityType Name="InformationBundle">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" Nullable="false" />
-          <Property Name="BundleID" Type="bigint" Nullable="false" />
-          <Property Name="Information_Type" Type="nvarchar(max)" Nullable="false" />
-          <Property Name="InformationID" Type="bigint" Nullable="false" />
         </EntityType>
         <EntityType Name="konyv">
           <Key>
@@ -117,39 +100,6 @@
           <Property Name="Birthday" Type="date" />
           <Property Name="Birtpalace" Type="nvarchar(max)" />
         </EntityType>
-        <EntityType Name="Relation_AuthorWriterBook">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" Nullable="false" />
-          <Property Name="writerId" Type="int" />
-          <Property Name="authorid" Type="int" />
-          <Property Name="bookid" Type="int" />
-        </EntityType>
-        <EntityType Name="Relation_BookCategorie">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" Nullable="false" />
-          <Property Name="Book_Id" Type="int" />
-          <Property Name="CatregorieID" Type="int" />
-        </EntityType>
-        <EntityType Name="Relation_UserBook">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" Nullable="false" />
-          <Property Name="User_Id" Type="int" />
-          <Property Name="BookID" Type="int" />
-        </EntityType>
-        <EntityType Name="Relation_UserCategorie">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" Nullable="false" />
-          <Property Name="User_Id" Type="int" />
-          <Property Name="CatregorieID" Type="int" />
-        </EntityType>
         <EntityType Name="Rent">
           <Key>
             <PropertyRef Name="IdRent" />
@@ -161,13 +111,6 @@
           <Property Name="Return_Date" Type="datetime" />
           <Property Name="Punishment" Type="money" />
           <Property Name="Card_ID" Type="int" Nullable="false" />
-        </EntityType>
-        <EntityType Name="staff_role">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" Nullable="false" />
-          <Property Name="role_name" Type="nchar" MaxLength="10" />
         </EntityType>
         <EntityType Name="user">
           <Key>
@@ -201,10 +144,8 @@
           <Property Name="aboutpath" Type="nvarchar(max)" />
         </EntityType>
         <EntityContainer Name="book_vs19ModelStoreContainer">
-          <EntitySet Name="Author" EntityType="Self.Author" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Categories" EntityType="Self.Categories" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Images" EntityType="Self.Images" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="InformationBundle" EntityType="Self.InformationBundle" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="konyv" EntityType="Self.konyv" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="KonyvPeldany" EntityType="Self.KonyvPeldany" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="KonyvTorolt" EntityType="Self.KonyvTorolt" Schema="dbo" store:Type="Tables" />
@@ -213,12 +154,7 @@
           <EntitySet Name="MessagesError" EntityType="Self.MessagesError" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MessagesSucces" EntityType="Self.MessagesSucces" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Reader_Card" EntityType="Self.Reader_Card" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Relation_AuthorWriterBook" EntityType="Self.Relation_AuthorWriterBook" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Relation_BookCategorie" EntityType="Self.Relation_BookCategorie" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Relation_UserBook" EntityType="Self.Relation_UserBook" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Relation_UserCategorie" EntityType="Self.Relation_UserCategorie" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Rent" EntityType="Self.Rent" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="staff_role" EntityType="Self.staff_role" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="user" EntityType="Self.user" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="User_sus" EntityType="Self.User_sus" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Writer" EntityType="Self.Writer" Schema="dbo" store:Type="Tables" />
@@ -228,10 +164,8 @@
     <edmx:ConceptualModels>
       <Schema Namespace="book_vs19Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityContainer Name="book_vs19Entities1" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="Author" EntityType="book_vs19Model.Author" />
           <EntitySet Name="Categories" EntityType="book_vs19Model.Categories" />
           <EntitySet Name="Images" EntityType="book_vs19Model.Images" />
-          <EntitySet Name="InformationBundle" EntityType="book_vs19Model.InformationBundle" />
           <EntitySet Name="konyv" EntityType="book_vs19Model.konyv" />
           <EntitySet Name="KonyvPeldany" EntityType="book_vs19Model.KonyvPeldany" />
           <EntitySet Name="KonyvTorolt" EntityType="book_vs19Model.KonyvTorolt" />
@@ -240,24 +174,11 @@
           <EntitySet Name="MessagesError" EntityType="book_vs19Model.MessagesError" />
           <EntitySet Name="MessagesSucces" EntityType="book_vs19Model.MessagesSucces" />
           <EntitySet Name="Reader_Card" EntityType="book_vs19Model.Reader_Card" />
-          <EntitySet Name="Relation_AuthorWriterBook" EntityType="book_vs19Model.Relation_AuthorWriterBook" />
-          <EntitySet Name="Relation_BookCategorie" EntityType="book_vs19Model.Relation_BookCategorie" />
-          <EntitySet Name="Relation_UserBook" EntityType="book_vs19Model.Relation_UserBook" />
-          <EntitySet Name="Relation_UserCategorie" EntityType="book_vs19Model.Relation_UserCategorie" />
           <EntitySet Name="Rent" EntityType="book_vs19Model.Rent" />
-          <EntitySet Name="staff_role" EntityType="book_vs19Model.staff_role" />
           <EntitySet Name="user" EntityType="book_vs19Model.user" />
           <EntitySet Name="User_sus" EntityType="book_vs19Model.User_sus" />
           <EntitySet Name="Writer" EntityType="book_vs19Model.Writer" />
         </EntityContainer>
-        <EntityType Name="Author">
-          <Key>
-            <PropertyRef Name="IdAuthor" />
-          </Key>
-          <Property Name="IdAuthor" Type="Int32" Nullable="false" />
-          <Property Name="name" Type="String" MaxLength="60" FixedLength="true" Unicode="true" />
-          <Property Name="Date" Type="String" MaxLength="30" FixedLength="true" Unicode="true" />
-        </EntityType>
         <EntityType Name="Categories">
           <Key>
             <PropertyRef Name="IdCategorie" />
@@ -272,15 +193,6 @@
           </Key>
           <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="JPG" Type="Binary" MaxLength="Max" FixedLength="false" />
-        </EntityType>
-        <EntityType Name="InformationBundle">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" />
-          <Property Name="BundleID" Type="Int64" Nullable="false" />
-          <Property Name="Information_Type" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="InformationID" Type="Int64" Nullable="false" />
         </EntityType>
         <EntityType Name="konyv">
           <Key>
@@ -362,39 +274,6 @@
           <Property Name="Birthday" Type="DateTime" Precision="0" />
           <Property Name="Birtpalace" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
-        <EntityType Name="Relation_AuthorWriterBook">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" />
-          <Property Name="writerId" Type="Int32" />
-          <Property Name="authorid" Type="Int32" />
-          <Property Name="bookid" Type="Int32" />
-        </EntityType>
-        <EntityType Name="Relation_BookCategorie">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" />
-          <Property Name="Book_Id" Type="Int32" />
-          <Property Name="CatregorieID" Type="Int32" />
-        </EntityType>
-        <EntityType Name="Relation_UserBook">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" />
-          <Property Name="User_Id" Type="Int32" />
-          <Property Name="BookID" Type="Int32" />
-        </EntityType>
-        <EntityType Name="Relation_UserCategorie">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" />
-          <Property Name="User_Id" Type="Int32" />
-          <Property Name="CatregorieID" Type="Int32" />
-        </EntityType>
         <EntityType Name="Rent">
           <Key>
             <PropertyRef Name="IdRent" />
@@ -406,13 +285,6 @@
           <Property Name="Return_Date" Type="DateTime" Precision="3" />
           <Property Name="Punishment" Type="Decimal" Precision="19" Scale="4" />
           <Property Name="Card_ID" Type="Int32" Nullable="false" />
-        </EntityType>
-        <EntityType Name="staff_role">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" />
-          <Property Name="role_name" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
         </EntityType>
         <EntityType Name="user">
           <Key>
@@ -451,15 +323,6 @@
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="book_vs19ModelStoreContainer" CdmEntityContainer="book_vs19Entities1">
-          <EntitySetMapping Name="Author">
-            <EntityTypeMapping TypeName="book_vs19Model.Author">
-              <MappingFragment StoreEntitySet="Author">
-                <ScalarProperty Name="Date" ColumnName="Date" />
-                <ScalarProperty Name="name" ColumnName="name" />
-                <ScalarProperty Name="IdAuthor" ColumnName="IdAuthor" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Categories">
             <EntityTypeMapping TypeName="book_vs19Model.Categories">
               <MappingFragment StoreEntitySet="Categories">
@@ -473,16 +336,6 @@
             <EntityTypeMapping TypeName="book_vs19Model.Images">
               <MappingFragment StoreEntitySet="Images">
                 <ScalarProperty Name="JPG" ColumnName="JPG" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="InformationBundle">
-            <EntityTypeMapping TypeName="book_vs19Model.InformationBundle">
-              <MappingFragment StoreEntitySet="InformationBundle">
-                <ScalarProperty Name="InformationID" ColumnName="InformationID" />
-                <ScalarProperty Name="Information_Type" ColumnName="Information_Type" />
-                <ScalarProperty Name="BundleID" ColumnName="BundleID" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -575,43 +428,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Relation_AuthorWriterBook">
-            <EntityTypeMapping TypeName="book_vs19Model.Relation_AuthorWriterBook">
-              <MappingFragment StoreEntitySet="Relation_AuthorWriterBook">
-                <ScalarProperty Name="bookid" ColumnName="bookid" />
-                <ScalarProperty Name="authorid" ColumnName="authorid" />
-                <ScalarProperty Name="writerId" ColumnName="writerId" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Relation_BookCategorie">
-            <EntityTypeMapping TypeName="book_vs19Model.Relation_BookCategorie">
-              <MappingFragment StoreEntitySet="Relation_BookCategorie">
-                <ScalarProperty Name="CatregorieID" ColumnName="CatregorieID" />
-                <ScalarProperty Name="Book_Id" ColumnName="Book_Id" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Relation_UserBook">
-            <EntityTypeMapping TypeName="book_vs19Model.Relation_UserBook">
-              <MappingFragment StoreEntitySet="Relation_UserBook">
-                <ScalarProperty Name="BookID" ColumnName="BookID" />
-                <ScalarProperty Name="User_Id" ColumnName="User_Id" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Relation_UserCategorie">
-            <EntityTypeMapping TypeName="book_vs19Model.Relation_UserCategorie">
-              <MappingFragment StoreEntitySet="Relation_UserCategorie">
-                <ScalarProperty Name="CatregorieID" ColumnName="CatregorieID" />
-                <ScalarProperty Name="User_Id" ColumnName="User_Id" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Rent">
             <EntityTypeMapping TypeName="book_vs19Model.Rent">
               <MappingFragment StoreEntitySet="Rent">
@@ -622,14 +438,6 @@
                 <ScalarProperty Name="Rent_Date" ColumnName="Rent_Date" />
                 <ScalarProperty Name="Book_ID" ColumnName="Book_ID" />
                 <ScalarProperty Name="IdRent" ColumnName="IdRent" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="staff_role">
-            <EntityTypeMapping TypeName="book_vs19Model.staff_role">
-              <MappingFragment StoreEntitySet="staff_role">
-                <ScalarProperty Name="role_name" ColumnName="role_name" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

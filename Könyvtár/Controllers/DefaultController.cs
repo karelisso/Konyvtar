@@ -238,21 +238,24 @@ namespace Könyvtár.App_Data
                     kv.IdKonyv = 0;
                 }
             }
-
-            KonyvPeldany[] kvp = new KonyvPeldany[quantity];
-            int startindex = db_book.KonyvPeldany.Where(q => q.book_id == kv.ISBN).Count();
-            Session["success"] = "Sikeresen hozzáadott könyvek:\n";
-            for (int i = 0; i < kvp.Length; i++)
+            if (quantity != null)
             {
-                kvp[i] = new KonyvPeldany();
-                kvp[i].AddedTime = addedtime;
-                kvp[i].book_id = kv.ISBN;
-                kvp[i].PeldanyId = startindex;
-                Session["success"] += $"{kv.ISBN};{startindex}";
-                startindex++;
+                KonyvPeldany[] kvp = new KonyvPeldany[quantity];
+                int startindex = db_book.KonyvPeldany.Where(q => q.book_id == kv.ISBN).Count();
+                Session["success"] = "Sikeresen hozzáadott könyvek:\n";
+                for (int i = 0; i < kvp.Length; i++)
+                {
+                    kvp[i] = new KonyvPeldany();
+                    kvp[i].AddedTime = addedtime;
+                    kvp[i].book_id = kv.ISBN;
+                    kvp[i].PeldanyId = startindex;
+                    Session["success"] += $"{kv.ISBN};{startindex}";
+                    startindex++;
+                }
+                db_book.KonyvPeldany.AddRange(kvp);
+                if (isNewEntry) db_book.konyv.Add(kv);
             }
-            db_book.KonyvPeldany.AddRange(kvp);
-            if (isNewEntry) db_book.konyv.Add(kv);
+
             await SaveDatabaseBook();
             await Log("5", kv.IdKonyv + "");
             return await CreateMetaPage();
@@ -545,7 +548,8 @@ namespace Könyvtár.App_Data
             string searchedcategories = searchsplit[3];
             item = item.Where(q => q.k.name.Contains(searchedbook)
             && q.writer_name.Contains(searchedwriter)
-            && q.categori.Contains(searchedcategories));
+            && q.categori.Contains(searchedcategories)
+            && q.k.ISBN.Contains(searchisbn));
             pages = (int)Math.Ceiling((double)item.Count() / 30);
             item = item.OrderBy(q => q.k.IdKonyv).Skip(30 * (page - 1)).Take(30);
             var value =  new
