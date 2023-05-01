@@ -130,10 +130,10 @@
                     }
 
 
-                    <li class="nav-item">
+                    @*<li class="nav-item">
                         @Html.ActionLink("Súgó", "Helperpage", "Default", new { area = "" }, new { @class = "navbar-brand navbar-right" })
 
-                    </li>
+                    </li>*@
 
                     if (int.Parse(Session["level"].ToString()) >= 1)
                     {
@@ -165,13 +165,13 @@
         @if ( (Session["success"] != null || Session["error"] != null)  && (Session["success"].ToString().Length > 1 || Session["error"].ToString().Length > 1))
         {
             <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
+                <div class="modal-dialog text-dark">
                     <div class="modal-content">
                         <div class="modal-header">
                             <h4 class="modal-title" id="myModalLabel">Esemény</h4>
                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                         </div>
-                        <div class="modal-body">
+                        <div class="modal-body text-dark">
                             @Session["error"]
                             <hr>
                             @Session["success"]
