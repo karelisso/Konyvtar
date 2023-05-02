@@ -299,7 +299,8 @@ namespace Könyvtár.App_Data
             await Log("7", account2.user_id + "");
             return await RegisterUserPage();
         }
-        public async Task<ActionResult> CreateReader(string Uname, string name2, string mail, string Upp, string UppR, string phone, string szid, string home, string birthday, string birthpalace)
+        public async Task<ActionResult> CreateReader(string Uname, string name2, string mail, string Upp, string UppR, string phone, string szid, string home,
+            string birthday, string birthpalace)
         {
             if (Upp != UppR)
             {
@@ -434,7 +435,8 @@ namespace Könyvtár.App_Data
 
 
 
-
+        /// <summary>
+        /// unsed
         public String Load_Image_Base()
         {
 
@@ -486,6 +488,10 @@ namespace Könyvtár.App_Data
             catch { }
             return null;
         }
+        /// <summary>
+        ///  unused
+
+
 
         public string RenderBook(konyv item)
         {
@@ -560,6 +566,7 @@ namespace Könyvtár.App_Data
             return Json(value, JsonRequestBehavior.AllowGet);
 
         }
+        // input search = isbn;number
         [HttpGet]
         public ActionResult Rent(string search = "", int page = 1)
         {
