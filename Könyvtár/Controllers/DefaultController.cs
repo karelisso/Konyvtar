@@ -421,13 +421,14 @@ namespace Könyvtár.App_Data
 
         public async Task<ActionResult> delRent(string bookid, string date)
         {
-            string[] bookidsplit = bookid.Split(';');
+            string bookidISBN = bookid.Split(';')[0];
+            int bookidnum = int.Parse( bookid.Split(';')[1]);
             Rent rent = db_book.Rent.First(q => q.Book_ID.Equals(bookid));
             rent.Return_Date = DateTime.Now;
             DateTime addedDate;
             if (!DateTime.TryParse(date, out addedDate)) addedDate = DateTime.Now;
             rent.Return_Date = addedDate;
-            db_book.KonyvPeldany.Where(q => q.book_id == bookid).First().isBorrowed = false;
+            db_book.KonyvPeldany.Where(q => q.book_id == bookidISBN).First(q =>  q.PeldanyId == bookidnum).isBorrowed = false;
             await SaveDatabaseBook();
             await Log("10", bookid + "");
             return await RentReaderCardPage();

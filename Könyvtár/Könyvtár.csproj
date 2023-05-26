@@ -250,8 +250,10 @@
     <Content Include="Scripts\app\_run.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
-    <Content Include="App_Data\db_a9796b_kerubin1_5_2_2023.bak" />
     <Content Include="Documentation\Szalamandra-Projekt-feladat-dokumentuma-kész 1.docx" />
+    <Content Include="Documentation\Szalamandra-könyvtár-kész.pptx" />
+    <Content Include="App_Data\mqsl18_BOOK_VS19.MDF.bak" />
+    <Content Include="App_Data\msql22_db_a9796b_kerubin1_5_2_2023.bak" />
     <None Include="Properties\PublishProfiles\smartasp.pubxml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
